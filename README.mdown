@@ -1,0 +1,12 @@
+# MFSideMenu
+
+## Installation
+
+1. Bring the MFSideMenu folder into your project.
+2. Create your menu (a UITableViewController -- in the demo this is the SideMenuViewController class)
+3. In your UIViewController, import MFSideMenu.h and then add this to your viewDidLoad method:<br />
+    [self setupSideMenuBarButtonItem];
+4. Initiate MFSideMenu in your app delegate:<br />
+    self.window.rootViewController = navigationController;<br />
+    [self.window makeKeyAndVisible];<br />
+    [MFSideMenuManager configureWithNavigationController:navigationController sideMenuController:sideMenuViewController];
