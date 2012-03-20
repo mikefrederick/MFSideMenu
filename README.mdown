@@ -1,12 +1,51 @@
 # MFSideMenu
+=======
 
-## Installation
+This project was inspired by the Facebook iOS app. The idea is to give a slideout menu to a UINavigationController-based app.
+
+=======
+
+[![](http://i.imgur.com/jf2RM.png)](http://i.imgur.com/jf2RM.png)
+[![](http://i.imgur.com/6dAU1.png)](http://i.imgur.com/6dAU1.png)
+
+Features
+=======
+
+- UIBarButtonItem for sliding your UINavigationController to show/hide a menu (UITableViewController) for your app.
+- Ability to slide the UINavigationBar to the right in order to display the menu.
+- Ability to drag the UINavigationController back when the menu is visible.
+- Very simple and readable code.
+
+Installation
+=======
 
 1. Bring the MFSideMenu folder into your project.
 2. Create your menu (a UITableViewController -- in the demo this is the SideMenuViewController class)
 3. In your UIViewController, import MFSideMenu.h and then add this to your viewDidLoad method:<br />
-    [self setupSideMenuBarButtonItem];
+    `[self setupSideMenuBarButtonItem];`
 4. Initiate MFSideMenu in your app delegate:<br />
-    self.window.rootViewController = navigationController;<br />
-    [self.window makeKeyAndVisible];<br />
-    [MFSideMenuManager configureWithNavigationController:navigationController sideMenuController:sideMenuViewController];
+    `self.window.rootViewController = navigationController;`<br />
+    `[self.window makeKeyAndVisible];`<br />
+    `[MFSideMenuManager configureWithNavigationController:navigationController sideMenuController:sideMenuViewController];`
+    
+License
+=======
+Copyright (c) 2012, Michael Frederick
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+ 
+* Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+ 
+* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+* Neither the name of Michael Frederick, 'viamike.com' nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL Michael Frederick BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Contact
+=======
+
+mike@viamike.com<br />
+http://viamike.com<br />
+http://twitter.com/mike_frederick
