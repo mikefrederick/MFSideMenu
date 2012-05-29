@@ -32,7 +32,7 @@ static char menuStateKey;
     if(self.navigationController.menuState == MFSideMenuStateVisible || 
        [[self.navigationController.viewControllers objectAtIndex:0] isEqual:self]) {
         self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] 
-                                                 initWithImage:[UIImage imageNamed:@"ButtonMenu.png"] style:UIBarButtonItemStyleBordered 
+                                                 initWithImage:[UIImage imageNamed:@"menu-icon.png"] style:UIBarButtonItemStyleBordered 
                                                  target:self action:@selector(toggleSideMenuPressed:)] autorelease];
     } else {
         self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back-arrow"] 
