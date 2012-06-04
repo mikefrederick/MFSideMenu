@@ -5,6 +5,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#define kMenuAnimationDuration 0.2
 
 typedef enum {
     MFSideMenuStateHidden,

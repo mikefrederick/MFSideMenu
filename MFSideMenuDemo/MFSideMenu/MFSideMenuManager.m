@@ -6,6 +6,7 @@
 
 #import "MFSideMenuManager.h"
 #import "UIViewController+MFSideMenu.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation MFSideMenuManager
 
@@ -19,7 +20,8 @@
     return sharedManager;
 }
 
-+ (void) configureWithNavigationController:(UINavigationController *)controller sideMenuController:(id)menuController {
++ (void) configureWithNavigationController:(UINavigationController *)controller 
+                        sideMenuController:(id)menuController {
     MFSideMenuManager *manager = [MFSideMenuManager sharedManager];
     manager.navigationController = controller;
     manager.sideMenuController = menuController;
@@ -49,6 +51,10 @@
     [tapRecognizer release];
     
     [controller.view.superview insertSubview:[menuController view] belowSubview:controller.view];
+    
+    controller.view.layer.shadowOpacity = 0.75f;
+    controller.view.layer.shadowRadius = 10.0f;
+    controller.view.layer.shadowColor = [UIColor blackColor].CGColor;
 }
 
 
@@ -83,16 +89,14 @@
     }
 }
 
-- (void) handlePan:(id)sender {
-    UIPanGestureRecognizer *recognizer = (UIPanGestureRecognizer *)sender;
-    
+- (void) handlePan:(UIPanGestureRecognizer *)recognizer {    
     UIView *view = self.navigationController.view;
     
 	if(recognizer.state == UIGestureRecognizerStateBegan) {
 		originalCenter = view.center;
 	}
     
-    CGPoint translatedPoint = [(UIPanGestureRecognizer*)sender translationInView:view];
+    CGPoint translatedPoint = [recognizer translationInView:view];
     translatedPoint = CGPointMake(originalCenter.x+translatedPoint.x, originalCenter.y+translatedPoint.y);
     
     translatedPoint.x = MIN(translatedPoint.x, kSidebarWidth + view.frame.size.width/2);

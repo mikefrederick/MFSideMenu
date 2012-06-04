@@ -27,14 +27,14 @@
     demoViewController.title = @"Drag Me To The Right";
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:demoViewController];
     
-    SideMenuViewController *sideMenuViewController = [[SideMenuViewController alloc] init];
-    sideMenuViewController.title = @"Side Menu";
-    
     self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];
     
+    SideMenuViewController *sideMenuViewController = [[SideMenuViewController alloc] init];
+    
     // make sure to display the navigation controller before calling this
-    [MFSideMenuManager configureWithNavigationController:navigationController sideMenuController:sideMenuViewController];
+    [MFSideMenuManager configureWithNavigationController:navigationController 
+                                      sideMenuController:sideMenuViewController];
     
     [sideMenuViewController release];
     [demoViewController release];

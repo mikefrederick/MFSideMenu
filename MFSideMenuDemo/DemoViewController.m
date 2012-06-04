@@ -7,7 +7,6 @@
 
 #import "DemoViewController.h"
 #import "MFSideMenu.h"
-#import <QuartzCore/QuartzCore.h>
 
 @interface DemoViewController ()
 

@@ -71,7 +71,6 @@
 		275F15781517E9B70052A240 = {
 			isa = PBXGroup;
 			children = (
-				275F15BB1517F7A20052A240 /* QuartzCore.framework */,
 				275F158D1517E9B80052A240 /* MFSideMenuDemo */,
 				275F15861517E9B80052A240 /* Frameworks */,
 				275F15841517E9B80052A240 /* Products */,
@@ -89,6 +88,7 @@
 		275F15861517E9B80052A240 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				275F15BB1517F7A20052A240 /* QuartzCore.framework */,
 				275F15871517E9B80052A240 /* UIKit.framework */,
 				275F15891517E9B80052A240 /* Foundation.framework */,
 				275F158B1517E9B80052A240 /* CoreGraphics.framework */,
@@ -279,7 +279,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MFSideMenuDemo/MFSideMenuDemo-Prefix.pch";
 				INFOPLIST_FILE = "MFSideMenuDemo/MFSideMenuDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -290,7 +292,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MFSideMenuDemo/MFSideMenuDemo-Prefix.pch";
 				INFOPLIST_FILE = "MFSideMenuDemo/MFSideMenuDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -314,6 +318,7 @@
 				275F159D1517E9B80052A240 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -97,6 +97,7 @@ static char menuStateKey;
     [UIView beginAnimations:@"toggleSideMenu" context:NULL];
     [UIView setAnimationDelegate:self];
     [UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
+    [UIView setAnimationDuration:kMenuAnimationDuration];
     
     CGRect frame = self.view.frame;
     if (hidden) {

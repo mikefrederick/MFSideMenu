@@ -13,11 +13,18 @@ Features
 
 - UIBarButtonItem for sliding your UINavigationController to show/hide a menu (UITableViewController) for your app.
 - Ability to slide the UINavigationBar to the right in order to display the menu.
-- Ability to drag the UINavigationController back when the menu is visible.
-- Very simple and readable code.
+- Ability to tap or drag the UINavigationController back when the menu is visible.
+- Shadow between UINavigationController and menu
+- Universal support (iPhone + iPad)
+- Lightweight, simple and readable code.
+
+Known Caveats
+=======
+- No landscape support
 
 Installation
 =======
+Note: QuartzCore is required for shadow rendering
 
 1. Bring the MFSideMenu folder into your project.
 2. Create your menu (a UITableViewController -- in the demo this is the SideMenuViewController class)
