@@ -9,9 +9,8 @@
 #define kSidebarWidth 270
 
 @interface MFSideMenuManager : NSObject<UIGestureRecognizerDelegate> {
-    CGPoint originalCenter;
+    CGPoint originalOrigin;
 }
-
 
 @property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic, strong) UITableViewController *sideMenuController;
@@ -19,6 +18,7 @@
 + (MFSideMenuManager *) sharedManager;
 
 // this is all you should need to setup your app
-+ (void) configureWithNavigationController:(UINavigationController *)controller sideMenuController:(id)menuController;
++ (void) configureWithNavigationController:(UINavigationController *)controller 
+                        sideMenuController:(id)menuController;
 
 @end

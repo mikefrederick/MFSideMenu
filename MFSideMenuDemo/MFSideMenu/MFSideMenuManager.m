@@ -52,9 +52,10 @@
     
     [controller.view.superview insertSubview:[menuController view] belowSubview:controller.view];
     
-    controller.view.layer.shadowOpacity = 0.75f;
-    controller.view.layer.shadowRadius = 10.0f;
-    controller.view.layer.shadowColor = [UIColor blackColor].CGColor;
+    [[NSNotificationCenter defaultCenter] addObserver:manager 
+                                             selector:@selector(flipViewAccordingToStatusBarOrientation:) 
+                                                 name:UIApplicationDidChangeStatusBarOrientationNotification 
+                                               object:nil];
 }
 
 
@@ -89,38 +90,113 @@
     }
 }
 
-- (void) handlePan:(UIPanGestureRecognizer *)recognizer {    
+- (void) setNavigationControllerOffset:(CGFloat)xOffset {
+    CGRect frame = self.navigationController.view.frame;
+    frame.origin = CGPointZero;
+    switch (self.navigationController.interfaceOrientation) 
+    {
+        case UIInterfaceOrientationPortrait:
+            frame.origin.x = xOffset;
+            break;
+            
+        case UIInterfaceOrientationPortraitUpsideDown:
+            frame.origin.x = -1*xOffset;
+            break;
+            
+        case UIInterfaceOrientationLandscapeLeft:
+            frame.origin.y = -1*xOffset;
+            break;
+            
+        case UIInterfaceOrientationLandscapeRight:
+            frame.origin.y = xOffset;
+            break;
+    }
+    
+    self.navigationController.view.frame = frame;
+}
+
+- (CGFloat) yAdjustedForInterfaceOrientation:(CGPoint)point {
+    if(UIInterfaceOrientationIsPortrait(self.navigationController.interfaceOrientation)) {
+        return ABS(point.y);
+    } else {
+        return ABS(point.x);
+    }
+}
+
+- (CGFloat) xAdjustedForInterfaceOrientation:(CGPoint)point {
+    if(UIInterfaceOrientationIsPortrait(self.navigationController.interfaceOrientation)) {
+        return ABS(point.x);
+    } else {
+        return ABS(point.y);
+    }
+}
+
+- (void) setXAdjustedForInterfaceOrientation:(CGFloat)newX point:(CGPoint)point {
+    switch (self.navigationController.interfaceOrientation) 
+    {
+        case UIInterfaceOrientationPortrait:
+            point.x = newX;
+            break;
+            
+        case UIInterfaceOrientationPortraitUpsideDown:
+            point.x = -1*newX;
+            break;
+            
+        case UIInterfaceOrientationLandscapeLeft:
+            point.y = -1*newX;
+            break;
+            
+        case UIInterfaceOrientationLandscapeRight:
+            point.y = newX;
+            break;
+    }
+}
+
+- (CGFloat) widthAdjustedForInterfaceOrientation:(UIView *)view {
+    if(UIInterfaceOrientationIsPortrait(self.navigationController.interfaceOrientation)) {
+        return view.frame.size.width;
+    } else {
+        return view.frame.size.height;
+    }
+}
+
+// this method handles the navigation bar pan event
+// and sets the navigation controller's frame as needed
+- (void) handleNavigationBarPan:(UIPanGestureRecognizer *)recognizer {    
     UIView *view = self.navigationController.view;
     
 	if(recognizer.state == UIGestureRecognizerStateBegan) {
-		originalCenter = view.center;
+        originalOrigin = view.frame.origin;
 	}
     
     CGPoint translatedPoint = [recognizer translationInView:view];
-    translatedPoint = CGPointMake(originalCenter.x+translatedPoint.x, originalCenter.y+translatedPoint.y);
+    translatedPoint = CGPointMake([self xAdjustedForInterfaceOrientation:originalOrigin]+translatedPoint.x, 
+                                  [self yAdjustedForInterfaceOrientation:originalOrigin]+translatedPoint.y);
     
-    translatedPoint.x = MIN(translatedPoint.x, kSidebarWidth + view.frame.size.width/2);
-    translatedPoint.x = MAX(translatedPoint.x, 0 + view.frame.size.width/2);
+    translatedPoint.x = MIN(translatedPoint.x, kSidebarWidth);
+    translatedPoint.x = MAX(translatedPoint.x, 0);
     
-    view.center = CGPointMake(translatedPoint.x, view.center.y);
+    [self setNavigationControllerOffset:translatedPoint.x];
     
 	if(recognizer.state == UIGestureRecognizerStateEnded) {
-        CGFloat finalX = translatedPoint.x + (.35*[recognizer velocityInView:view].x);
+        CGPoint velocity = [recognizer velocityInView:view];
+        CGFloat finalX = translatedPoint.x + (.35*velocity.x);
+        CGFloat viewWidth = [self widthAdjustedForInterfaceOrientation:view]; 
         
         if(self.navigationController.menuState == MFSideMenuStateHidden) {
-            if(finalX - view.frame.size.width/2 > view.frame.size.width/2) {
+            if(finalX > viewWidth/2) {
                 [self.navigationController setMenuState:MFSideMenuStateVisible];
             } else {
                 [UIView beginAnimations:nil context:NULL];
-                view.center = originalCenter;
+                [self setNavigationControllerOffset:0];
                 [UIView commitAnimations];
             }
         } else if(self.navigationController.menuState == MFSideMenuStateVisible) {
-            if(finalX < originalCenter.x) {
+            if(finalX < [self xAdjustedForInterfaceOrientation:originalOrigin]) {
                 [self.navigationController setMenuState:MFSideMenuStateHidden];
             } else {
                 [UIView beginAnimations:nil context:NULL];
-                view.center = originalCenter;
+                [self setNavigationControllerOffset:[self xAdjustedForInterfaceOrientation:originalOrigin]]; 
                 [UIView commitAnimations];
             }
         }
@@ -130,13 +206,63 @@
 - (void) navigationControllerPanned:(id)sender {
     if(self.navigationController.menuState == MFSideMenuStateHidden) return;
     
-    [self handlePan:sender];
+    [self handleNavigationBarPan:sender];
 }
 
 - (void) navigationBarPanned:(id)sender {
     if(self.navigationController.menuState != MFSideMenuStateHidden) return;
     
-    [self handlePan:sender];
+    [self handleNavigationBarPan:sender];
 }
+
+
+#pragma mark - Side Menu Rotation
+
+- (void)flipViewAccordingToStatusBarOrientation:(NSNotification *)notification {
+    /*
+     This notification is most likely triggered inside an animation block, 
+     therefore no animation is needed to perform this nice transition. 
+     */
+    
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    
+    CGFloat angle = 0.0;
+    CGRect newFrame = self.sideMenuController.view.window.bounds;
+    CGSize statusBarSize = [[UIApplication sharedApplication] statusBarFrame].size;
+    
+    switch (orientation) { 
+        case UIInterfaceOrientationPortraitUpsideDown:
+            angle = M_PI; 
+            newFrame.size.height -= statusBarSize.height;
+            break;
+        case UIInterfaceOrientationLandscapeLeft:
+            angle = - M_PI / 2.0f;
+            newFrame.origin.x += statusBarSize.width;
+            newFrame.size.width -= statusBarSize.width; 
+            break;
+        case UIInterfaceOrientationLandscapeRight:
+            angle = M_PI / 2.0f;
+            newFrame.size.width -= statusBarSize.width;
+            break;
+        default: // as UIInterfaceOrientationPortrait
+            angle = 0.0;
+            newFrame.origin.y += statusBarSize.height;
+            newFrame.size.height -= statusBarSize.height;
+            break;
+    } 
+    
+    self.sideMenuController.view.transform = CGAffineTransformMakeRotation(angle);
+    self.sideMenuController.view.frame = newFrame;
+    
+    if(self.navigationController.menuState == MFSideMenuStateVisible) {
+        [self.navigationController setMenuState:MFSideMenuStateHidden];
+    }
+    
+    self.navigationController.view.layer.shadowOpacity = 0.75f;
+    self.navigationController.view.layer.shadowRadius = 10.0f;
+    self.navigationController.view.layer.shadowColor = [UIColor blackColor].CGColor;
+}
+
+
 
 @end

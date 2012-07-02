@@ -8,6 +8,8 @@
 #import "MFSideMenuManager.h"
 #import <objc/runtime.h>
 
+@class SideMenuViewController;
+
 @interface UIViewController (MFSideMenuPrivate)
 - (void)toggleSideMenu:(BOOL)hidden;
 @end
@@ -15,6 +17,10 @@
 @implementation UIViewController (MFSideMenu)
 
 static char menuStateKey;
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return YES;
+}
 
 - (void) toggleSideMenuPressed:(id)sender {
     if(self.navigationController.menuState == MFSideMenuStateVisible) {
@@ -94,20 +100,37 @@ static char menuStateKey;
 @implementation UIViewController (MFSideMenuPrivate)
 
 - (void) toggleSideMenu:(BOOL)hidden {
+    if(![self isKindOfClass:[UINavigationController class]]) return;
+    
     [UIView beginAnimations:@"toggleSideMenu" context:NULL];
     [UIView setAnimationDelegate:self];
     [UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
     [UIView setAnimationDuration:kMenuAnimationDuration];
     
     CGRect frame = self.view.frame;
-    if (hidden) {
-        frame.origin = CGPointZero;
-    } else {
-        frame.origin.x = kSidebarWidth;
+    frame.origin = CGPointZero;
+    if (!hidden) {
+        switch (self.interfaceOrientation) 
+        {
+            case UIInterfaceOrientationPortrait:
+                frame.origin.x = kSidebarWidth;
+                break;
+                
+            case UIInterfaceOrientationPortraitUpsideDown:
+                frame.origin.x = -1*kSidebarWidth;
+                break;
+                
+            case UIInterfaceOrientationLandscapeLeft:
+                frame.origin.y = -1*kSidebarWidth;
+                break;
+                
+            case UIInterfaceOrientationLandscapeRight:
+                frame.origin.y = kSidebarWidth;
+                break;
+        } 
     }
-    
     self.view.frame = frame;
-    
+        
     [UIView commitAnimations];
 }
 

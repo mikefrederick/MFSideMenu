@@ -106,7 +106,7 @@ IG9mIHRoZSBVSU5hdmlnYXRpb25Db250cm9sbGVyIHRvIGJyaW5nIGl0IGJhY2suA</string>
 						</object>
 					</object>
 				</array>
-				<string key="NSFrame">{{0, 20}, {320, 460}}</string>
+				<string key="NSFrame">{{0, 64}, {320, 416}}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="646849533"/>
@@ -118,6 +118,9 @@ IG9mIHRoZSBVSU5hdmlnYXRpb25Db250cm9sbGVyIHRvIGJyaW5nIGl0IGJhY2suA</string>
 					</object>
 				</object>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
+				<object class="IBUISimulatedNavigationBarMetrics" key="IBUISimulatedTopBarMetrics">
+					<bool key="IBUIPrompted">NO</bool>
+				</object>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 		</array>
