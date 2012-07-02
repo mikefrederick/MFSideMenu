@@ -6,7 +6,8 @@ This project was inspired by the Facebook iOS app. The idea is to give a slideou
 =======
 
 [![](http://i.imgur.com/jf2RM.png)](http://i.imgur.com/jf2RM.png)
-[![](http://i.imgur.com/6dAU1.png)](http://i.imgur.com/6dAU1.png)
+[![](http://i.imgur.com/Ah5mP.png)
+[![](http://i.imgur.com/KN4IB.png)
 
 Features
 =======
@@ -16,11 +17,9 @@ Features
 - Ability to tap or drag the UINavigationController back when the menu is visible.
 - Shadow between UINavigationController and menu
 - Universal support (iPhone + iPad)
+- Landscape support
 - Lightweight, simple and readable code.
 
-Known Caveats
-=======
-- No landscape support
 
 Installation
 =======

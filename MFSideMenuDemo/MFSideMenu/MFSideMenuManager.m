@@ -56,6 +56,10 @@
                                              selector:@selector(flipViewAccordingToStatusBarOrientation:) 
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification 
                                                object:nil];
+    
+    controller.view.layer.shadowOpacity = 0.75f;
+    controller.view.layer.shadowRadius = 10.0f;
+    controller.view.layer.shadowColor = [UIColor blackColor].CGColor;
 }
 
 

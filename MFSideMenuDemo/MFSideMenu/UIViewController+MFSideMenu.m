@@ -99,6 +99,8 @@ static char menuStateKey;
 
 @implementation UIViewController (MFSideMenuPrivate)
 
+// TODO: alter the duration based on the current position of the menu
+// to provide a smoother animation
 - (void) toggleSideMenu:(BOOL)hidden {
     if(![self isKindOfClass:[UINavigationController class]]) return;
     
