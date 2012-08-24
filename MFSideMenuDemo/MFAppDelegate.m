@@ -32,9 +32,12 @@
     
     SideMenuViewController *sideMenuViewController = [[SideMenuViewController alloc] init];
     
+    MenuOptions options = MenuButtonEnabled|BackButtonEnabled;
     // make sure to display the navigation controller before calling this
     [MFSideMenuManager configureWithNavigationController:navigationController 
-                                      sideMenuController:sideMenuViewController];
+                                      sideMenuController:sideMenuViewController
+                                        menuSide:MenuLeftHandSide
+                                                 options:options];
     
     [sideMenuViewController release];
     [demoViewController release];

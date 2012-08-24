@@ -10,11 +10,6 @@
 
 @implementation SideMenuViewController
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-}
-
 #pragma mark - UITableViewDataSource
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {

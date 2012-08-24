@@ -36,15 +36,36 @@ static char velocityKey;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (UIBarButtonItem *)menuBarButtonItem {
+    return [[[UIBarButtonItem alloc]
+             initWithImage:[UIImage imageNamed:@"menu-icon.png"] style:UIBarButtonItemStyleBordered
+             target:self action:@selector(toggleSideMenuPressed:)] autorelease];
+}
+
+- (UIBarButtonItem *)backBarButtonItem {
+    return [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back-arrow"]
+                                             style:UIBarButtonItemStyleBordered target:self
+                                            action:@selector(backButtonPressed:)] autorelease];
+}
+
 - (void) setupSideMenuBarButtonItem {
-    if(self.navigationController.menuState == MFSideMenuStateVisible || 
+    if([MFSideMenuManager sharedManager].menuSide == MenuRightHandSide
+       && [MFSideMenuManager menuButtonEnabled]) {
+        self.navigationItem.rightBarButtonItem = [self menuBarButtonItem];
+        return;
+    }
+    
+    if(self.navigationController.menuState == MFSideMenuStateVisible ||
        [[self.navigationController.viewControllers objectAtIndex:0] isEqual:self]) {
-        self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] 
-                                                 initWithImage:[UIImage imageNamed:@"menu-icon.png"] style:UIBarButtonItemStyleBordered 
-                                                 target:self action:@selector(toggleSideMenuPressed:)] autorelease];
+        if([MFSideMenuManager menuButtonEnabled]) {
+            self.navigationItem.leftBarButtonItem = [self menuBarButtonItem];
+        }
     } else {
-        self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back-arrow"] 
-                                         style:UIBarButtonItemStyleBordered target:self action:@selector(backButtonPressed:)] autorelease];
+        if([MFSideMenuManager sharedManager].menuSide == MenuLeftHandSide) {
+            if([MFSideMenuManager backButtonEnabled]) {
+                self.navigationItem.leftBarButtonItem = [self backBarButtonItem];
+            }
+        }
     }
 }
 
@@ -87,7 +108,6 @@ static char velocityKey;
 }
 
 - (void)setVelocity:(CGFloat)velocity {
-    NSLog(@"setting velocity: %f", velocity);
     objc_setAssociatedObject(self, &velocityKey, [NSNumber numberWithFloat:velocity], OBJC_ASSOCIATION_RETAIN);
 }
 
@@ -124,14 +144,15 @@ static char velocityKey;
     if(![self isKindOfClass:[UINavigationController class]]) return;
     
     CGFloat x = [self xAdjustedForInterfaceOrientation:self.view.frame.origin];
-    CGFloat animationPositionDelta = (hidden) ? x : (kSidebarWidth - x);
+    CGFloat navigationControllerXPosition = [MFSideMenuManager menuVisibleNavigationControllerXPosition];
+    CGFloat animationPositionDelta = (hidden) ? x : (navigationControllerXPosition  - x);
     
     if(ABS(self.velocity) > 1.0) {
         // try to continue the animation at the speed the user was swiping
         duration = animationPositionDelta / ABS(self.velocity);
     } else {
         // no swipe was used, user tapped the bar button item
-        CGFloat animationDurationPerPixel = kMenuAnimationDuration / kSidebarWidth;
+        CGFloat animationDurationPerPixel = kMenuAnimationDuration / navigationControllerXPosition;
         duration = animationDurationPerPixel * animationPositionDelta;
     }
     
@@ -148,19 +169,19 @@ static char velocityKey;
         switch (self.interfaceOrientation) 
         {
             case UIInterfaceOrientationPortrait:
-                frame.origin.x = kSidebarWidth;
+                frame.origin.x = navigationControllerXPosition;
                 break;
                 
             case UIInterfaceOrientationPortraitUpsideDown:
-                frame.origin.x = -1*kSidebarWidth;
+                frame.origin.x = -1*navigationControllerXPosition;
                 break;
                 
             case UIInterfaceOrientationLandscapeLeft:
-                frame.origin.y = -1*kSidebarWidth;
+                frame.origin.y = -1*navigationControllerXPosition;
                 break;
                 
             case UIInterfaceOrientationLandscapeRight:
-                frame.origin.y = kSidebarWidth;
+                frame.origin.y = navigationControllerXPosition;
                 break;
         } 
     }

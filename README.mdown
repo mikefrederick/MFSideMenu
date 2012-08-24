@@ -11,13 +11,12 @@ This project was inspired by the Facebook iOS app. The idea is to give a slideou
 
 Features
 =======
-
-- UIBarButtonItem for sliding your UINavigationController to show/hide a menu (UITableViewController) for your app.
-- Ability to slide the UINavigationBar to the right in order to display the menu.
-- Ability to tap or drag the UINavigationController back when the menu is visible.
+- The menu can display on the left OR right side of the screen.
+- Display the menu either by dragging the UINavigationBar or by pressing the UIBarButtonItem.
+- When the menu is visible you can tap or drag the UINavigationController to close the menu.
 - Shadow between UINavigationController and menu
-- Universal support (iPhone + iPad)
-- Landscape support
+- Universal device support (iPhone + iPad)
+- Universal orientation support (Portrait + Landscape)
 - Lightweight, simple and readable code.
 
 
@@ -27,12 +26,18 @@ Note: QuartzCore is required for shadow rendering
 
 1. Bring the MFSideMenu folder into your project.
 2. Create your menu (a UITableViewController -- in the demo this is the SideMenuViewController class)
-3. In your UIViewController, import MFSideMenu.h and then add this to your viewDidLoad method:<br />
-    `[self setupSideMenuBarButtonItem];`
-4. Initiate MFSideMenu in your app delegate:<br />
+3. Initiate MFSideMenu in your app delegate:<br />
     `self.window.rootViewController = navigationController;`<br />
     `[self.window makeKeyAndVisible];`<br />
-    `[MFSideMenuManager configureWithNavigationController:navigationController sideMenuController:sideMenuViewController];`
+    
+    `MenuOptions options = MenuButtonEnabled|BackButtonEnabled;`<br />
+    `// make sure to display the navigation controller before calling this`<br />
+    `[MFSideMenuManager configureWithNavigationController:navigationController 
+                                      sideMenuController:sideMenuViewController
+                                        menuSide:MenuLeftHandSide
+                                                 options:options];`
+4. (Optional) If you want to display the menu or back UIBarButtonItem, import MFSideMenu.h in your UIViewController and then add this to your viewDidLoad method:<br />
+    `[self setupSideMenuBarButtonItem];`
     
 License
 =======
