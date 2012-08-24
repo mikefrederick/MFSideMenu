@@ -27,15 +27,17 @@ Note: QuartzCore is required for shadow rendering
 1. Bring the MFSideMenu folder into your project.
 2. Create your menu (a UITableViewController -- in the demo this is the SideMenuViewController class)
 3. Initiate MFSideMenu in your app delegate:<br />
-    `self.window.rootViewController = navigationController;`<br />
-    `[self.window makeKeyAndVisible];`<br />
+	````objective-c
+    self.window.rootViewController = navigationController;
+    [self.window makeKeyAndVisible];
     
-    `MenuOptions options = MenuButtonEnabled|BackButtonEnabled;`<br />
-    `// make sure to display the navigation controller before calling this`<br />
-    `[MFSideMenuManager configureWithNavigationController:navigationController 
+    MenuOptions options = MenuButtonEnabled|BackButtonEnabled;
+    // make sure to display the navigation controller before calling this
+    [MFSideMenuManager configureWithNavigationController:navigationController 
                                       sideMenuController:sideMenuViewController
                                         menuSide:MenuLeftHandSide
-                                                 options:options];`
+                                                 options:options];
+    ````
 4. (Optional) If you want to display the menu or back UIBarButtonItem, import MFSideMenu.h in your UIViewController and then add this to your viewDidLoad method:<br />
     `[self setupSideMenuBarButtonItem];`
     
