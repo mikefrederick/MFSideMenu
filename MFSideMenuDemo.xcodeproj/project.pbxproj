@@ -276,11 +276,13 @@
 		275F159C1517E9B80052A240 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: michael frederick (L7FKSR97U2)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MFSideMenuDemo/MFSideMenuDemo-Prefix.pch";
 				INFOPLIST_FILE = "MFSideMenuDemo/MFSideMenuDemo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2105FF50-8570-40F6-82D2-4345AB225349";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};

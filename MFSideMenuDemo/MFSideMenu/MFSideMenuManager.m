@@ -57,9 +57,16 @@
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification 
                                                object:nil];
     
-    controller.view.layer.shadowOpacity = 0.75f;
-    controller.view.layer.shadowRadius = 10.0f;
-    controller.view.layer.shadowColor = [UIColor blackColor].CGColor;
+    [manager drawNavigationControllerShadow];
+}
+
+- (void) drawNavigationControllerShadow {
+    CGRect pathRect = self.navigationController.view.bounds;
+    pathRect.size.width = 10;
+    self.navigationController.view.layer.shadowPath = [UIBezierPath bezierPathWithRect:pathRect].CGPath;
+    self.navigationController.view.layer.shadowOpacity = 0.75f;
+    self.navigationController.view.layer.shadowRadius = 10.0f;
+    self.navigationController.view.layer.shadowColor = [UIColor blackColor].CGColor;
 }
 
 
@@ -180,7 +187,9 @@
     translatedPoint.x = MIN(translatedPoint.x, kSidebarWidth);
     translatedPoint.x = MAX(translatedPoint.x, 0);
     
+
     [self setNavigationControllerOffset:translatedPoint.x];
+
     
 	if(recognizer.state == UIGestureRecognizerStateEnded) {
         CGPoint velocity = [recognizer velocityInView:view];
@@ -189,16 +198,20 @@
         
         if(self.navigationController.menuState == MFSideMenuStateHidden) {
             if(finalX > viewWidth/2) {
+                self.navigationController.velocity = velocity.x;
                 [self.navigationController setMenuState:MFSideMenuStateVisible];
             } else {
+                self.navigationController.velocity = 0;
                 [UIView beginAnimations:nil context:NULL];
                 [self setNavigationControllerOffset:0];
                 [UIView commitAnimations];
             }
         } else if(self.navigationController.menuState == MFSideMenuStateVisible) {
             if(finalX < [self xAdjustedForInterfaceOrientation:originalOrigin]) {
+                self.navigationController.velocity = velocity.x;
                 [self.navigationController setMenuState:MFSideMenuStateHidden];
             } else {
+                self.navigationController.velocity = 0;
                 [UIView beginAnimations:nil context:NULL];
                 [self setNavigationControllerOffset:[self xAdjustedForInterfaceOrientation:originalOrigin]]; 
                 [UIView commitAnimations];
@@ -261,10 +274,6 @@
     if(self.navigationController.menuState == MFSideMenuStateVisible) {
         [self.navigationController setMenuState:MFSideMenuStateHidden];
     }
-    
-    self.navigationController.view.layer.shadowOpacity = 0.75f;
-    self.navigationController.view.layer.shadowRadius = 10.0f;
-    self.navigationController.view.layer.shadowColor = [UIColor blackColor].CGColor;
 }
 
 
