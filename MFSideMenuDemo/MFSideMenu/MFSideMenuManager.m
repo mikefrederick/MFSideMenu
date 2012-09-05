@@ -26,7 +26,7 @@
 
 + (void) configureWithNavigationController:(UINavigationController *)controller 
                         sideMenuController:(id)menuController {
-    MenuOptions options = MenuButtonEnabled|BackButtonEnabled;
+    MenuOptions options = MenuButtonEnabled|BackButtonEnabled|OnlyPanRootNavbar;
     
     [MFSideMenuManager configureWithNavigationController:controller
                                       sideMenuController:menuController
@@ -108,6 +108,10 @@
 
 + (BOOL) backButtonEnabled {
     return (([MFSideMenuManager sharedManager].options & BackButtonEnabled) == BackButtonEnabled);
+}
+
++ (BOOL) onlyPanRootNavbar {
+    return (([MFSideMenuManager sharedManager].options & OnlyPanRootNavbar) == OnlyPanRootNavbar);
 }
 
 - (void) drawNavigationControllerShadowPath {    
@@ -314,8 +318,14 @@
 
 - (void) navigationBarPanned:(id)sender {
     if(self.navigationController.menuState != MFSideMenuStateHidden) return;
-    
-    [self handleNavigationBarPan:sender];
+
+    if([MFSideMenuManager onlyPanRootNavbar]) {
+        if(self.navigationController.visibleViewController == [self.navigationController.viewControllers objectAtIndex:0]) {
+            [self handleNavigationBarPan:sender];
+        }
+    } else {
+        [self handleNavigationBarPan:sender];
+    }
 }
 
 
