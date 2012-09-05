@@ -15,7 +15,8 @@ typedef enum {
 
 typedef enum {
     MenuButtonEnabled = 1 << 0, // enable the 'menu' UIBarButtonItem
-    BackButtonEnabled = 1 << 1 // enable the 'back' UIBarButtonItem
+    BackButtonEnabled = 1 << 1,  // enable the 'back' UIBarButtonItem
+    OnlyPanRootNavbar = 1 << 2  // only pan the root UINavigationBar
 } MenuOptions;
 
 
@@ -43,5 +44,5 @@ typedef enum {
 
 + (BOOL) menuButtonEnabled;
 + (BOOL) backButtonEnabled;
-
++ (BOOL) onlyPanRootNavbar;
 @end
