@@ -9,8 +9,6 @@
 #import <objc/runtime.h>
 #import <QuartzCore/QuartzCore.h>
 
-@class SideMenuViewController;
-
 @interface UIViewController (MFSideMenuPrivate)
 - (void) toggleSideMenu:(BOOL)hidden animationDuration:(NSTimeInterval)duration;
 @end
