@@ -18,10 +18,6 @@
 static char menuStateKey;
 static char velocityKey;
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return YES;
-}
-
 - (void) toggleSideMenuPressed:(id)sender {
     if(self.navigationController.menuState == MFSideMenuStateVisible) {
         [self.navigationController setMenuState:MFSideMenuStateHidden];
