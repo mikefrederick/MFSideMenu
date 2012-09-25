@@ -6,8 +6,6 @@
 
 #import <Foundation/Foundation.h>
 
-#define kSidebarWidth 270
-
 typedef enum {
     MFSideMenuLocationLeft, // show the menu on the left hand side
     MFSideMenuLocationRight // show the menu on the right hand side
@@ -25,8 +23,8 @@ typedef enum {
 
 @property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic, strong) UITableViewController *sideMenuController;
-@property (nonatomic, assign) MFSideMenuLocation menuSide;
-@property (nonatomic, assign) MFSideMenuOptions options;
+@property (nonatomic, assign) MFSideMenuLocation menuLocation;
+@property (nonatomic, assign) MFSideMenuOptions menuOptions;
 
 + (MFSideMenuManager *) sharedManager;
 

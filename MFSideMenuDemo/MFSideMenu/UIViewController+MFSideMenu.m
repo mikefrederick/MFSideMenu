@@ -43,7 +43,7 @@ static char velocityKey;
 }
 
 - (void) mf_setupSideMenuBarButtonItem {
-    if([MFSideMenuManager sharedManager].menuSide == MFSideMenuLocationRight
+    if([MFSideMenuManager sharedManager].menuLocation == MFSideMenuLocationRight
        && [MFSideMenuManager menuButtonEnabled]) {
         self.navigationItem.rightBarButtonItem = [self mf_menuBarButtonItem];
         return;
@@ -55,7 +55,7 @@ static char velocityKey;
             self.navigationItem.leftBarButtonItem = [self mf_menuBarButtonItem];
         }
     } else {
-        if([MFSideMenuManager sharedManager].menuSide == MFSideMenuLocationLeft) {
+        if([MFSideMenuManager sharedManager].menuLocation == MFSideMenuLocationLeft) {
             if([MFSideMenuManager backButtonEnabled]) {
                 self.navigationItem.leftBarButtonItem = [self mf_backBarButtonItem];
             }

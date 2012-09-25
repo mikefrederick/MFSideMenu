@@ -8,14 +8,16 @@
 #import "UIViewController+MFSideMenu.h"
 #import <QuartzCore/QuartzCore.h>
 
-#define kMenuShadowWidth 10.0
+static CGFloat const kSideMenuShadowWidth = 10.0f;
+static CGFloat const kSideMenuWidth = 270.0f;
+
 
 @implementation MFSideMenuManager
 
 @synthesize navigationController;
 @synthesize sideMenuController;
-@synthesize menuSide;
-@synthesize options;
+@synthesize menuLocation;
+@synthesize menuOptions;
 
 + (MFSideMenuManager *) sharedManager {
     static dispatch_once_t once;
@@ -41,8 +43,8 @@
     MFSideMenuManager *manager = [MFSideMenuManager sharedManager];
     manager.navigationController = controller;
     manager.sideMenuController = menuController;
-    manager.menuSide = side;
-    manager.options = options;
+    manager.menuLocation = side;
+    manager.menuOptions = options;
     
     controller.mf_menuState = MFSideMenuStateHidden;
     
@@ -94,29 +96,29 @@
     
     [manager drawNavigationControllerShadowPath];
     controller.view.layer.shadowOpacity = 0.75f;
-    controller.view.layer.shadowRadius = kMenuShadowWidth;
+    controller.view.layer.shadowRadius = kSideMenuShadowWidth;
     controller.view.layer.shadowColor = [UIColor blackColor].CGColor;
 }
 
 + (CGFloat) menuVisibleNavigationControllerXPosition {
-    return ([MFSideMenuManager sharedManager].menuSide == MFSideMenuLocationLeft) ? kSidebarWidth : -1*kSidebarWidth;
+    return ([MFSideMenuManager sharedManager].menuLocation == MFSideMenuLocationLeft) ? kSideMenuWidth : -1*kSideMenuWidth;
 }
 
 + (BOOL) menuButtonEnabled {
-    return (([MFSideMenuManager sharedManager].options & MFSideMenuOptionMenuButtonEnabled) == MFSideMenuOptionMenuButtonEnabled);
+    return (([MFSideMenuManager sharedManager].menuOptions & MFSideMenuOptionMenuButtonEnabled) == MFSideMenuOptionMenuButtonEnabled);
 }
 
 + (BOOL) backButtonEnabled {
-    return (([MFSideMenuManager sharedManager].options & MFSideMenuOptionBackButtonEnabled) == MFSideMenuOptionBackButtonEnabled);
+    return (([MFSideMenuManager sharedManager].menuOptions & MFSideMenuOptionBackButtonEnabled) == MFSideMenuOptionBackButtonEnabled);
 }
 
 - (void) drawNavigationControllerShadowPath {    
     CGRect pathRect = self.navigationController.view.bounds;
-    if(self.menuSide == MFSideMenuLocationRight) {
+    if(self.menuLocation == MFSideMenuLocationRight) {
         // draw the shadow on the right hand side of the navigationController
-        pathRect.origin.x = pathRect.size.width - kMenuShadowWidth;
+        pathRect.origin.x = pathRect.size.width - kSideMenuShadowWidth;
     }
-    pathRect.size.width = kMenuShadowWidth;
+    pathRect.size.width = kSideMenuShadowWidth;
     
     self.navigationController.view.layer.shadowPath = [UIBezierPath bezierPathWithRect:pathRect].CGPath;
 }
@@ -262,11 +264,11 @@
     translatedPoint = CGPointMake([self xAdjustedForInterfaceOrientation:originalOrigin] + translatedPoint.x,
                                   [self yAdjustedForInterfaceOrientation:originalOrigin] + translatedPoint.y);
     
-    if(self.menuSide == MFSideMenuLocationLeft) {
-        translatedPoint.x = MIN(translatedPoint.x, kSidebarWidth);
+    if(self.menuLocation == MFSideMenuLocationLeft) {
+        translatedPoint.x = MIN(translatedPoint.x, kSideMenuWidth);
         translatedPoint.x = MAX(translatedPoint.x, 0);
     } else {
-        translatedPoint.x = MAX(translatedPoint.x, -1*kSidebarWidth);
+        translatedPoint.x = MAX(translatedPoint.x, -1*kSideMenuWidth);
         translatedPoint.x = MIN(translatedPoint.x, 0);
     }
     
@@ -280,7 +282,7 @@
         CGFloat viewWidth = [self widthAdjustedForInterfaceOrientation:view]; 
         
         if(self.navigationController.mf_menuState == MFSideMenuStateHidden) {
-            BOOL showMenu = (self.menuSide == MFSideMenuLocationLeft) ? (finalX > viewWidth/2) : (finalX < -1*viewWidth/2);
+            BOOL showMenu = (self.menuLocation == MFSideMenuLocationLeft) ? (finalX > viewWidth/2) : (finalX < -1*viewWidth/2);
             if(showMenu) {
                 self.navigationController.mf_velocity = velocity.x;
                 self.navigationController.mf_menuState = MFSideMenuStateVisible;
@@ -291,7 +293,7 @@
                 [UIView commitAnimations];
             }
         } else if(self.navigationController.mf_menuState == MFSideMenuStateVisible) {
-            BOOL hideMenu = (self.menuSide == MFSideMenuLocationLeft) ? (finalX < [self xAdjustedForInterfaceOrientation:originalOrigin]) :
+            BOOL hideMenu = (self.menuLocation == MFSideMenuLocationLeft) ? (finalX < [self xAdjustedForInterfaceOrientation:originalOrigin]) :
                                                                 (finalX > [self xAdjustedForInterfaceOrientation:originalOrigin]);
             if(hideMenu) {
                 self.navigationController.mf_velocity = velocity.x;
@@ -332,31 +334,31 @@
         case UIInterfaceOrientationPortraitUpsideDown:
             angle = M_PI;
             newFrame.size.height -= statusBarSize.height;
-            if(self.menuSide == MFSideMenuLocationRight) {
-                newFrame.origin.x = -1*newFrame.size.width + kSidebarWidth;
+            if(self.menuLocation == MFSideMenuLocationRight) {
+                newFrame.origin.x = -1*newFrame.size.width + kSideMenuWidth;
             }
             break;
         case UIInterfaceOrientationLandscapeLeft:
             angle = - M_PI / 2.0f;
             newFrame.origin.x += statusBarSize.width;
             newFrame.size.width -= statusBarSize.width;
-            if(self.menuSide == MFSideMenuLocationRight) {
-                newFrame.origin.y = -1*newFrame.size.height + kSidebarWidth;
+            if(self.menuLocation == MFSideMenuLocationRight) {
+                newFrame.origin.y = -1*newFrame.size.height + kSideMenuWidth;
             }
             break;
         case UIInterfaceOrientationLandscapeRight:
             angle = M_PI / 2.0f;
             newFrame.size.width -= statusBarSize.width;
-            if(self.menuSide == MFSideMenuLocationRight) {
-                newFrame.origin.y = newFrame.size.height - kSidebarWidth;
+            if(self.menuLocation == MFSideMenuLocationRight) {
+                newFrame.origin.y = newFrame.size.height - kSideMenuWidth;
             }
             break;
         default: // as UIInterfaceOrientationPortrait
             angle = 0.0;
             newFrame.origin.y += statusBarSize.height;
             newFrame.size.height -= statusBarSize.height;
-            if(self.menuSide == MFSideMenuLocationRight) {
-                newFrame.origin.x = newFrame.size.width - kSidebarWidth;
+            if(self.menuLocation == MFSideMenuLocationRight) {
+                newFrame.origin.x = newFrame.size.width - kSideMenuWidth;
             }
             break;
     }
