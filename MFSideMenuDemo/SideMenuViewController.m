@@ -49,7 +49,7 @@
     
     NSArray *controllers = [NSArray arrayWithObject:demoController];
     [MFSideMenuManager sharedManager].navigationController.viewControllers = controllers;
-    [MFSideMenuManager sharedManager].navigationController.menuState = MFSideMenuStateHidden;
+    [MFSideMenuManager sharedManager].navigationController.mf_menuState = MFSideMenuStateHidden;
 }
 
 @end
