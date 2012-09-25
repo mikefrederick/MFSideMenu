@@ -23,6 +23,7 @@
 		275F15B41517F0B90052A240 /* SideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 275F15B31517F0B90052A240 /* SideMenuViewController.m */; };
 		275F15BA1517F5770052A240 /* back-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 275F15B91517F5770052A240 /* back-arrow.png */; };
 		275F15BC1517F7A20052A240 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 275F15BB1517F7A20052A240 /* QuartzCore.framework */; };
+		64349A33161211C9009340E7 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64349A32161211C9009340E7 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,7 @@
 		275F15B31517F0B90052A240 /* SideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideMenuViewController.m; sourceTree = "<group>"; };
 		275F15B91517F5770052A240 /* back-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-arrow.png"; sourceTree = "<group>"; };
 		275F15BB1517F7A20052A240 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		64349A32161211C9009340E7 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +110,7 @@
 				275F15A71517ED220052A240 /* DemoViewController.h */,
 				275F15A81517ED220052A240 /* DemoViewController.m */,
 				275F15AA1517EED80052A240 /* DemoViewController.xib */,
+				64349A32161211C9009340E7 /* Default-568h@2x.png */,
 			);
 			path = MFSideMenuDemo;
 			sourceTree = "<group>";
@@ -197,6 +200,7 @@
 				275F15B01517F0380052A240 /* menu-icon.png in Resources */,
 				275F15B11517F0380052A240 /* menu-icon@2x.png in Resources */,
 				275F15BA1517F5770052A240 /* back-arrow.png in Resources */,
+				64349A33161211C9009340E7 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
