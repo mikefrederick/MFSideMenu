@@ -9,14 +9,14 @@
 #define kSidebarWidth 270
 
 typedef enum {
-    MenuLeftHandSide, // show the menu on the left hand side
-    MenuRightHandSide // show the menu on the right hand side
-} MenuSide;
+    MFSideMenuLocationLeft, // show the menu on the left hand side
+    MFSideMenuLocationRight // show the menu on the right hand side
+} MFSideMenuLocation;
 
 typedef enum {
-    MenuButtonEnabled = 1 << 0, // enable the 'menu' UIBarButtonItem
-    BackButtonEnabled = 1 << 1 // enable the 'back' UIBarButtonItem
-} MenuOptions;
+    MFSideMenuOptionMenuButtonEnabled = 1 << 0, // enable the 'menu' UIBarButtonItem
+    MFSideMenuOptionBackButtonEnabled = 1 << 1 // enable the 'back' UIBarButtonItem
+} MFSideMenuOptions;
 
 
 @interface MFSideMenuManager : NSObject<UIGestureRecognizerDelegate> {
@@ -25,8 +25,8 @@ typedef enum {
 
 @property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic, strong) UITableViewController *sideMenuController;
-@property (nonatomic, assign) MenuSide menuSide;
-@property (nonatomic, assign) MenuOptions options;
+@property (nonatomic, assign) MFSideMenuLocation menuSide;
+@property (nonatomic, assign) MFSideMenuOptions options;
 
 + (MFSideMenuManager *) sharedManager;
 
@@ -35,8 +35,8 @@ typedef enum {
 
 + (void) configureWithNavigationController:(UINavigationController *)controller
                         sideMenuController:(id)menuController
-                                  menuSide:(MenuSide)side
-                                   options:(MenuOptions)options;
+                                  menuSide:(MFSideMenuLocation)side
+                                   options:(MFSideMenuOptions)options;
 
 // the x position of the nav controller when the menu is shown
 + (CGFloat) menuVisibleNavigationControllerXPosition;

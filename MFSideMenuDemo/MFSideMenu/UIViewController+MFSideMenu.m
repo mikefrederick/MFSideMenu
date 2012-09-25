@@ -49,7 +49,7 @@ static char velocityKey;
 }
 
 - (void) setupSideMenuBarButtonItem {
-    if([MFSideMenuManager sharedManager].menuSide == MenuRightHandSide
+    if([MFSideMenuManager sharedManager].menuSide == MFSideMenuLocationRight
        && [MFSideMenuManager menuButtonEnabled]) {
         self.navigationItem.rightBarButtonItem = [self menuBarButtonItem];
         return;
@@ -61,7 +61,7 @@ static char velocityKey;
             self.navigationItem.leftBarButtonItem = [self menuBarButtonItem];
         }
     } else {
-        if([MFSideMenuManager sharedManager].menuSide == MenuLeftHandSide) {
+        if([MFSideMenuManager sharedManager].menuSide == MFSideMenuLocationLeft) {
             if([MFSideMenuManager backButtonEnabled]) {
                 self.navigationItem.leftBarButtonItem = [self backBarButtonItem];
             }
