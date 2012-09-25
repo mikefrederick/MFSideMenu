@@ -133,8 +133,7 @@
        self.navigationController.menuState != MFSideMenuStateHidden) return YES;
     
     if([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
-        if([gestureRecognizer.view isEqual:self.navigationController.view] && 
-           self.navigationController.menuState != MFSideMenuStateHidden) return YES;
+        if([gestureRecognizer.view isEqual:self.navigationController.view]) return YES;
         
         if([gestureRecognizer.view isEqual:self.navigationController.navigationBar] && 
            self.navigationController.menuState == MFSideMenuStateHidden) return YES;
@@ -306,9 +305,7 @@
 	}
 }
 
-- (void) navigationControllerPanned:(id)sender {
-    if(self.navigationController.menuState == MFSideMenuStateHidden) return;
-    
+- (void) navigationControllerPanned:(id)sender {    
     [self handleNavigationBarPan:sender];
 }
 
