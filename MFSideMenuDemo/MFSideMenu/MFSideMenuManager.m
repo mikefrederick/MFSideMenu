@@ -75,9 +75,7 @@
     [tapRecognizer release];
     
     [controller.view.superview insertSubview:[menuController view] belowSubview:controller.view];
-    
-    [manager orientSideMenuFromStatusBar];
-    
+        
     [[NSNotificationCenter defaultCenter] addObserver:manager
                                              selector:@selector(flipViewAccordingToStatusBarOrientation:)
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification
