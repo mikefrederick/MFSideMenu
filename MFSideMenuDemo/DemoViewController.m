@@ -16,7 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self setupSideMenuBarButtonItem];
+    //[[MFSideMenu sharedMenu] setupSideMenuBarButtonItem];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -24,7 +24,7 @@
 }
 
 - (IBAction)pushAnotherPressed:(id)sender {
-    DemoViewController *demoController = [[[DemoViewController alloc] initWithNibName:@"DemoViewController" bundle:nil] autorelease];
+    DemoViewController *demoController = [[DemoViewController alloc] initWithNibName:@"DemoViewController" bundle:nil];
     demoController.title = @"Drag Me To The Right";
     
     [self.navigationController pushViewController:demoController animated:YES];

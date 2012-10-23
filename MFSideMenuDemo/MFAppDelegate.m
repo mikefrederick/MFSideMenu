@@ -13,15 +13,10 @@
 
 @synthesize window = _window;
 
-- (void)dealloc
-{
-    [_window release];
-    [super dealloc];
-}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     DemoViewController *demoViewController = [[DemoViewController alloc] initWithNibName:@"DemoViewController" bundle:nil];
     demoViewController.title = @"Drag Me To The Right";
@@ -32,16 +27,9 @@
     
     SideMenuViewController *sideMenuViewController = [[SideMenuViewController alloc] init];
     
-    MenuOptions options = MenuButtonEnabled|BackButtonEnabled;
-    // make sure to display the navigation controller before calling this
-    [MFSideMenuManager configureWithNavigationController:navigationController 
-                                      sideMenuController:sideMenuViewController
-                                        menuSide:MenuLeftHandSide
-                                                 options:options];
+    [MFSideMenu menuWithNavigationController:navigationController
+                          sideMenuController:sideMenuViewController];
     
-    [sideMenuViewController release];
-    [demoViewController release];
-    [navigationController release];
     
     return YES;
 }

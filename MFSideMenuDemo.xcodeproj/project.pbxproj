@@ -13,8 +13,6 @@
 		275F15921517E9B80052A240 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 275F15901517E9B80052A240 /* InfoPlist.strings */; };
 		275F15941517E9B80052A240 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 275F15931517E9B80052A240 /* main.m */; };
 		275F15981517E9B80052A240 /* MFAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 275F15971517E9B80052A240 /* MFAppDelegate.m */; };
-		275F15A41517E9E60052A240 /* MFSideMenuManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 275F15A11517E9E60052A240 /* MFSideMenuManager.m */; };
-		275F15A51517E9E60052A240 /* UIViewController+MFSideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 275F15A31517E9E60052A240 /* UIViewController+MFSideMenu.m */; };
 		275F15A91517ED230052A240 /* DemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 275F15A81517ED220052A240 /* DemoViewController.m */; };
 		275F15AB1517EED80052A240 /* DemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 275F15AA1517EED80052A240 /* DemoViewController.xib */; };
 		275F15AF1517F0380052A240 /* back-arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 275F15AC1517F0380052A240 /* back-arrow@2x.png */; };
@@ -23,6 +21,7 @@
 		275F15B41517F0B90052A240 /* SideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 275F15B31517F0B90052A240 /* SideMenuViewController.m */; };
 		275F15BA1517F5770052A240 /* back-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 275F15B91517F5770052A240 /* back-arrow.png */; };
 		275F15BC1517F7A20052A240 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 275F15BB1517F7A20052A240 /* QuartzCore.framework */; };
+		2781287D1636263D00BAFB60 /* MFSideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781287C1636263D00BAFB60 /* MFSideMenu.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,10 +35,6 @@
 		275F15951517E9B80052A240 /* MFSideMenuDemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MFSideMenuDemo-Prefix.pch"; sourceTree = "<group>"; };
 		275F15961517E9B80052A240 /* MFAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MFAppDelegate.h; sourceTree = "<group>"; };
 		275F15971517E9B80052A240 /* MFAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MFAppDelegate.m; sourceTree = "<group>"; };
-		275F15A01517E9E60052A240 /* MFSideMenuManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenuManager.h; sourceTree = "<group>"; };
-		275F15A11517E9E60052A240 /* MFSideMenuManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSideMenuManager.m; sourceTree = "<group>"; };
-		275F15A21517E9E60052A240 /* UIViewController+MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MFSideMenu.h"; sourceTree = "<group>"; };
-		275F15A31517E9E60052A240 /* UIViewController+MFSideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MFSideMenu.m"; sourceTree = "<group>"; };
 		275F15A61517EA480052A240 /* MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenu.h; sourceTree = "<group>"; };
 		275F15A71517ED220052A240 /* DemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoViewController.h; sourceTree = "<group>"; };
 		275F15A81517ED220052A240 /* DemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoViewController.m; sourceTree = "<group>"; };
@@ -51,6 +46,7 @@
 		275F15B31517F0B90052A240 /* SideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideMenuViewController.m; sourceTree = "<group>"; };
 		275F15B91517F5770052A240 /* back-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-arrow.png"; sourceTree = "<group>"; };
 		275F15BB1517F7A20052A240 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		2781287C1636263D00BAFB60 /* MFSideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSideMenu.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,10 +127,7 @@
 				275F15AD1517F0380052A240 /* menu-icon.png */,
 				275F15AE1517F0380052A240 /* menu-icon@2x.png */,
 				275F15A61517EA480052A240 /* MFSideMenu.h */,
-				275F15A01517E9E60052A240 /* MFSideMenuManager.h */,
-				275F15A11517E9E60052A240 /* MFSideMenuManager.m */,
-				275F15A21517E9E60052A240 /* UIViewController+MFSideMenu.h */,
-				275F15A31517E9E60052A240 /* UIViewController+MFSideMenu.m */,
+				2781287C1636263D00BAFB60 /* MFSideMenu.m */,
 			);
 			path = MFSideMenu;
 			sourceTree = "<group>";
@@ -209,10 +202,9 @@
 			files = (
 				275F15941517E9B80052A240 /* main.m in Sources */,
 				275F15981517E9B80052A240 /* MFAppDelegate.m in Sources */,
-				275F15A41517E9E60052A240 /* MFSideMenuManager.m in Sources */,
-				275F15A51517E9E60052A240 /* UIViewController+MFSideMenu.m in Sources */,
 				275F15A91517ED230052A240 /* DemoViewController.m in Sources */,
 				275F15B41517F0B90052A240 /* SideMenuViewController.m in Sources */,
+				2781287D1636263D00BAFB60 /* MFSideMenu.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,6 +268,7 @@
 		275F159C1517E9B80052A240 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: michael frederick (L7FKSR97U2)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MFSideMenuDemo/MFSideMenuDemo-Prefix.pch";
@@ -291,6 +284,7 @@
 		275F159D1517E9B80052A240 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MFSideMenuDemo/MFSideMenuDemo-Prefix.pch";
 				INFOPLIST_FILE = "MFSideMenuDemo/MFSideMenuDemo-Info.plist";

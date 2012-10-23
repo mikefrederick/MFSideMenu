@@ -12,6 +12,11 @@
 
 #pragma mark - UITableViewDataSource
 
+- (void) viewDidLoad {
+    [super viewDidLoad];
+    self.tableView.scrollsToTop = YES;
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return [NSString stringWithFormat:@"Section %d", section];
 }
@@ -32,7 +37,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
     cell.textLabel.text = [NSString stringWithFormat:@"Item %d", indexPath.row];
@@ -44,12 +49,12 @@
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    DemoViewController *demoController = [[[DemoViewController alloc] initWithNibName:@"DemoViewController" bundle:nil] autorelease];
+    DemoViewController *demoController = [[DemoViewController alloc] initWithNibName:@"DemoViewController" bundle:nil];
     demoController.title = [NSString stringWithFormat:@"Demo Controller #%d-%d", indexPath.section, indexPath.row];
     
     NSArray *controllers = [NSArray arrayWithObject:demoController];
-    [MFSideMenuManager sharedManager].navigationController.viewControllers = controllers;
-    [MFSideMenuManager sharedManager].navigationController.menuState = MFSideMenuStateHidden;
+    [MFSideMenu sharedMenu].navigationController.viewControllers = controllers;
+    [[MFSideMenu sharedMenu] setMenuState:MFSideMenuStateHidden animated:YES];
 }
 
 @end
