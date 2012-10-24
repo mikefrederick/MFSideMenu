@@ -10,11 +10,14 @@
 
 @implementation SideMenuViewController
 
-#pragma mark - UITableViewDataSource
+@synthesize sideMenu;
 
 - (void) viewDidLoad {
     [super viewDidLoad];
-    self.tableView.tableHeaderView = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 45.0)];
+    CGRect searchBarFrame = CGRectMake(0, 0, self.tableView.frame.size.width, 45.0);
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:searchBarFrame];
+    searchBar.delegate = self;
+    self.tableView.tableHeaderView = searchBar;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -53,8 +56,18 @@
     demoController.title = [NSString stringWithFormat:@"Demo Controller #%d-%d", indexPath.section, indexPath.row];
     
     NSArray *controllers = [NSArray arrayWithObject:demoController];
-    [MFSideMenu sharedMenu].navigationController.viewControllers = controllers;
-    [[MFSideMenu sharedMenu] setMenuState:MFSideMenuStateHidden animated:YES];
+    self.sideMenu.navigationController.viewControllers = controllers;
+    [self.sideMenu setMenuState:MFSideMenuStateHidden animated:YES];
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
+    return YES;
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [searchBar resignFirstResponder];
 }
 
 @end

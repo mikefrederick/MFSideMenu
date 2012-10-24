@@ -13,25 +13,63 @@
 
 @synthesize window = _window;
 
+- (DemoViewController *)demoController {
+    return [[DemoViewController alloc] initWithNibName:@"DemoViewController" bundle:nil];
+}
+
+- (UINavigationController *)navigationController {
+    return [[UINavigationController alloc]
+            initWithRootViewController:[self demoController]];
+}
+
+- (MFSideMenu *)sideMenu {
+    SideMenuViewController *sideMenuController = [[SideMenuViewController alloc] init];
+    UINavigationController *navigationController = [self navigationController];
+    
+    MFSideMenuOptions options = MFSideMenuOptionMenuButtonEnabled|MFSideMenuOptionBackButtonEnabled
+                                                                 |MFSideMenuOptionShadowEnabled;
+    MFSideMenuPanMode panMode = MFSideMenuPanModeNavigationBar|MFSideMenuPanModeNavigationController;
+    
+    MFSideMenu *sideMenu = [MFSideMenu menuWithNavigationController:navigationController
+                                                 sideMenuController:sideMenuController
+                                                           location:MFSideMenuLocationRight
+                                                            options:options
+                                                            panMode:panMode];
+    
+    sideMenuController.sideMenu = sideMenu;
+    
+    return sideMenu;
+}
+
+- (void) setupNavigationControllerApp {
+    self.window.rootViewController = [self sideMenu].navigationController;
+    [self.window makeKeyAndVisible];
+}
+
+- (void) setupTabBarControllerApp {
+    NSMutableArray *controllers = [NSMutableArray new];
+    [controllers addObject:[self sideMenu].navigationController];
+    [controllers addObject:[self sideMenu].navigationController];
+    [controllers addObject:[self sideMenu].navigationController];
+    [controllers addObject:[self sideMenu].navigationController];
+    
+    UITabBarController *tabBarController = [[UITabBarController alloc] init];
+    [tabBarController setViewControllers:controllers];
+    
+    self.window.rootViewController = tabBarController;
+    [self.window makeKeyAndVisible];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    DemoViewController *demoViewController = [[DemoViewController alloc] initWithNibName:@"DemoViewController" bundle:nil];
-    demoViewController.title = @"Drag Me To The Right";
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:demoViewController];
-    
-    self.window.rootViewController = navigationController;
-    [self.window makeKeyAndVisible];
-    
-    SideMenuViewController *sideMenuViewController = [[SideMenuViewController alloc] init];
-    
-    [MFSideMenu menuWithNavigationController:navigationController
-                          sideMenuController:sideMenuViewController];
-    
+    //[self setupNavigationControllerApp];
+    [self setupTabBarControllerApp];
     
     return YES;
 }
+     
+    
 
 @end

@@ -23,6 +23,7 @@
 		275F15BC1517F7A20052A240 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 275F15BB1517F7A20052A240 /* QuartzCore.framework */; };
 		2781287D1636263D00BAFB60 /* MFSideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781287C1636263D00BAFB60 /* MFSideMenu.m */; };
 		2781288316370E2600BAFB60 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2781288216370E2600BAFB60 /* Default-568h@2x.png */; };
+		2781288B1638543D00BAFB60 /* UINavigationController+MFSideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781288A1638543D00BAFB60 /* UINavigationController+MFSideMenu.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,8 @@
 		275F15BB1517F7A20052A240 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		2781287C1636263D00BAFB60 /* MFSideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSideMenu.m; sourceTree = "<group>"; };
 		2781288216370E2600BAFB60 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		278128891638543D00BAFB60 /* UINavigationController+MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+MFSideMenu.h"; sourceTree = "<group>"; };
+		2781288A1638543D00BAFB60 /* UINavigationController+MFSideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+MFSideMenu.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +134,8 @@
 				275F15AE1517F0380052A240 /* menu-icon@2x.png */,
 				275F15A61517EA480052A240 /* MFSideMenu.h */,
 				2781287C1636263D00BAFB60 /* MFSideMenu.m */,
+				278128891638543D00BAFB60 /* UINavigationController+MFSideMenu.h */,
+				2781288A1638543D00BAFB60 /* UINavigationController+MFSideMenu.m */,
 			);
 			path = MFSideMenu;
 			sourceTree = "<group>";
@@ -209,6 +214,7 @@
 				275F15A91517ED230052A240 /* DemoViewController.m in Sources */,
 				275F15B41517F0B90052A240 /* SideMenuViewController.m in Sources */,
 				2781287D1636263D00BAFB60 /* MFSideMenu.m in Sources */,
+				2781288B1638543D00BAFB60 /* UINavigationController+MFSideMenu.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

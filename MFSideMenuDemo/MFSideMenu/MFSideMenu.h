@@ -4,6 +4,8 @@
 //  Created by Michael Frederick on 3/17/12.
 //
 
+#import "UINavigationController+MFSideMenu.h"
+
 static CGFloat const kMFSideMenuSidebarWidth = 270.0f;
 static CGFloat const kMFSideMenuShadowWidth = 10.0f;
 static CGFloat const kMenuAnimationDuration = 0.2f;
@@ -33,32 +35,35 @@ typedef enum {
 
 @interface MFSideMenu : NSObject<UIGestureRecognizerDelegate>
 
-@property (nonatomic, strong) UINavigationController *navigationController;
+@property (nonatomic, assign) UINavigationController *navigationController;
 @property (nonatomic, strong) UITableViewController *sideMenuController;
 @property (nonatomic, assign) MFSideMenuLocation menuSide;
 @property (nonatomic, assign) MFSideMenuOptions options;
 @property (nonatomic, assign) MFSideMenuPanMode panMode;
 
-+ (MFSideMenu *) sharedMenu;
-
-+ (void) menuWithNavigationController:(UINavigationController *)controller
++ (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
                         sideMenuController:(id)menuController;
 
-+ (void) menuWithNavigationController:(UINavigationController *)controller
++ (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
                         sideMenuController:(id)menuController
                                   location:(MFSideMenuLocation)side
                                    options:(MFSideMenuOptions)options;
 
-+ (void) menuWithNavigationController:(UINavigationController *)controller
++ (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
                    sideMenuController:(id)menuController
                              location:(MFSideMenuLocation)side
                               options:(MFSideMenuOptions)options
                               panMode:(MFSideMenuPanMode)panMode;
 
-+ (UIBarButtonItem *) menuBarButtonItem;
-+ (UIBarButtonItem *) backBarButtonItem;
+- (void) navigationControllerWillAppear;
+- (void) navigationControllerDidAppear;
+- (void) navigationControllerDidDisappear;
+
+- (UIBarButtonItem *) menuBarButtonItem;
+- (UIBarButtonItem *) backBarButtonItem;
 - (void) setupSideMenuBarButtonItem;
 
+- (MFSideMenuState)menuState;
 - (void) setMenuState:(MFSideMenuState)menuState animated:(BOOL)animated;
 
 
