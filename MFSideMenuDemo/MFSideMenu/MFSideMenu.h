@@ -21,7 +21,8 @@ typedef enum {
 
 typedef enum {
     MFSideMenuOptionMenuButtonEnabled = 1 << 0, // enable the 'menu' UIBarButtonItem
-    MFSideMenuOptionBackButtonEnabled = 1 << 1 // enable the 'back' UIBarButtonItem
+    MFSideMenuOptionBackButtonEnabled = 1 << 1, // enable the 'back' UIBarButtonItem
+    MFSideMenuOptionShadowEnabled = 1 << 2
 } MFSideMenuOptions;
 
 typedef enum {

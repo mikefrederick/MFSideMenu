@@ -14,7 +14,7 @@
 
 - (void) viewDidLoad {
     [super viewDidLoad];
-    self.tableView.scrollsToTop = YES;
+    self.tableView.tableHeaderView = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 45.0)];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {

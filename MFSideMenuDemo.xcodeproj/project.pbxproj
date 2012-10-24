@@ -22,6 +22,7 @@
 		275F15BA1517F5770052A240 /* back-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 275F15B91517F5770052A240 /* back-arrow.png */; };
 		275F15BC1517F7A20052A240 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 275F15BB1517F7A20052A240 /* QuartzCore.framework */; };
 		2781287D1636263D00BAFB60 /* MFSideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781287C1636263D00BAFB60 /* MFSideMenu.m */; };
+		2781288316370E2600BAFB60 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2781288216370E2600BAFB60 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		275F15B91517F5770052A240 /* back-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-arrow.png"; sourceTree = "<group>"; };
 		275F15BB1517F7A20052A240 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		2781287C1636263D00BAFB60 /* MFSideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSideMenu.m; sourceTree = "<group>"; };
+		2781288216370E2600BAFB60 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 		275F158D1517E9B80052A240 /* MFSideMenuDemo */ = {
 			isa = PBXGroup;
 			children = (
+				2781288216370E2600BAFB60 /* Default-568h@2x.png */,
 				275F159E1517E9E60052A240 /* MFSideMenu */,
 				275F15961517E9B80052A240 /* MFAppDelegate.h */,
 				275F15971517E9B80052A240 /* MFAppDelegate.m */,
@@ -190,6 +193,7 @@
 				275F15B01517F0380052A240 /* menu-icon.png in Resources */,
 				275F15B11517F0380052A240 /* menu-icon@2x.png in Resources */,
 				275F15BA1517F5770052A240 /* back-arrow.png in Resources */,
+				2781288316370E2600BAFB60 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,13 +273,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: michael frederick (L7FKSR97U2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MFSideMenuDemo/MFSideMenuDemo-Prefix.pch";
 				INFOPLIST_FILE = "MFSideMenuDemo/MFSideMenuDemo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2105FF50-8570-40F6-82D2-4345AB225349";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};

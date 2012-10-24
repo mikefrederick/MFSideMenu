@@ -13,7 +13,14 @@
 @interface MFSideMenu() {
     CGPoint panGestureOrigin;
 }
+
+@property (nonatomic, strong) NSLayoutConstraint *topConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *rightConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *bottomConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *leftConstraint;
+
 @end
+
 
 @implementation MFSideMenu
 
@@ -22,6 +29,10 @@
 @synthesize menuSide;
 @synthesize options;
 @synthesize panMode;
+@synthesize topConstraint;
+@synthesize rightConstraint;
+@synthesize bottomConstraint;
+@synthesize leftConstraint;
 
 static char menuStateKey;
 static char velocityKey;
@@ -35,7 +46,7 @@ static char velocityKey;
 
 + (void) menuWithNavigationController:(UINavigationController *)controller
                         sideMenuController:(id)menuController {
-    MFSideMenuOptions options = MFSideMenuOptionMenuButtonEnabled|MFSideMenuOptionBackButtonEnabled;
+    MFSideMenuOptions options = MFSideMenuOptionMenuButtonEnabled|MFSideMenuOptionBackButtonEnabled|MFSideMenuOptionShadowEnabled;
     
     [MFSideMenu menuWithNavigationController:controller
                           sideMenuController:menuController
@@ -78,14 +89,12 @@ static char velocityKey;
     
     UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc]
                                           initWithTarget:menu action:@selector(navigationBarPanned:)];
-    [recognizer setMinimumNumberOfTouches:1];
 	[recognizer setMaximumNumberOfTouches:1];
     [recognizer setDelegate:menu];
     [controller.navigationBar addGestureRecognizer:recognizer];
     
     recognizer = [[UIPanGestureRecognizer alloc]
                   initWithTarget:menu action:@selector(navigationControllerPanned:)];
-    [recognizer setMinimumNumberOfTouches:1];
 	[recognizer setMaximumNumberOfTouches:1];
     [recognizer setDelegate:menu];
     [controller.view addGestureRecognizer:recognizer];
@@ -100,23 +109,46 @@ static char velocityKey;
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification
                                                object:nil];
     
-    if(side == MFSideMenuLocationRight) {
-        // on the right hand side the shadowpath doesn't start at 0 so we have to redraw it when the device flips
-        [[NSNotificationCenter defaultCenter] addObserver:menu
-                                                 selector:@selector(drawNavigationControllerShadowPath)
-                                                     name:UIDeviceOrientationDidChangeNotification
-                                                   object:nil];
-    }
-    
     [controller.view.superview insertSubview:[menuController view] belowSubview:controller.view];
+    
+    UIView *menuView = [menuController view];
+    
+    [menuView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    menu.topConstraint = [[self class] edgeConstraint:NSLayoutAttributeTop subview:menuView];
+    menu.rightConstraint = [[self class] edgeConstraint:NSLayoutAttributeRight subview:menuView];
+    menu.bottomConstraint = [[self class] edgeConstraint:NSLayoutAttributeBottom subview:menuView];
+    menu.leftConstraint = [[self class] edgeConstraint:NSLayoutAttributeLeft subview:menuView];
+    
+    [menuView.superview addConstraint:menu.topConstraint];
+    [menuView.superview addConstraint:menu.rightConstraint];
+    [menuView.superview addConstraint:menu.bottomConstraint];
+    [menuView.superview addConstraint:menu.leftConstraint];
     
     // we need to reorient from the status bar here incase the initial orientation is landscape
     [menu orientSideMenuFromStatusBar];
     
-    [menu drawNavigationControllerShadowPath];
-    controller.view.layer.shadowOpacity = 0.75f;
-    controller.view.layer.shadowRadius = kMFSideMenuShadowWidth;
-    controller.view.layer.shadowColor = [UIColor blackColor].CGColor;
+    if([menu shadowEnabled]) {
+        // we have to redraw the shadow when the device flips
+        [[NSNotificationCenter defaultCenter] addObserver:menu
+                                                 selector:@selector(drawNavigationControllerShadowPath)
+                                                     name:UIDeviceOrientationDidChangeNotification
+                                                   object:nil];
+        
+        [menu drawNavigationControllerShadowPath];
+        controller.view.layer.shadowOpacity = 0.75f;
+        controller.view.layer.shadowRadius = kMFSideMenuShadowWidth;
+        controller.view.layer.shadowColor = [UIColor blackColor].CGColor;
+    }
+}
+
++ (NSLayoutConstraint *)edgeConstraint:(NSLayoutAttribute)edge subview:(UIView *)subview {
+    return [NSLayoutConstraint constraintWithItem:subview
+                                                          attribute:edge
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:subview.superview
+                                                          attribute:edge
+                                                         multiplier:1
+                                                           constant:0];
 }
 
 // draw a shadow between the navigation controller and the menu
@@ -143,6 +175,10 @@ static char velocityKey;
     return ((self.options & MFSideMenuOptionBackButtonEnabled) == MFSideMenuOptionBackButtonEnabled);
 }
 
+- (BOOL) shadowEnabled {
+    return ((self.options & MFSideMenuOptionShadowEnabled) == MFSideMenuOptionShadowEnabled);
+}
+
 
 #pragma mark -
 #pragma mark - MFSideMenuPanMode
@@ -161,13 +197,15 @@ static char velocityKey;
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     if ([touch.view isKindOfClass:[UIControl class]]) return NO;
-    if ([touch.view isKindOfClass:[UITableViewCell class]] ||
-        [touch.view.superview isKindOfClass:[UITableViewCell class]]) return NO;
     
     if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]] &&
        self.menuState != MFSideMenuStateHidden) return YES;
     
     if([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+        // we don't want to override UITableViewCell swipes
+        if ([touch.view isKindOfClass:[UITableViewCell class]] ||
+            [touch.view.superview isKindOfClass:[UITableViewCell class]]) return NO;
+        
         if([gestureRecognizer.view isEqual:self.navigationController.view] &&
            [self navigationControllerPanEnabled]) return YES;
         
@@ -176,7 +214,7 @@ static char velocityKey;
            [self navigationBarPanEnabled]) return YES;
     }
     
-    return YES;
+    return NO;
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
@@ -185,7 +223,7 @@ static char velocityKey;
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
         shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-	return ![gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]];
+	return NO;
 }
 
 
@@ -305,46 +343,47 @@ static char velocityKey;
 
 - (void) orientSideMenuFromStatusBar {
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    
-    CGFloat angle = 0.0;
-    CGRect newFrame = self.sideMenuController.view.window.bounds;
     CGSize statusBarSize = [[UIApplication sharedApplication] statusBarFrame].size;
+    CGSize windowSize = self.navigationController.view.window.bounds.size;
+    CGFloat angle = 0.0;
     
     switch (orientation) {
+        case UIInterfaceOrientationPortrait:
+            angle = 0.0;
+            
+            [self.topConstraint setConstant:statusBarSize.height];
+            [self.rightConstraint setConstant:-1*(windowSize.width - kMFSideMenuSidebarWidth)];
+            [self.bottomConstraint setConstant:0.0];
+            [self.leftConstraint setConstant:0.0];
+            break;
         case UIInterfaceOrientationPortraitUpsideDown:
             angle = M_PI;
-            newFrame.size.height -= statusBarSize.height;
-            if(self.menuSide == MFSideMenuLocationRight) {
-                newFrame.origin.x = -1*newFrame.size.width + kMFSideMenuSidebarWidth;
-            }
+            
+            [self.topConstraint setConstant:0.0];
+            [self.rightConstraint setConstant:0.0];
+            [self.bottomConstraint setConstant:-1*statusBarSize.height];
+            [self.leftConstraint setConstant:windowSize.width - kMFSideMenuSidebarWidth];
             break;
         case UIInterfaceOrientationLandscapeLeft:
             angle = - M_PI / 2.0f;
-            newFrame.origin.x += statusBarSize.width;
-            newFrame.size.width -= statusBarSize.width;
-            if(self.menuSide == MFSideMenuLocationRight) {
-                newFrame.origin.y = -1*newFrame.size.height + kMFSideMenuSidebarWidth;
-            }
+            
+            [self.topConstraint setConstant:(windowSize.height - kMFSideMenuSidebarWidth)];
+            [self.rightConstraint setConstant:0.0];
+            [self.bottomConstraint setConstant:0.0];
+            [self.leftConstraint setConstant:statusBarSize.width];
             break;
         case UIInterfaceOrientationLandscapeRight:
             angle = M_PI / 2.0f;
-            newFrame.size.width -= statusBarSize.width;
-            if(self.menuSide == MFSideMenuLocationRight) {
-                newFrame.origin.y = newFrame.size.height - kMFSideMenuSidebarWidth;
-            }
-            break;
-        default: // as UIInterfaceOrientationPortrait
-            angle = 0.0;
-            newFrame.origin.y += statusBarSize.height;
-            newFrame.size.height -= statusBarSize.height;
-            if(self.menuSide == MFSideMenuLocationRight) {
-                newFrame.origin.x = newFrame.size.width - kMFSideMenuSidebarWidth;
-            }
+            
+            [self.topConstraint setConstant:0.0];
+            [self.rightConstraint setConstant:-1*statusBarSize.width];
+            [self.bottomConstraint setConstant:-1*(windowSize.height - kMFSideMenuSidebarWidth)];
+            [self.leftConstraint setConstant:0.0];
             break;
     }
     
-    self.sideMenuController.view.transform = CGAffineTransformMakeRotation(angle);
-    self.sideMenuController.view.frame = newFrame;
+    CGAffineTransform transform = CGAffineTransformMakeRotation(angle);
+    self.sideMenuController.view.transform = transform;
 }
 
 - (void)statusBarOrientationDidChange:(NSNotification *)notification {
