@@ -9,7 +9,6 @@
 #import "UINavigationController+MFSideMenu.h"
 #import "MFSideMenu.h"
 #import <objc/runtime.h>
-#import "SideMenuViewController.h"
 
 @implementation UINavigationController (MFSideMenu)
 
