@@ -3,9 +3,10 @@
 
 This project was inspired by the Facebook iOS app. The idea is to give a slideout menu to a UINavigationController-based app.
 
+**Important**: As of version 0.3 MFSideMenu uses ARC. If you have a project that doesn't use ARC, just add the `-fobjc-arc` compiler flag to the MFSideMenu files.
+
 =======
 
-[![](http://i.imgur.com/jf2RM.png)](http://i.imgur.com/jf2RM.png)
 [![](http://i.imgur.com/Ah5mP.png)
 [![](http://i.imgur.com/KN4IB.png)
 
