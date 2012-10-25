@@ -57,7 +57,7 @@
     
     NSArray *controllers = [NSArray arrayWithObject:demoController];
     self.sideMenu.navigationController.viewControllers = controllers;
-    [self.sideMenu setMenuState:MFSideMenuStateHidden animated:YES];
+    [self.sideMenu setMenuState:MFSideMenuStateHidden];
 }
 
 #pragma mark - UISearchBarDelegate

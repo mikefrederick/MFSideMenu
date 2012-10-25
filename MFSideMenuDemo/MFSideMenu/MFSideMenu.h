@@ -37,8 +37,7 @@ typedef enum {
 
 @property (nonatomic, assign) UINavigationController *navigationController;
 @property (nonatomic, strong) UITableViewController *sideMenuController;
-@property (nonatomic, assign) MFSideMenuLocation menuSide;
-@property (nonatomic, assign) MFSideMenuOptions options;
+@property (nonatomic, assign) MFSideMenuState menuState;
 @property (nonatomic, assign) MFSideMenuPanMode panMode;
 
 + (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
@@ -55,16 +54,8 @@ typedef enum {
                               options:(MFSideMenuOptions)options
                               panMode:(MFSideMenuPanMode)panMode;
 
-- (void) navigationControllerWillAppear;
-- (void) navigationControllerDidAppear;
-- (void) navigationControllerDidDisappear;
-
 - (UIBarButtonItem *) menuBarButtonItem;
 - (UIBarButtonItem *) backBarButtonItem;
 - (void) setupSideMenuBarButtonItem;
-
-- (MFSideMenuState)menuState;
-- (void) setMenuState:(MFSideMenuState)menuState animated:(BOOL)animated;
-
 
 @end

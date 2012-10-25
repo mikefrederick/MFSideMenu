@@ -14,10 +14,15 @@
     CGPoint panGestureOrigin;
 }
 
+@property (nonatomic, assign) MFSideMenuLocation menuSide;
+@property (nonatomic, assign) MFSideMenuOptions options;
+
 @property (nonatomic, strong) NSLayoutConstraint *topConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *rightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *bottomConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *leftConstraint;
+
+@property (nonatomic, assign) CGFloat panGestureVelocity;
 
 @end
 
@@ -33,16 +38,13 @@
 @synthesize rightConstraint;
 @synthesize bottomConstraint;
 @synthesize leftConstraint;
+@synthesize panGestureVelocity;
 
 static char menuStateKey;
-static char velocityKey;
 
-+ (MFSideMenu *) sharedMenu {
-    static dispatch_once_t once;
-    static MFSideMenu *sharedMenu;
-    dispatch_once(&once, ^ { sharedMenu = [[MFSideMenu alloc] init]; });
-    return sharedMenu;
-}
+
+#pragma mark -
+#pragma mark - Menu Creation
 
 + (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
                         sideMenuController:(id)menuController {
@@ -105,8 +107,11 @@ static char velocityKey;
     return menu;
 }
 
+#pragma mark -
+#pragma mark - Navigation Controller View Lifecycle
+
 - (void) navigationControllerWillAppear {
-    [self setMenuState:MFSideMenuStateHidden animated:NO];
+    [self setMenuState:MFSideMenuStateHidden];
     
     if(self.navigationController.viewControllers && self.navigationController.viewControllers.count) {
         // we need to do this b/c the options to show the barButtonItem
@@ -163,30 +168,14 @@ static char velocityKey;
     [self.rootViewController.view.superview removeConstraints:constraints];
 }
 
-- (UIViewController *) rootViewController {
-    return self.navigationController.view.window.rootViewController;
-}
-
 + (NSLayoutConstraint *)edgeConstraint:(NSLayoutAttribute)edge subview:(UIView *)subview {
     return [NSLayoutConstraint constraintWithItem:subview
-                                                          attribute:edge
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:subview.superview
-                                                          attribute:edge
-                                                         multiplier:1
-                                                           constant:0];
-}
-
-// draw a shadow between the navigation controller and the menu
-- (void) drawRootControllerShadowPath {
-    CGRect pathRect = self.rootViewController.view.bounds;
-    if(self.menuSide == MFSideMenuLocationRight) {
-        // draw the shadow on the right hand side of the navigationController
-        pathRect.origin.x = pathRect.size.width - kMFSideMenuShadowWidth;
-    }
-    pathRect.size.width = kMFSideMenuShadowWidth;
-    
-    self.rootViewController.view.layer.shadowPath = [UIBezierPath bezierPathWithRect:pathRect].CGPath;
+                                        attribute:edge
+                                        relatedBy:NSLayoutRelationEqual
+                                           toItem:subview.superview
+                                        attribute:edge
+                                       multiplier:1
+                                         constant:0];
 }
 
 
@@ -215,6 +204,53 @@ static char velocityKey;
 
 - (BOOL) navigationBarPanEnabled {
     return ((self.panMode & MFSideMenuPanModeNavigationBar) == MFSideMenuPanModeNavigationBar);
+}
+
+
+#pragma mark -
+#pragma mark - UIBarButtonItems & Callbacks
+
+- (UIBarButtonItem *)menuBarButtonItem {
+    return [[UIBarButtonItem alloc]
+            initWithImage:[UIImage imageNamed:@"menu-icon.png"] style:UIBarButtonItemStyleBordered
+            target:self
+            action:@selector(toggleSideMenuPressed:)];
+}
+
+- (UIBarButtonItem *)backBarButtonItem {
+    return [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back-arrow"]
+                                            style:UIBarButtonItemStyleBordered
+                                           target:self
+                                           action:@selector(backButtonPressed:)];
+}
+
+- (void) setupSideMenuBarButtonItem {
+    UINavigationItem *navigationItem = self.navigationController.topViewController.navigationItem;
+    if([self menuButtonEnabled]) {
+        if(self.menuSide == MFSideMenuLocationRight && !navigationItem.rightBarButtonItem) {
+            navigationItem.rightBarButtonItem = [self menuBarButtonItem];
+        } else if(self.menuSide == MFSideMenuLocationLeft &&
+                  (self.menuState == MFSideMenuStateVisible || self.navigationController.viewControllers.count == 1)) {
+            // show the menu button on the root view controller or if the menu is open
+            navigationItem.leftBarButtonItem = [self menuBarButtonItem];
+        }
+    }
+    
+    if([self backButtonEnabled] && self.navigationController.viewControllers.count > 1) {
+        navigationItem.leftBarButtonItem = [self backBarButtonItem];
+    }
+}
+
+- (void) toggleSideMenuPressed:(id)sender {
+    if(self.menuState == MFSideMenuStateVisible) {
+        [self setMenuState:MFSideMenuStateHidden];
+    } else {
+        [self setMenuState:MFSideMenuStateVisible];
+    }
+}
+
+- (void) backButtonPressed:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -254,7 +290,7 @@ static char velocityKey;
 
 
 #pragma mark -
-#pragma mark - UIGestureRecognizer callbacks
+#pragma mark - UIGestureRecognizer Callbacks
 
 // this method handles the navigation bar pan event
 // and sets the navigation controller's frame as needed
@@ -289,10 +325,10 @@ static char velocityKey;
         if(self.menuState == MFSideMenuStateHidden) {
             BOOL showMenu = (self.menuSide == MFSideMenuLocationLeft) ? (finalX > viewWidth/2) : (finalX < -1*viewWidth/2);
             if(showMenu) {
-                self.velocity = velocity.x;
-                [self setMenuState:MFSideMenuStateVisible animated:YES];
+                self.panGestureVelocity = velocity.x;
+                [self setMenuState:MFSideMenuStateVisible];
             } else {
-                self.velocity = 0;
+                self.panGestureVelocity = 0;
                 [UIView beginAnimations:nil context:NULL];
                 [self setRootControllerOffset:0];
                 [UIView commitAnimations];
@@ -300,10 +336,10 @@ static char velocityKey;
         } else if(self.menuState == MFSideMenuStateVisible) {
             BOOL hideMenu = (self.menuSide == MFSideMenuLocationLeft) ? (finalX < adjustedOrigin.x) : (finalX > adjustedOrigin.x);
             if(hideMenu) {
-                self.velocity = velocity.x;
-                [self setMenuState:MFSideMenuStateHidden animated:YES];
+                self.panGestureVelocity = velocity.x;
+                [self setMenuState:MFSideMenuStateHidden];
             } else {
-                self.velocity = 0;
+                self.panGestureVelocity = 0;
                 [UIView beginAnimations:nil context:NULL];
                 [self setRootControllerOffset:adjustedOrigin.x];
                 [UIView commitAnimations];
@@ -314,7 +350,7 @@ static char velocityKey;
 
 - (void) navigationControllerTapped:(id)sender {
     if(self.menuState != MFSideMenuStateHidden) {
-        [self setMenuState:MFSideMenuStateHidden animated:YES];
+        [self setMenuState:MFSideMenuStateHidden];
     }
 }
 
@@ -332,7 +368,7 @@ static char velocityKey;
 
 
 #pragma mark -
-#pragma mark - Gesture Recognizer Helpers
+#pragma mark - UIGestureRecognizer Helpers
 
 - (CGPoint) pointAdjustedForInterfaceOrientation:(CGPoint)point {
     switch (self.rootViewController.interfaceOrientation)
@@ -365,7 +401,7 @@ static char velocityKey;
 
 
 #pragma mark -
-#pragma mark - Side Menu Rotation
+#pragma mark - Menu Rotation
 
 - (void) orientSideMenuFromStatusBar {
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
@@ -435,66 +471,19 @@ static char velocityKey;
     [self orientSideMenuFromStatusBar];
     
     if(self.menuState == MFSideMenuStateVisible) {
-        [self setMenuState:MFSideMenuStateHidden animated:YES];
+        [self setMenuState:MFSideMenuStateHidden];
     }
-}
-
-
-#pragma mark -
-#pragma mark - UIBarButtonItems
-
-- (UIBarButtonItem *)menuBarButtonItem {
-    return [[UIBarButtonItem alloc]
-            initWithImage:[UIImage imageNamed:@"menu-icon.png"] style:UIBarButtonItemStyleBordered
-            target:self
-            action:@selector(toggleSideMenuPressed:)];
-}
-
-- (UIBarButtonItem *)backBarButtonItem {
-    return [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back-arrow"]
-                                            style:UIBarButtonItemStyleBordered
-                                           target:self
-                                           action:@selector(backButtonPressed:)];
-}
-
-- (void) setupSideMenuBarButtonItem {
-    UINavigationItem *navigationItem = self.navigationController.topViewController.navigationItem;
-    if([self menuButtonEnabled]) {
-        if(self.menuSide == MFSideMenuLocationRight && !navigationItem.rightBarButtonItem) {
-            navigationItem.rightBarButtonItem = [self menuBarButtonItem];
-        } else if(self.menuSide == MFSideMenuLocationLeft &&
-                  (self.menuState == MFSideMenuStateVisible || self.navigationController.viewControllers.count == 1)) {
-            // show the menu button on the root view controller or if the menu is open
-            navigationItem.leftBarButtonItem = [self menuBarButtonItem];
-        }
-    }
-    
-    if([self backButtonEnabled] && self.navigationController.viewControllers.count > 1) {
-        navigationItem.leftBarButtonItem = [self backBarButtonItem];
-    }
-}
-
-- (void) toggleSideMenuPressed:(id)sender {
-    if(self.menuState == MFSideMenuStateVisible) {
-        [self setMenuState:MFSideMenuStateHidden animated:YES];
-    } else {
-        [self setMenuState:MFSideMenuStateVisible animated:YES];
-    }
-}
-
-- (void) backButtonPressed:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
 #pragma mark -
 #pragma mark - Menu State
 
-- (void)setMenuState:(MFSideMenuState)menuState animated:(BOOL)animated {
-    [self setMenuState:menuState animationDuration:(animated) ? kMenuAnimationDuration : 0];
+- (MFSideMenuState)menuState {
+    return (MFSideMenuState)[objc_getAssociatedObject(self, &menuStateKey) intValue];
 }
 
-- (void)setMenuState:(MFSideMenuState)menuState animationDuration:(NSTimeInterval)duration {
+- (void)setMenuState:(MFSideMenuState)menuState {
     MFSideMenuState currentState = self.menuState;
     
     objc_setAssociatedObject(self, &menuStateKey, [NSNumber numberWithInt:menuState], OBJC_ASSOCIATION_RETAIN);
@@ -515,21 +504,44 @@ static char velocityKey;
     }
 }
 
-- (MFSideMenuState)menuState {
-    return (MFSideMenuState)[objc_getAssociatedObject(self, &menuStateKey) intValue];
-}
-
-- (void)setVelocity:(CGFloat)velocity {
-    objc_setAssociatedObject(self, &velocityKey, [NSNumber numberWithFloat:velocity], OBJC_ASSOCIATION_RETAIN);
-}
-
-- (CGFloat)velocity {
-    return (CGFloat)[objc_getAssociatedObject(self, &velocityKey) floatValue];
+// menu open/close animation
+- (void) toggleSideMenuHidden:(BOOL)hidden {
+    CGFloat x = ABS([self pointAdjustedForInterfaceOrientation:self.rootViewController.view.frame.origin].x);
+    
+    CGFloat navigationControllerXPosition = (self.menuSide == MFSideMenuLocationLeft) ? kMFSideMenuSidebarWidth : -1*kMFSideMenuSidebarWidth;
+    CGFloat animationPositionDelta = (hidden) ? x : (navigationControllerXPosition  - x);
+    
+    CGFloat duration;
+    
+    if(ABS(self.panGestureVelocity) > 1.0) {
+        // try to continue the animation at the speed the user was swiping
+        duration = animationPositionDelta / ABS(self.panGestureVelocity);
+    } else {
+        // no swipe was used, user tapped the bar button item
+        CGFloat animationDurationPerPixel = kMenuAnimationDuration / navigationControllerXPosition;
+        duration = animationDurationPerPixel * animationPositionDelta;
+    }
+    
+    if(duration > kMenuAnimationMaxDuration) duration = kMenuAnimationMaxDuration;
+    
+    [UIView animateWithDuration:duration animations:^{
+        CGFloat xPosition = (hidden) ? 0 : navigationControllerXPosition;
+        [self setRootControllerOffset:xPosition];
+    } completion:^(BOOL finished) {
+        [self setupSideMenuBarButtonItem];
+        
+        // disable user interaction on the current view controller if the menu is visible
+        self.navigationController.topViewController.view.userInteractionEnabled = (self.menuState == MFSideMenuStateHidden);
+    }];
 }
 
 
 #pragma mark -
-#pragma mark - Navigation Controller Movement
+#pragma mark - Root Controller
+
+- (UIViewController *) rootViewController {
+    return self.navigationController.view.window.rootViewController;
+}
 
 - (void) setRootControllerOffset:(CGFloat)xOffset {
     UIViewController *rootController = self.rootViewController;
@@ -559,34 +571,16 @@ static char velocityKey;
     rootController.view.frame = frame;
 }
 
-- (void) toggleSideMenuHidden:(BOOL)hidden {
-    CGFloat x = ABS([self pointAdjustedForInterfaceOrientation:self.rootViewController.view.frame.origin].x);
-    
-    CGFloat navigationControllerXPosition = (self.menuSide == MFSideMenuLocationLeft) ? kMFSideMenuSidebarWidth : -1*kMFSideMenuSidebarWidth;
-    CGFloat animationPositionDelta = (hidden) ? x : (navigationControllerXPosition  - x);
-    
-    CGFloat duration;
-    
-    if(ABS(self.velocity) > 1.0) {
-        // try to continue the animation at the speed the user was swiping
-        duration = animationPositionDelta / ABS(self.velocity);
-    } else {
-        // no swipe was used, user tapped the bar button item
-        CGFloat animationDurationPerPixel = kMenuAnimationDuration / navigationControllerXPosition;
-        duration = animationDurationPerPixel * animationPositionDelta;
+// draw a shadow between the navigation controller and the menu
+- (void) drawRootControllerShadowPath {
+    CGRect pathRect = self.rootViewController.view.bounds;
+    if(self.menuSide == MFSideMenuLocationRight) {
+        // draw the shadow on the right hand side of the navigationController
+        pathRect.origin.x = pathRect.size.width - kMFSideMenuShadowWidth;
     }
+    pathRect.size.width = kMFSideMenuShadowWidth;
     
-    if(duration > kMenuAnimationMaxDuration) duration = kMenuAnimationMaxDuration;
-    
-    [UIView animateWithDuration:duration animations:^{
-        CGFloat xPosition = (hidden) ? 0 : navigationControllerXPosition;
-        [self setRootControllerOffset:xPosition];
-    } completion:^(BOOL finished) {
-        [self setupSideMenuBarButtonItem];
-        
-        // disable user interaction on the current view controller if the menu is visible
-        self.navigationController.topViewController.view.userInteractionEnabled = (self.menuState == MFSideMenuStateHidden);
-    }];
+    self.rootViewController.view.layer.shadowPath = [UIBezierPath bezierPathWithRect:pathRect].CGPath;
 }
 
 @end

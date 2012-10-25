@@ -239,19 +239,6 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "MFSideMenuDemo/MFSideMenu/MFSideMenu.m"
-         timestampString = "372808433.868217"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "470"
-         endingLineNumber = "470"
-         landmarkName = "-setupSideMenuBarButtonItem"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "MFSideMenuDemo/DemoViewController.m"
          timestampString = "372800471.757993"
          startingColumnNumber = "9223372036854775807"
@@ -279,12 +266,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MFSideMenuDemo/MFSideMenu/MFSideMenu.m"
-         timestampString = "372808433.868217"
+         timestampString = "372828545.774769"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "499"
-         endingLineNumber = "499"
-         landmarkName = "-setMenuState:animationDuration:"
+         startingLineNumber = "490"
+         endingLineNumber = "490"
+         landmarkName = "-setMenuState:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -292,11 +279,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MFSideMenuDemo/MFSideMenu/MFSideMenu.m"
-         timestampString = "372808433.868217"
+         timestampString = "372828545.774769"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "245"
-         endingLineNumber = "245"
+         startingLineNumber = "283"
+         endingLineNumber = "283"
          landmarkName = "-gestureRecognizerShouldBegin:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -305,11 +292,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MFSideMenuDemo/MFSideMenu/MFSideMenu.m"
-         timestampString = "372808433.868217"
+         timestampString = "372828545.774769"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "224"
-         endingLineNumber = "224"
+         startingLineNumber = "262"
+         endingLineNumber = "262"
          landmarkName = "-gestureRecognizer:shouldReceiveTouch:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -331,24 +318,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MFSideMenuDemo/MFSideMenu/MFSideMenu.m"
-         timestampString = "372808433.868217"
+         timestampString = "372828545.774769"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "394"
-         endingLineNumber = "394"
-         landmarkName = "-orientSideMenuFromStatusBar"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "MFSideMenuDemo/MFSideMenu/MFSideMenu.m"
-         timestampString = "372808433.868217"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "327"
-         endingLineNumber = "327"
+         startingLineNumber = "365"
+         endingLineNumber = "365"
          landmarkName = "-navigationBarPanned:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -357,11 +331,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MFSideMenuDemo/MFSideMenu/MFSideMenu.m"
-         timestampString = "372808433.868217"
+         timestampString = "372828545.774769"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "323"
-         endingLineNumber = "323"
+         startingLineNumber = "361"
+         endingLineNumber = "361"
          landmarkName = "-navigationControllerPanned:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -370,11 +344,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MFSideMenuDemo/MFSideMenu/MFSideMenu.m"
-         timestampString = "372808433.868217"
+         timestampString = "372828545.774769"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "315"
-         endingLineNumber = "315"
+         startingLineNumber = "353"
+         endingLineNumber = "353"
          landmarkName = "-navigationControllerTapped:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -383,24 +357,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MFSideMenuDemo/MFSideMenu/MFSideMenu.m"
-         timestampString = "372808433.868217"
+         timestampString = "372828545.774769"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "434"
-         endingLineNumber = "434"
-         landmarkName = "-statusBarOrientationDidChange:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "MFSideMenuDemo/MFSideMenu/MFSideMenu.m"
-         timestampString = "372794931.05934"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "105"
-         endingLineNumber = "105"
+         startingLineNumber = "108"
+         endingLineNumber = "108"
          landmarkName = "+menuWithNavigationController:sideMenuController:location:options:panMode:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -409,38 +370,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MFSideMenuDemo/MFSideMenu/MFSideMenu.m"
-         timestampString = "372794931.05934"
+         timestampString = "372828545.774769"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "104"
-         endingLineNumber = "104"
+         startingLineNumber = "107"
+         endingLineNumber = "107"
          landmarkName = "+menuWithNavigationController:sideMenuController:location:options:panMode:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "MFSideMenuDemo/MFSideMenu/MFSideMenu.m"
-         timestampString = "372808433.868217"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "181"
-         endingLineNumber = "181"
-         landmarkName = "-drawRootControllerShadowPath"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "MFSideMenuDemo/MFSideMenu/MFSideMenu.m"
-         timestampString = "372808433.868217"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "188"
-         endingLineNumber = "188"
-         landmarkName = "-drawRootControllerShadowPath"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -460,38 +395,12 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "MFSideMenuDemo/MFSideMenu/MFSideMenu.m"
-         timestampString = "372808433.868217"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "493"
-         endingLineNumber = "493"
-         landmarkName = "-setMenuState:animated:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "MFSideMenuDemo/MFSideMenu/MFSideMenu.m"
-         timestampString = "372808433.868217"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "492"
-         endingLineNumber = "492"
-         landmarkName = "-setMenuState:animated:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "MFSideMenuDemo/MFSideMenu/UINavigationController+MFSideMenu.m"
-         timestampString = "372808497.621321"
+         timestampString = "372828545.774769"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "29"
-         endingLineNumber = "29"
+         startingLineNumber = "35"
+         endingLineNumber = "35"
          landmarkName = "-viewDidAppear:"
          landmarkType = "5">
       </FileBreakpoint>
