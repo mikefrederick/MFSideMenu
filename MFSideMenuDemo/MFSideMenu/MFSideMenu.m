@@ -10,13 +10,20 @@
 #import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
 
+NSString * const MFSideMenuStateEventDidOccurNotification = @"MFSideMenuStateEventDidOccurNotification";
+
+
 @interface MFSideMenu() {
     CGPoint panGestureOrigin;
 }
 
+@property (nonatomic, assign, readwrite) UINavigationController *navigationController;
+@property (nonatomic, strong, readwrite) UITableViewController *sideMenuController;
+
 @property (nonatomic, assign) MFSideMenuLocation menuSide;
 @property (nonatomic, assign) MFSideMenuOptions options;
 
+// layout constraints for the sideMenuController
 @property (nonatomic, strong) NSLayoutConstraint *topConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *rightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *bottomConstraint;
@@ -39,8 +46,8 @@
 @synthesize bottomConstraint;
 @synthesize leftConstraint;
 @synthesize panGestureVelocity;
-
-static char menuStateKey;
+@synthesize menuState = _menuState;
+@synthesize menuStateEventBlock;
 
 
 #pragma mark -
@@ -477,16 +484,11 @@ static char menuStateKey;
 
 
 #pragma mark -
-#pragma mark - Menu State
-
-- (MFSideMenuState)menuState {
-    return (MFSideMenuState)[objc_getAssociatedObject(self, &menuStateKey) intValue];
-}
+#pragma mark - Menu State & Open/Close Animation
 
 - (void)setMenuState:(MFSideMenuState)menuState {
-    MFSideMenuState currentState = self.menuState;
-    
-    objc_setAssociatedObject(self, &menuStateKey, [NSNumber numberWithInt:menuState], OBJC_ASSOCIATION_RETAIN);
+    MFSideMenuState currentState = _menuState;
+    _menuState = menuState;
     
     switch (currentState) {
         case MFSideMenuStateHidden:
@@ -506,6 +508,9 @@ static char menuStateKey;
 
 // menu open/close animation
 - (void) toggleSideMenuHidden:(BOOL)hidden {
+    // notify that the menu state event is starting
+    [self sendMenuStateEventNotification:(hidden ? MFSideMenuStateEventMenuWillClose : MFSideMenuStateEventMenuWillOpen)];
+    
     CGFloat x = ABS([self pointAdjustedForInterfaceOrientation:self.rootViewController.view.frame.origin].x);
     
     CGFloat navigationControllerXPosition = (self.menuSide == MFSideMenuLocationLeft) ? kMFSideMenuSidebarWidth : -1*kMFSideMenuSidebarWidth;
@@ -518,11 +523,11 @@ static char menuStateKey;
         duration = animationPositionDelta / ABS(self.panGestureVelocity);
     } else {
         // no swipe was used, user tapped the bar button item
-        CGFloat animationDurationPerPixel = kMenuAnimationDuration / navigationControllerXPosition;
+        CGFloat animationDurationPerPixel = kMFSideMenuAnimationDuration / navigationControllerXPosition;
         duration = animationDurationPerPixel * animationPositionDelta;
     }
     
-    if(duration > kMenuAnimationMaxDuration) duration = kMenuAnimationMaxDuration;
+    if(duration > kMFSideMenuAnimationMaxDuration) duration = kMFSideMenuAnimationMaxDuration;
     
     [UIView animateWithDuration:duration animations:^{
         CGFloat xPosition = (hidden) ? 0 : navigationControllerXPosition;
@@ -532,9 +537,17 @@ static char menuStateKey;
         
         // disable user interaction on the current view controller if the menu is visible
         self.navigationController.topViewController.view.userInteractionEnabled = (self.menuState == MFSideMenuStateHidden);
+        
+        // notify that the menu state event is done
+        [self sendMenuStateEventNotification:(hidden ? MFSideMenuStateEventMenuDidClose : MFSideMenuStateEventMenuDidOpen)];
     }];
 }
 
+- (void) sendMenuStateEventNotification:(MFSideMenuStateEvent)event {
+    [[NSNotificationCenter defaultCenter] postNotificationName:MFSideMenuStateEventDidOccurNotification
+                                                        object:[NSNumber numberWithInt:event]];
+    // if(self.menuStateEventBlock) self.menuStateEventBlock(event);
+}
 
 #pragma mark -
 #pragma mark - Root Controller

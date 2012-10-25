@@ -6,10 +6,12 @@
 
 #import "UINavigationController+MFSideMenu.h"
 
-static CGFloat const kMFSideMenuSidebarWidth = 270.0f;
-static CGFloat const kMFSideMenuShadowWidth = 10.0f;
-static CGFloat const kMenuAnimationDuration = 0.2f;
-static CGFloat const kMenuAnimationMaxDuration = 0.4f;
+static const CGFloat kMFSideMenuSidebarWidth = 270.0f;
+static const CGFloat kMFSideMenuShadowWidth = 10.0f;
+static const CGFloat kMFSideMenuAnimationDuration = 0.2f;
+static const CGFloat kMFSideMenuAnimationMaxDuration = 0.4f;
+
+extern NSString * const MFSideMenuStateEventDidOccurNotification;
 
 typedef enum {
     MFSideMenuLocationLeft, // show the menu on the left hand side
@@ -24,7 +26,7 @@ typedef enum {
 typedef enum {
     MFSideMenuOptionMenuButtonEnabled = 1 << 0, // enable the 'menu' UIBarButtonItem
     MFSideMenuOptionBackButtonEnabled = 1 << 1, // enable the 'back' UIBarButtonItem
-    MFSideMenuOptionShadowEnabled = 1 << 2
+    MFSideMenuOptionShadowEnabled = 1 << 2, // enable the shadow between the navigation controller & side menu
 } MFSideMenuOptions;
 
 typedef enum {
@@ -32,13 +34,25 @@ typedef enum {
     MFSideMenuPanModeNavigationController = 1 << 1 // enable panning on the body of the navigation controller
 } MFSideMenuPanMode;
 
+typedef enum {
+    MFSideMenuStateEventMenuWillOpen, // the menu is going to open
+    MFSideMenuStateEventMenuDidOpen, // the menu finished opening
+    MFSideMenuStateEventMenuWillClose, // the menu is going to close
+    MFSideMenuStateEventMenuDidClose // the menu finished closing
+} MFSideMenuStateEvent;
+
+typedef void (^MFSideMenuStateBlock)(void);
+typedef void (^MFSideMenuStateEventBlock)(MFSideMenuStateEvent);
 
 @interface MFSideMenu : NSObject<UIGestureRecognizerDelegate>
 
-@property (nonatomic, assign) UINavigationController *navigationController;
-@property (nonatomic, strong) UITableViewController *sideMenuController;
+@property (nonatomic, readonly) UINavigationController *navigationController;
+@property (nonatomic, strong, readonly) UITableViewController *sideMenuController;
 @property (nonatomic, assign) MFSideMenuState menuState;
 @property (nonatomic, assign) MFSideMenuPanMode panMode;
+
+// this can be used as a notification of open/close events
+@property (copy) MFSideMenuStateEventBlock menuStateEventBlock;
 
 + (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
                         sideMenuController:(id)menuController;

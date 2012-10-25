@@ -26,13 +26,13 @@
     SideMenuViewController *sideMenuController = [[SideMenuViewController alloc] init];
     UINavigationController *navigationController = [self navigationController];
     
-    MFSideMenuOptions options = MFSideMenuOptionMenuButtonEnabled|MFSideMenuOptionBackButtonEnabled
+    MFSideMenuOptions options = MFSideMenuOptionMenuButtonEnabled
                                                                  |MFSideMenuOptionShadowEnabled;
     MFSideMenuPanMode panMode = MFSideMenuPanModeNavigationBar|MFSideMenuPanModeNavigationController;
     
     MFSideMenu *sideMenu = [MFSideMenu menuWithNavigationController:navigationController
                                                  sideMenuController:sideMenuController
-                                                           location:MFSideMenuLocationRight
+                                                           location:MFSideMenuLocationLeft
                                                             options:options
                                                             panMode:panMode];
     
@@ -64,8 +64,8 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    //[self setupNavigationControllerApp];
-    [self setupTabBarControllerApp];
+    [self setupNavigationControllerApp];
+    //[self setupTabBarControllerApp];
     
     return YES;
 }
