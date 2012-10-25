@@ -24,6 +24,8 @@ Features
 
 Basic Setup
 =======
+The example project shows how to use the full configuration. It also includes an example of how to use the app with a UITabBarController.
+
 Note: QuartzCore is required for shadow rendering
 
 1. Bring the MFSideMenu folder into your project.
@@ -32,7 +34,6 @@ Note: QuartzCore is required for shadow rendering
 	```objective-c                                             
     MFSideMenu *sideMenu = [MFSideMenu menuWithNavigationController:navigationController
                                                  sideMenuController:sideMenuController];
-    sideMenuController.sideMenu = sideMenu;
                                                  
     self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];
