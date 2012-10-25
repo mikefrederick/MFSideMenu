@@ -26,7 +26,7 @@
     SideMenuViewController *sideMenuController = [[SideMenuViewController alloc] init];
     UINavigationController *navigationController = [self navigationController];
     
-    MFSideMenuOptions options = MFSideMenuOptionMenuButtonEnabled
+    MFSideMenuOptions options = MFSideMenuOptionMenuButtonEnabled|MFSideMenuOptionBackButtonEnabled
                                                                  |MFSideMenuOptionShadowEnabled;
     MFSideMenuPanMode panMode = MFSideMenuPanModeNavigationBar|MFSideMenuPanModeNavigationController;
     

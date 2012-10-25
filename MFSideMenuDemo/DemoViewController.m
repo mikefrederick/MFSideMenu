@@ -14,14 +14,39 @@
 
 @implementation DemoViewController
 
+- (void) dealloc {
+    self.navigationController.sideMenu.menuStateEventBlock = nil;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Demo!";
     
+    // this isn't needed on the rootViewController of the navigation controller
     [self.navigationController.sideMenu setupSideMenuBarButtonItem];
     
     // if you want to listen for menu open/close events
-    [self addSideMenuStateEventObserver];
+    // this is useful, for example, if you want to change a UIBarButtonItem when the menu closes
+    self.navigationController.sideMenu.menuStateEventBlock = ^(MFSideMenuStateEvent event) {
+        switch (event) {
+            case MFSideMenuStateEventMenuWillOpen:
+                // the menu will open
+                self.navigationItem.title = @"Menu Will Open!";
+                break;
+            case MFSideMenuStateEventMenuDidOpen:
+                // the menu finished opening
+                self.navigationItem.title = @"Menu Opened!";
+                break;
+            case MFSideMenuStateEventMenuWillClose:
+                // the menu will close
+                self.navigationItem.title = @"Menu Will Close!";
+                break;
+            case MFSideMenuStateEventMenuDidClose:
+                // the menu finished closing
+                self.navigationItem.title = @"Menu Closed!";
+                break;
+        }
+    };
 }
 
 - (IBAction)pushAnotherPressed:(id)sender {
@@ -30,45 +55,6 @@
                                           bundle:nil];
     
     [self.navigationController pushViewController:demoController animated:YES];
-}
-
-
-/** 
- Optional: listen for menu state events
- This is useful, for example, if you want to change the UIBarButtonItem when the menu closes
- **/
-
-- (void) addSideMenuStateEventObserver {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(sideMenuStateEventOccurred:)
-                                                 name:MFSideMenuStateEventDidOccurNotification
-                                               object:nil];
-}
-
-- (void) sideMenuStateEventOccurred:(NSNotification *)notification {
-    MFSideMenuStateEvent event = (MFSideMenuStateEvent)[notification.object intValue];
-    switch (event) {
-        case MFSideMenuStateEventMenuWillOpen:
-            // the menu will open
-            self.navigationItem.title = @"Menu Will Open!";
-            break;
-        case MFSideMenuStateEventMenuDidOpen:
-            // the menu finished opening
-            self.navigationItem.title = @"Menu Opened!";
-            break;
-        case MFSideMenuStateEventMenuWillClose:
-            // the menu will close
-            self.navigationItem.title = @"Menu Will Close!";
-            break;
-        case MFSideMenuStateEventMenuDidClose:
-            // the menu finished closing
-            self.navigationItem.title = @"Menu Closed!";
-            break;
-    }
-}
-
-- (void) dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

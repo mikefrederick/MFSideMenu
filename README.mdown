@@ -11,35 +11,63 @@ This project was inspired by the Facebook iOS app. The idea is to give a slideou
 
 Features
 =======
-- The menu can display on the left OR right side of the screen.
-- Display the menu either by dragging the UINavigationBar or by pressing the UIBarButtonItem.
-- When the menu is visible you can tap or drag the UINavigationController to close the menu.
-- Shadow between UINavigationController and menu
 - Universal device support (iPhone + iPad)
 - Universal orientation support (Portrait + Landscape)
+- The menu can display on the left or right side of the screen.
+- Support for UINavigationController or UITabBarController as the window's rootViewController.
+- Toggle the menu by pressing the UIBarButtonItem or by dragging your UINavigationController to the side.
+- When the menu is visible you can tap or drag it back to the closed position.
+- Optional shadow between UINavigationController and menu
 - Lightweight, simple and readable code.
 
 
-Installation
+Basic Setup
 =======
 Note: QuartzCore is required for shadow rendering
 
 1. Bring the MFSideMenu folder into your project.
 2. Create your menu (a UITableViewController -- in the demo this is the SideMenuViewController class)
 3. Initiate MFSideMenu in your app delegate:<br />
-	````objective-c
+	```objective-c                                             
+    MFSideMenu *sideMenu = [MFSideMenu menuWithNavigationController:navigationController
+                                                 sideMenuController:sideMenuController];
+    sideMenuController.sideMenu = sideMenu;
+                                                 
     self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];
-    
-    MenuOptions options = MenuButtonEnabled|BackButtonEnabled;
-    // make sure to display the navigation controller before calling this
-    [MFSideMenuManager configureWithNavigationController:navigationController 
-                                      sideMenuController:sideMenuViewController
-                                        menuSide:MenuLeftHandSide
-                                                 options:options];
-    ````
-4. (Optional) If you want to display the menu or back UIBarButtonItem, import MFSideMenu.h in your UIViewController and then add this to your viewDidLoad method:<br />
-    `[self setupSideMenuBarButtonItem];`
+    ```
+4. (Optional) For UIBarButtonItem support add this to your UIViewController. Note that the UIBarButtons will automatically be setup for the rootViewController of your UINavigationController. The UIBarButtonItems can be disabled, see MFSideMenuOptions.<br />
+    `[self.navigationController.sideMenu setupSideMenuBarButtonItem];`
+
+
+Configuration
+=======
+Checkout MFSideMenu.h to get the full gist of the configuration options.
+
+- **MFSideMenuLocation** lets you choose which side of the screen you want the menu to display on (left/right).
+- **MFSideMenuOptions** let you enable/disable the UIBarButtonItems as well as the shadow.
+- **MFSideMenuPanMode** lets you control the areas that can be panned in order to show the menu. You can use this to disable panning on the UINavigationBar or on the body of the UINavigationController.
+- **MFSideMenuState** tells you the current state of the menu (open or closed)
+- **MFSideMenuStateEventBlock** can be used to receive notifications of MFSideMenuStateEvents. You can do this like so:<br />
+
+```objective-c
+    self.navigationController.sideMenu.menuStateEventBlock = ^(MFSideMenuStateEvent event) {
+        switch (event) {
+            case MFSideMenuStateEventMenuWillOpen:
+                // the menu will open
+                break;
+            case MFSideMenuStateEventMenuDidOpen:
+                // the menu finished opening
+                break;
+            case MFSideMenuStateEventMenuWillClose:
+                // the menu will close
+                break;
+            case MFSideMenuStateEventMenuDidClose:
+                // the menu finished closing
+                break;
+        }
+    }; 
+```
     
 License
 =======

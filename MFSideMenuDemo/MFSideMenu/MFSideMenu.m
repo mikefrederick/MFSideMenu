@@ -10,9 +10,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
 
-NSString * const MFSideMenuStateEventDidOccurNotification = @"MFSideMenuStateEventDidOccurNotification";
-
-
 @interface MFSideMenu() {
     CGPoint panGestureOrigin;
 }
@@ -243,7 +240,8 @@ NSString * const MFSideMenuStateEventDidOccurNotification = @"MFSideMenuStateEve
         }
     }
     
-    if([self backButtonEnabled] && self.navigationController.viewControllers.count > 1) {
+    if([self backButtonEnabled] && self.navigationController.viewControllers.count > 1
+       && self.menuState == MFSideMenuStateHidden) {
         navigationItem.leftBarButtonItem = [self backBarButtonItem];
     }
 }
@@ -544,9 +542,9 @@ NSString * const MFSideMenuStateEventDidOccurNotification = @"MFSideMenuStateEve
 }
 
 - (void) sendMenuStateEventNotification:(MFSideMenuStateEvent)event {
-    [[NSNotificationCenter defaultCenter] postNotificationName:MFSideMenuStateEventDidOccurNotification
-                                                        object:[NSNumber numberWithInt:event]];
-    // if(self.menuStateEventBlock) self.menuStateEventBlock(event);
+    //[[NSNotificationCenter defaultCenter] postNotificationName:MFSideMenuStateEventDidOccurNotification
+    //                                                    object:[NSNumber numberWithInt:event]];
+    if(self.menuStateEventBlock) self.menuStateEventBlock(event);
 }
 
 #pragma mark -
