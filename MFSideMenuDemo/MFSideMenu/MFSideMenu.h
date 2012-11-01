@@ -6,8 +6,9 @@
 
 #import "UINavigationController+MFSideMenu.h"
 
-static const CGFloat kMFSideMenuSidebarWidth = 270.0f;
-static const CGFloat kMFSideMenuShadowWidth = 10.0f;
+static const CGFloat kMFSideMenuSidebarWidth = 210.0f;
+static const CGFloat kMFSideMenuSidebarWidthPlus = 10.0f;
+static const CGFloat kMFSideMenuShadowWidth = 3.0f;
 static const CGFloat kMFSideMenuAnimationDuration = 0.2f;
 static const CGFloat kMFSideMenuAnimationMaxDuration = 0.4f;
 
@@ -44,7 +45,7 @@ typedef void (^MFSideMenuStateEventBlock)(MFSideMenuStateEvent);
 @interface MFSideMenu : NSObject<UIGestureRecognizerDelegate>
 
 @property (nonatomic, readonly) UINavigationController *navigationController;
-@property (nonatomic, strong, readonly) UITableViewController *sideMenuController;
+@property (nonatomic, strong, readonly) UIViewController *sideMenuController;
 @property (nonatomic, assign) MFSideMenuState menuState;
 @property (nonatomic, assign) MFSideMenuPanMode panMode;
 

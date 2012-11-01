@@ -325,10 +325,9 @@
 	if(recognizer.state == UIGestureRecognizerStateEnded) {
         CGPoint velocity = [recognizer velocityInView:view];
         CGFloat finalX = translatedPoint.x + (.35*velocity.x);
-        CGFloat viewWidth = [self widthAdjustedForInterfaceOrientation:view];
         
         if(self.menuState == MFSideMenuStateHidden) {
-            BOOL showMenu = (self.menuSide == MFSideMenuLocationLeft) ? (finalX > viewWidth/2) : (finalX < -1*viewWidth/2);
+            BOOL showMenu = (self.menuSide == MFSideMenuLocationLeft) ? (finalX > kMFSideMenuSidebarWidth) : (finalX < -1*kMFSideMenuSidebarWidth);
             if(showMenu) {
                 self.panGestureVelocity = velocity.x;
                 [self setMenuState:MFSideMenuStateVisible];
@@ -414,9 +413,9 @@
     CGSize windowSize = self.navigationController.view.window.bounds.size;
     CGFloat angle = 0.0;
     
-    CGFloat portraitPadding = (windowSize.width - kMFSideMenuSidebarWidth);
+    CGFloat portraitPadding = (windowSize.width - kMFSideMenuSidebarWidth - kMFSideMenuSidebarWidthPlus);
     CGFloat portraitLeft, portraitRight;
-    CGFloat landscapePadding = (windowSize.height - kMFSideMenuSidebarWidth);
+    CGFloat landscapePadding = (windowSize.height - kMFSideMenuSidebarWidth - kMFSideMenuSidebarWidthPlus);
     CGFloat landscapeTop, landscapeBottom;
     
     // we clear these here so that we don't create any unsatisfiable constraints below
