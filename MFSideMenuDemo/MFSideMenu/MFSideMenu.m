@@ -487,21 +487,27 @@
 - (void)setMenuState:(MFSideMenuState)menuState {
     MFSideMenuState currentState = _menuState;
     _menuState = menuState;
-    
+
+    BOOL navigationControllerViewAccessibilityModal = NO;
     switch (currentState) {
         case MFSideMenuStateHidden:
             if (menuState == MFSideMenuStateVisible) {
                 [self toggleSideMenuHidden:NO];
             }
+            else {
+                navigationControllerViewAccessibilityModal = YES;
+            }
             break;
         case MFSideMenuStateVisible:
             if (menuState == MFSideMenuStateHidden) {
                 [self toggleSideMenuHidden:YES];
+                navigationControllerViewAccessibilityModal = YES;
             }
             break;
         default:
             break;
     }
+    self.navigationController.view.accessibilityViewIsModal = navigationControllerViewAccessibilityModal;
 }
 
 // menu open/close animation
