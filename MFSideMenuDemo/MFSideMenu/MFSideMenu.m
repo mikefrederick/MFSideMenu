@@ -487,7 +487,7 @@
 - (void)setMenuState:(MFSideMenuState)menuState {
     MFSideMenuState currentState = _menuState;
     _menuState = menuState;
-    
+
     switch (currentState) {
         case MFSideMenuStateHidden:
             if (menuState == MFSideMenuStateVisible) {
@@ -502,6 +502,8 @@
         default:
             break;
     }
+    if (self.navigationController.isViewLoaded)
+      self.navigationController.view.accessibilityViewIsModal = menuState == MFSideMenuStateHidden;
 }
 
 // menu open/close animation
