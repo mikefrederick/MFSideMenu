@@ -269,10 +269,6 @@
        self.menuState != MFSideMenuStateHidden) return YES;
     
     if([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
-        // we don't want to override UITableViewCell swipes
-        if ([touch.view isKindOfClass:[UITableViewCell class]] ||
-            [touch.view.superview isKindOfClass:[UITableViewCell class]]) return NO;
-        
         if([gestureRecognizer.view isEqual:self.navigationController.view] &&
            [self navigationControllerPanEnabled]) return YES;
         
