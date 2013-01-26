@@ -19,7 +19,8 @@ typedef enum {
 typedef enum {
     MFSideMenuOptionMenuButtonEnabled = 1 << 0, // enable the 'menu' UIBarButtonItem
     MFSideMenuOptionBackButtonEnabled = 1 << 1, // enable the 'back' UIBarButtonItem
-    MFSideMenuOptionShadowEnabled = 1 << 2, // enable the shadow between the navigation controller & side menu
+    MFSideMenuOptionRestoreBackButton = 1 << 3, // restores the default 'back' UIBarButtonItem (only applies if MFSideMenuOptionBackButtonEnabled is set)
+    MFSideMenuOptionShadowEnabled = 1 << 2 // enable the shadow between the navigation controller & side menu
 } MFSideMenuOptions;
 
 typedef enum {
@@ -47,6 +48,7 @@ typedef void (^MFSideMenuStateEventBlock)(MFSideMenuStateEvent);
 @property (nonatomic, strong, readonly) UITableViewController *sideMenuController;
 @property (nonatomic, assign) MFSideMenuState menuState;
 @property (nonatomic, assign) MFSideMenuPanMode panMode;
+@property (nonatomic, strong) UIBarButtonItem *savedBackButtonItem;
 
 // this can be used to observe all MFSideMenuStateEvents
 @property (copy) MFSideMenuStateEventBlock menuStateEventBlock;
