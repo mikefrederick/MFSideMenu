@@ -529,8 +529,10 @@
     } completion:^(BOOL finished) {
         [self setupSideMenuBarButtonItem];
         
-        // disable user interaction on the current view controller if the menu is visible
-        self.navigationController.topViewController.view.userInteractionEnabled = (self.menuState == MFSideMenuStateHidden);
+        // disable user interaction on the current stack of view controllers if the menu is visible
+        for(UIViewController* viewController in self.navigationController.viewControllers) {
+            viewController.view.userInteractionEnabled = (self.menuState == MFSideMenuStateHidden);
+        }
         
         // notify that the menu state event is done
         [self sendMenuStateEventNotification:(hidden ? MFSideMenuStateEventMenuDidClose : MFSideMenuStateEventMenuDidOpen)];
