@@ -194,6 +194,10 @@
     return ((self.options & MFSideMenuOptionBackButtonEnabled) == MFSideMenuOptionBackButtonEnabled);
 }
 
+- (BOOL) restoreBackButton {
+    return ((self.options & MFSideMenuOptionRestoreBackButton) == MFSideMenuOptionRestoreBackButton);
+}
+
 - (BOOL) shadowEnabled {
     return ((self.options & MFSideMenuOptionShadowEnabled) == MFSideMenuOptionShadowEnabled);
 }
@@ -235,6 +239,10 @@
             navigationItem.rightBarButtonItem = [self menuBarButtonItem];
         } else if(self.menuSide == MFSideMenuLocationLeft &&
                   (self.menuState == MFSideMenuStateVisible || self.navigationController.viewControllers.count == 1)) {
+            if ([self restoreBackButton]) {
+                self.savedBackButtonItem = navigationItem.leftBarButtonItem;
+            }
+            
             // show the menu button on the root view controller or if the menu is open
             navigationItem.leftBarButtonItem = [self menuBarButtonItem];
         }
@@ -242,7 +250,11 @@
     
     if([self backButtonEnabled] && self.navigationController.viewControllers.count > 1
        && self.menuState == MFSideMenuStateHidden) {
-        navigationItem.leftBarButtonItem = [self backBarButtonItem];
+        if ([self restoreBackButton]) {
+            navigationItem.leftBarButtonItem = self.savedBackButtonItem;
+        } else {
+            navigationItem.leftBarButtonItem = [self backBarButtonItem];
+        }
     }
 }
 
