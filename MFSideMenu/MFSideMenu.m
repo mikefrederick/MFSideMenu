@@ -75,8 +75,6 @@ typedef enum {
     menu.leftSideMenuViewController = leftMenuController;
     menu.rightSideMenuViewController = rightMenuController;
     menu.panMode = panMode;
-    menu.menuContainerView = [[UIView alloc] init];
-    [menu setMenuState:MFSideMenuStateClosed];
     controller.sideMenu = menu;
     
     UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc]
@@ -101,12 +99,23 @@ typedef enum {
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification
                                                object:nil];
     
-    // we have to redraw the shadow when the device flips
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(drawRootControllerShadowPath)
-                                                 name:UIDeviceOrientationDidChangeNotification
-                                               object:nil];
+//    // we have to redraw the shadow when the device flips
+//    [[NSNotificationCenter defaultCenter] addObserver:menu
+//                                             selector:@selector(drawRootControllerShadowPath)
+//                                                 name:UIDeviceOrientationDidChangeNotification
+//                                               object:nil];
     return menu;
+}
+
+- (id) init {
+    self = [super init];
+    if(self) {
+        _shadowEnabled = YES;
+        
+        self.menuContainerView = [[UIView alloc] init];
+        self.menuState = MFSideMenuStateClosed;
+    }
+    return self;
 }
 
 - (void)setupMenuContainerView {
@@ -127,7 +136,7 @@ typedef enum {
     // we need to reorient from the status bar here incase the initial orientation is landscape
     [self orientSideMenuFromStatusBar];
     
-    
+    if(self.shadowEnabled) [self drawMenuShadows];
     
     CGSize windowSize = self.navigationController.view.window.bounds.size;
     
@@ -172,26 +181,26 @@ typedef enum {
     if(_shadowEnabled) {
         [self drawMenuShadows];
     } else {
-        self.rootViewController.view.layer.shadowOpacity = 0.0f;
-        self.rootViewController.view.layer.shadowRadius = 0.0f;
+        self.navigationController.view.layer.shadowOpacity = 0.0f;
+        self.navigationController.view.layer.shadowRadius = 0.0f;
     }
 }
 
 - (void) drawMenuShadows {
-    if([self shadowEnabled]) {
+    if(_shadowEnabled) {
         [self drawRootControllerShadowPath];
-        self.rootViewController.view.layer.shadowOpacity = 0.75f;
-        self.rootViewController.view.layer.shadowRadius = kMFSideMenuShadowWidth;
-        self.rootViewController.view.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.navigationController.view.layer.shadowOpacity = 0.75f;
+        self.navigationController.view.layer.shadowRadius = kMFSideMenuShadowWidth;
+        self.navigationController.view.layer.shadowColor = [UIColor blackColor].CGColor;
     }
 }
 
 // draw a shadow between the navigation controller and the menu
 - (void) drawRootControllerShadowPath {
-    if([self shadowEnabled]) {
+    if(_shadowEnabled) {
         CGRect pathRect = self.rootViewController.view.bounds;
-        pathRect.size.width = self.rootViewController.view.bounds.size.width;
-        self.rootViewController.view.layer.shadowPath = [UIBezierPath bezierPathWithRect:pathRect].CGPath;
+        pathRect.size = [self sizeAdjustedForInterfaceOrientation:self.navigationController.view];
+        self.navigationController.view.layer.shadowPath = [UIBezierPath bezierPathWithRect:pathRect].CGPath;
     }
 }
 
@@ -416,6 +425,14 @@ typedef enum {
     }
 }
 
+- (CGSize) sizeAdjustedForInterfaceOrientation:(UIView *)view {
+    if(UIInterfaceOrientationIsPortrait(self.rootViewController.interfaceOrientation)) {
+        return CGSizeMake(view.frame.size.width, view.frame.size.height);
+    } else {
+        return CGSizeMake(view.frame.size.height, view.frame.size.width);
+    }
+}
+
 
 #pragma mark -
 #pragma mark - Menu Rotation
@@ -451,6 +468,8 @@ typedef enum {
     if(self.menuState != MFSideMenuStateClosed) {
         [self setMenuState:MFSideMenuStateClosed];
     }
+    
+    [self drawRootControllerShadowPath];
 }
 
 
