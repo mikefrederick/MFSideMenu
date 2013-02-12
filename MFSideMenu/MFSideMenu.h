@@ -42,12 +42,17 @@ typedef void (^MFSideMenuStateEventBlock)(MFSideMenuStateEvent);
 // this can be used to observe all MFSideMenuStateEvents
 @property (copy) MFSideMenuStateEventBlock menuStateEventBlock;
 
-+ (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
-                        sideMenuController:(id)menuController;
++ (MFSideMenu *)menuWithNavigationController:(UINavigationController *)controller
+                      leftSideMenuController:(id)leftMenuController
+                     rightSideMenuController:(id)rightMenuController;
 
-+ (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
++ (MFSideMenu *)menuWithNavigationController:(UINavigationController *)controller
                        leftSideMenuController:(id)leftMenuController
                       rightSideMenuController:(id)rightMenuController
                                       panMode:(MFSideMenuPanMode)panMode;
+
+
+- (void)toggleLeftSideMenu;
+- (void)toggleRightSideMenu;
 
 @end

@@ -14,18 +14,16 @@ typedef enum {
     MFSideMenuPanDirectionRight
 } MFSideMenuPanDirection;
 
-@interface MFSideMenu() {
-    CGPoint panGestureOrigin;
-}
 
+@interface MFSideMenu()
 @property (nonatomic, assign, readwrite) UINavigationController *navigationController;
 @property (nonatomic, strong) UIViewController *leftSideMenuViewController;
 @property (nonatomic, strong) UIViewController *rightSideMenuViewController;
 @property (nonatomic, strong) UIView *menuContainerView;
 
+@property (nonatomic, assign) CGPoint panGestureOrigin;
 @property (nonatomic, assign) CGFloat panGestureVelocity;
 @property (nonatomic, assign) MFSideMenuPanDirection panDirection;
-
 @end
 
 
@@ -36,6 +34,7 @@ typedef enum {
 @synthesize rightSideMenuViewController;
 @synthesize menuContainerView;
 @synthesize panMode;
+@synthesize panGestureOrigin;
 @synthesize panGestureVelocity;
 @synthesize menuState = _menuState;
 @synthesize menuStateEventBlock;
@@ -57,13 +56,13 @@ typedef enum {
     return self;
 }
 
-+ (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
-                        sideMenuController:(id)menuController {
++ (MFSideMenu *)menuWithNavigationController:(UINavigationController *)controller
+                      leftSideMenuController:(id)leftMenuController
+                     rightSideMenuController:(id)rightMenuController {
     MFSideMenuPanMode panMode = MFSideMenuPanModeNavigationBar|MFSideMenuPanModeNavigationController;
-    
     return [MFSideMenu menuWithNavigationController:controller
-                             leftSideMenuController:menuController
-                            rightSideMenuController:nil
+                             leftSideMenuController:leftMenuController
+                            rightSideMenuController:rightMenuController
                                             panMode:panMode];
 }
 
@@ -168,17 +167,19 @@ typedef enum {
     if(_shadowEnabled) {
         [self drawMenuShadows];
     } else {
-        self.navigationController.view.layer.shadowOpacity = 0.0f;
-        self.navigationController.view.layer.shadowRadius = 0.0f;
+        self.rootViewController.view.layer.shadowOpacity = 0.0f;
+        self.rootViewController.view.layer.shadowRadius = 0.0f;
     }
 }
 
 - (void) drawMenuShadows {
     if(_shadowEnabled) {
+        // we draw the shadow on the rootViewController, because it might not always be the uinavigationcontroller
+        // i.e. it could be a uitabbarcontroller
         [self drawRootControllerShadowPath];
-        self.navigationController.view.layer.shadowOpacity = 0.75f;
-        self.navigationController.view.layer.shadowRadius = kMFSideMenuShadowRadius;
-        self.navigationController.view.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.rootViewController.view.layer.shadowOpacity = 0.75f;
+        self.rootViewController.view.layer.shadowRadius = kMFSideMenuShadowRadius;
+        self.rootViewController.view.layer.shadowColor = [UIColor blackColor].CGColor;
     }
 }
 
@@ -186,8 +187,8 @@ typedef enum {
 - (void) drawRootControllerShadowPath {
     if(_shadowEnabled) {
         CGRect pathRect = self.rootViewController.view.bounds;
-        pathRect.size = [self sizeAdjustedForInterfaceOrientation:self.navigationController.view];
-        self.navigationController.view.layer.shadowPath = [UIBezierPath bezierPathWithRect:pathRect].CGPath;
+        pathRect.size = [self sizeAdjustedForInterfaceOrientation:self.rootViewController.view];
+        self.rootViewController.view.layer.shadowPath = [UIBezierPath bezierPathWithRect:pathRect].CGPath;
     }
 }
 
@@ -463,10 +464,26 @@ typedef enum {
 #pragma mark -
 #pragma mark - Menu State & Open/Close Animation
 
+- (void)toggleLeftSideMenu {
+    if(self.menuState == MFSideMenuStateLeftMenuOpen) {
+        [self setMenuState:MFSideMenuStateClosed];
+    } else {
+        [self setMenuState:MFSideMenuStateLeftMenuOpen];
+    }
+}
+
+- (void) toggleRightSideMenu {
+    if(self.menuState == MFSideMenuStateRightMenuOpen) {
+        [self setMenuState:MFSideMenuStateClosed];
+    } else {
+        [self setMenuState:MFSideMenuStateRightMenuOpen];
+    }
+}
+
 - (void)setMenuState:(MFSideMenuState)menuState {
     switch (menuState) {
         case MFSideMenuStateClosed:
-            [self closeSideMenus];
+            [self closeSideMenu];
             break;
         case MFSideMenuStateLeftMenuOpen:
             [self openLeftSideMenu];
@@ -482,22 +499,6 @@ typedef enum {
       self.navigationController.view.accessibilityViewIsModal = menuState == MFSideMenuStateClosed;
     
     _menuState = menuState;
-}
-
-- (void)toggleLeftSideMenu {
-    if(self.menuState == MFSideMenuStateLeftMenuOpen) {
-        [self setMenuState:MFSideMenuStateClosed];
-    } else {
-        [self setMenuState:MFSideMenuStateLeftMenuOpen];
-    }
-}
-
-- (void) toggleRightSideMenu {
-    if(self.menuState == MFSideMenuStateRightMenuOpen) {
-        [self setMenuState:MFSideMenuStateClosed];
-    } else {
-        [self setMenuState:MFSideMenuStateRightMenuOpen];
-    }
 }
 
 - (void)openLeftSideMenu {
@@ -545,7 +546,7 @@ typedef enum {
     }];
 }
 
-- (void)closeSideMenus {
+- (void)closeSideMenu {
     // notify that the menu state event is starting
     [self sendMenuStateEventNotification:MFSideMenuStateEventMenuWillClose];
     

@@ -26,19 +26,13 @@
     SideMenuViewController *leftSideMenuController = [[SideMenuViewController alloc] init];
     SideMenuViewController *rightSideMenuController = [[SideMenuViewController alloc] init];
     UINavigationController *navigationController = [self navigationController];
-    
-    MFSideMenuPanMode panMode = MFSideMenuPanModeNavigationBar|MFSideMenuPanModeNavigationController;
-    
+        
     MFSideMenu *sideMenu = [MFSideMenu menuWithNavigationController:navigationController
                                             leftSideMenuController:leftSideMenuController
-                                            rightSideMenuController:rightSideMenuController
-                                                            panMode:panMode];
+                                            rightSideMenuController:rightSideMenuController];
     
     leftSideMenuController.sideMenu = sideMenu;
     rightSideMenuController.sideMenu = sideMenu;
-    
-    leftSideMenuController.title = @"LEFT";
-    leftSideMenuController.title = @"RIGHT";
     
     return sideMenu;
 }
@@ -66,8 +60,8 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    [self setupNavigationControllerApp];
-    //[self setupTabBarControllerApp];
+    //[self setupNavigationControllerApp];
+    [self setupTabBarControllerApp];
     
     return YES;
 }
