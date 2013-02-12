@@ -12,10 +12,6 @@ static const CGFloat kMFSideMenuAnimationDuration = 0.2f;
 static const CGFloat kMFSideMenuAnimationMaxDuration = 0.4f;
 
 typedef enum {
-    MFSideMenuOptionShadowEnabled = 1 << 0, // enable the shadow between the navigation controller & side menu
-} MFSideMenuOptions;
-
-typedef enum {
     MFSideMenuPanModeNavigationBar = 1 << 0, // enable panning on the navigation bar
     MFSideMenuPanModeNavigationController = 1 << 1 // enable panning on the body of the navigation controller
 } MFSideMenuPanMode;
@@ -41,6 +37,7 @@ typedef void (^MFSideMenuStateEventBlock)(MFSideMenuStateEvent);
 
 @property (nonatomic, assign) MFSideMenuState menuState;
 @property (nonatomic, assign) MFSideMenuPanMode panMode;
+@property (nonatomic, assign) BOOL shadowEnabled;
 
 // this can be used to observe all MFSideMenuStateEvents
 @property (copy) MFSideMenuStateEventBlock menuStateEventBlock;
@@ -49,18 +46,12 @@ typedef void (^MFSideMenuStateEventBlock)(MFSideMenuStateEvent);
                         sideMenuController:(id)menuController;
 
 + (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
-                        sideMenuController:(id)menuController
-                                   options:(MFSideMenuOptions)options;
-
-+ (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
                    sideMenuController:(id)menuController
-                              options:(MFSideMenuOptions)options
                               panMode:(MFSideMenuPanMode)panMode;
 
 + (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
                        leftSideMenuController:(id)leftMenuController
                       rightSideMenuController:(id)rightMenuController
-                                      options:(MFSideMenuOptions)options
                                       panMode:(MFSideMenuPanMode)panMode;
 
 @end
