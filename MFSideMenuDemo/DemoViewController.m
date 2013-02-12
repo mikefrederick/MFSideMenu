@@ -25,25 +25,26 @@
     // this isn't needed on the rootViewController of the navigation controller
     [self.navigationController.sideMenu setupSideMenuBarButtonItem];
     
+    __weak DemoViewController *weakSelf = self;
     // if you want to listen for menu open/close events
     // this is useful, for example, if you want to change a UIBarButtonItem when the menu closes
     self.navigationController.sideMenu.menuStateEventBlock = ^(MFSideMenuStateEvent event) {
         switch (event) {
             case MFSideMenuStateEventMenuWillOpen:
                 // the menu will open
-                self.navigationItem.title = @"Menu Will Open!";
+                weakSelf.navigationItem.title = @"Menu Will Open!";
                 break;
             case MFSideMenuStateEventMenuDidOpen:
                 // the menu finished opening
-                self.navigationItem.title = @"Menu Opened!";
+                weakSelf.navigationItem.title = @"Menu Opened!";
                 break;
             case MFSideMenuStateEventMenuWillClose:
                 // the menu will close
-                self.navigationItem.title = @"Menu Will Close!";
+                weakSelf.navigationItem.title = @"Menu Will Close!";
                 break;
             case MFSideMenuStateEventMenuDidClose:
                 // the menu finished closing
-                self.navigationItem.title = @"Menu Closed!";
+                weakSelf.navigationItem.title = @"Menu Closed!";
                 break;
         }
     };
