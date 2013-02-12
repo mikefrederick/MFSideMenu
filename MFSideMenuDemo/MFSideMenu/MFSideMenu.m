@@ -21,6 +21,8 @@ typedef enum {
 }
 
 @property (nonatomic, assign, readwrite) UINavigationController *navigationController;
+@property (nonatomic, strong) UIViewController *leftSideMenuViewController;
+@property (nonatomic, strong) UIViewController *rightSideMenuViewController;
 @property (nonatomic, strong) UIView *menuContainerView;
 
 @property (nonatomic, assign) MFSideMenuOptions options;
@@ -61,7 +63,7 @@ typedef enum {
 
 + (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
                         sideMenuController:(id)menuController {
-    MFSideMenuOptions options = MFSideMenuOptionMenuButtonEnabled|MFSideMenuOptionBackButtonEnabled|MFSideMenuOptionShadowEnabled;
+    MFSideMenuOptions options = MFSideMenuOptionShadowEnabled;
     
     return [MFSideMenu menuWithNavigationController:controller
                           sideMenuController:menuController
@@ -102,6 +104,7 @@ typedef enum {
     menu.options = options;
     menu.panMode = panMode;
     menu.menuContainerView = [[UIView alloc] init];
+    [menu setMenuState:MFSideMenuStateClosed];
     controller.sideMenu = menu;
     
     UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc]
@@ -132,21 +135,37 @@ typedef enum {
 #pragma mark -
 #pragma mark - Navigation Controller View Lifecycle
 
-- (void) navigationControllerWillAppear {
-    [self setMenuState:MFSideMenuStateClosed];
-    
-    if(self.navigationController.viewControllers && self.navigationController.viewControllers.count) {
-        // we need to do this b/c the options to show the barButtonItem
-        // weren't set yet when viewDidLoad of the topViewController was called
-        [self setupSideMenuBarButtonItem];
-    }
+- (void) navigationControllerDidAppear {
+    [self setupMenuContainerView];
 }
 
-- (void) navigationControllerDidAppear {
+- (void) navigationControllerDidDisappear {
+    // we don't want the menu to be visible if the navigation controller is gone
+    if(self.menuContainerView && self.menuContainerView.superview) {
+        [self.menuContainerView removeFromSuperview];
+    }
+    
+    NSArray *constraints = [NSArray arrayWithObjects:self.topConstraint, self.bottomConstraint,
+                            self.leftConstraint, self.rightConstraint, nil];
+    [self.rootViewController.view.superview removeConstraints:constraints];
+}
+
++ (NSLayoutConstraint *)edgeConstraint:(NSLayoutAttribute)edge subview:(UIView *)subview {
+    return [NSLayoutConstraint constraintWithItem:subview
+                                        attribute:edge
+                                        relatedBy:NSLayoutRelationEqual
+                                           toItem:subview.superview
+                                        attribute:edge
+                                       multiplier:1
+                                         constant:0];
+}
+
+- (void)setupMenuContainerView {
     if(menuContainerView.superview) return;
     
     menuContainerView.frame = self.navigationController.view.window.bounds;
     menuContainerView.backgroundColor = [UIColor redColor];
+    menuContainerView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     
     if(self.leftSideMenuViewController) [menuContainerView insertSubview:self.leftSideMenuViewController.view atIndex:0];
     if(self.rightSideMenuViewController) [menuContainerView insertSubview:self.rightSideMenuViewController.view atIndex:0];
@@ -201,38 +220,9 @@ typedef enum {
     }
 }
 
-- (void) navigationControllerDidDisappear {
-    // we don't want the menu to be visible if the navigation controller is gone
-    if(self.menuContainerView && self.menuContainerView.superview) {
-        [self.menuContainerView removeFromSuperview];
-    }
-    
-    NSArray *constraints = [NSArray arrayWithObjects:self.topConstraint, self.bottomConstraint,
-                            self.leftConstraint, self.rightConstraint, nil];
-    [self.rootViewController.view.superview removeConstraints:constraints];
-}
-
-+ (NSLayoutConstraint *)edgeConstraint:(NSLayoutAttribute)edge subview:(UIView *)subview {
-    return [NSLayoutConstraint constraintWithItem:subview
-                                        attribute:edge
-                                        relatedBy:NSLayoutRelationEqual
-                                           toItem:subview.superview
-                                        attribute:edge
-                                       multiplier:1
-                                         constant:0];
-}
-
 
 #pragma mark -
 #pragma mark - MFSideMenuOptions
-
-- (BOOL) menuButtonEnabled {
-    return ((self.options & MFSideMenuOptionMenuButtonEnabled) == MFSideMenuOptionMenuButtonEnabled);
-}
-
-- (BOOL) backButtonEnabled {
-    return ((self.options & MFSideMenuOptionBackButtonEnabled) == MFSideMenuOptionBackButtonEnabled);
-}
 
 - (BOOL) shadowEnabled {
     return ((self.options & MFSideMenuOptionShadowEnabled) == MFSideMenuOptionShadowEnabled);
@@ -248,70 +238,6 @@ typedef enum {
 
 - (BOOL) navigationBarPanEnabled {
     return ((self.panMode & MFSideMenuPanModeNavigationBar) == MFSideMenuPanModeNavigationBar);
-}
-
-
-#pragma mark -
-#pragma mark - UIBarButtonItems & Callbacks
-
-- (UIBarButtonItem *)leftMenuBarButtonItem {
-    return [[UIBarButtonItem alloc]
-            initWithImage:[UIImage imageNamed:@"menu-icon.png"] style:UIBarButtonItemStyleBordered
-            target:self
-            action:@selector(toggleLeftSideMenuPressed:)];
-}
-
-- (UIBarButtonItem *)rightMenuBarButtonItem {
-    return [[UIBarButtonItem alloc]
-            initWithImage:[UIImage imageNamed:@"menu-icon.png"] style:UIBarButtonItemStyleBordered
-            target:self
-            action:@selector(toggleRightSideMenuPressed:)];
-}
-
-- (UIBarButtonItem *)backBarButtonItem {
-    return [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back-arrow"]
-                                            style:UIBarButtonItemStyleBordered
-                                           target:self
-                                           action:@selector(backButtonPressed:)];
-}
-
-- (void) setupSideMenuBarButtonItem {
-    UINavigationItem *navigationItem = self.navigationController.topViewController.navigationItem;
-    if([self menuButtonEnabled]) {
-        if(self.rightSideMenuViewController && !navigationItem.rightBarButtonItem) {
-            navigationItem.rightBarButtonItem = [self rightMenuBarButtonItem];
-        }
-        if(self.leftSideMenuViewController &&
-                  (self.menuState == MFSideMenuStateLeftMenuOpen || self.navigationController.viewControllers.count == 1)) {
-            // show the menu button on the root view controller or if the menu is open
-            navigationItem.leftBarButtonItem = [self leftMenuBarButtonItem];
-        }
-    }
-    
-    if([self backButtonEnabled] && self.navigationController.viewControllers.count > 1
-       && self.menuState == MFSideMenuStateClosed) {
-        navigationItem.leftBarButtonItem = [self backBarButtonItem];
-    }
-}
-
-- (void) toggleLeftSideMenuPressed:(id)sender {
-    if(self.menuState == MFSideMenuStateLeftMenuOpen) {
-        [self setMenuState:MFSideMenuStateClosed];
-    } else {
-        [self setMenuState:MFSideMenuStateLeftMenuOpen];
-    }
-}
-
-- (void) toggleRightSideMenuPressed:(id)sender {
-    if(self.menuState == MFSideMenuStateRightMenuOpen) {
-        [self setMenuState:MFSideMenuStateClosed];
-    } else {
-        [self setMenuState:MFSideMenuStateRightMenuOpen];
-    }
-}
-
-- (void) backButtonPressed:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -349,7 +275,7 @@ typedef enum {
 
 // this method handles the navigation bar pan event
 // and sets the navigation controller's frame as needed
-- (void) handleNavigationBarPan:(UIPanGestureRecognizer *)recognizer {
+- (void) handleNavigationControllerPan:(UIPanGestureRecognizer *)recognizer {
     UIView *view = self.rootViewController.view;
     
 	if(recognizer.state == UIGestureRecognizerStateBegan) {
@@ -373,7 +299,6 @@ typedef enum {
 }
 
 - (void) handleRightPan:(UIPanGestureRecognizer *)recognizer {
-        NSLog(@"right pan");
     UIView *view = self.rootViewController.view;
     
     CGPoint translatedPoint = [recognizer translationInView:view];
@@ -382,7 +307,13 @@ typedef enum {
                                   adjustedOrigin.y + translatedPoint.y);
     
     translatedPoint.x = MIN(translatedPoint.x, kMFSideMenuSidebarWidth);
-    // translatedPoint.x = MAX(translatedPoint.x, 0);
+    if(self.menuState == MFSideMenuStateRightMenuOpen) {
+        // menu is already open, the most the user can do is close it in this gesture
+        translatedPoint.x = MIN(translatedPoint.x, 0);
+    } else {
+        // we are opening the menu
+        translatedPoint.x = MAX(translatedPoint.x, 0);
+    }
     
     [self setRootControllerOffset:translatedPoint.x];
     
@@ -420,15 +351,21 @@ typedef enum {
 }
 
 - (void) handleLeftPan:(UIPanGestureRecognizer *)recognizer {
-    NSLog(@"left pan");
     UIView *view = self.rootViewController.view;
     
     CGPoint translatedPoint = [recognizer translationInView:view];
     CGPoint adjustedOrigin = [self pointAdjustedForInterfaceOrientation:panGestureOrigin];
     translatedPoint = CGPointMake(adjustedOrigin.x + translatedPoint.x,
                                   adjustedOrigin.y + translatedPoint.y);
+    
     translatedPoint.x = MAX(translatedPoint.x, -1*kMFSideMenuSidebarWidth);
-    // translatedPoint.x = MIN(translatedPoint.x, 0);
+    if(self.menuState == MFSideMenuStateLeftMenuOpen) {
+        // don't let the pan go less than 0 if the menu is already open
+        translatedPoint.x = MAX(translatedPoint.x, 0);
+    } else {
+        // we are opening the menu
+        translatedPoint.x = MIN(translatedPoint.x, 0);
+    }
     
     [self setRootControllerOffset:translatedPoint.x];
     
@@ -470,15 +407,13 @@ typedef enum {
 }
 
 - (void) navigationControllerPanned:(id)sender {
-    // if(self.menuState == MFSideMenuStateClosed) return;
-    
-    [self handleNavigationBarPan:sender];
+    [self handleNavigationControllerPan:sender];
 }
 
 - (void) navigationBarPanned:(id)sender {
     if(self.menuState != MFSideMenuStateClosed) return;
     
-    [self handleNavigationBarPan:sender];
+    [self handleNavigationControllerPan:sender];
 }
 
 
@@ -521,13 +456,7 @@ typedef enum {
 - (void) orientSideMenuFromStatusBar {
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     CGFloat angle = 0.0;
-    
-    // we clear these here so that we don't create any unsatisfiable constraints below
-    [self.topConstraint setConstant:0.0];
-    [self.rightConstraint setConstant:0.0];
-    [self.bottomConstraint setConstant:0.0];
-    [self.leftConstraint setConstant:0.0];
-    
+        
     switch (orientation) {
         case UIInterfaceOrientationPortrait:
             angle = 0.0;
@@ -580,6 +509,22 @@ typedef enum {
     _menuState = menuState;
 }
 
+- (void)toggleLeftSideMenu {
+    if(self.menuState == MFSideMenuStateLeftMenuOpen) {
+        [self setMenuState:MFSideMenuStateClosed];
+    } else {
+        [self setMenuState:MFSideMenuStateLeftMenuOpen];
+    }
+}
+
+- (void) toggleRightSideMenu {
+    if(self.menuState == MFSideMenuStateRightMenuOpen) {
+        [self setMenuState:MFSideMenuStateClosed];
+    } else {
+        [self setMenuState:MFSideMenuStateRightMenuOpen];
+    }
+}
+
 - (void)openLeftSideMenu {
     [self.menuContainerView bringSubviewToFront:self.leftSideMenuViewController.view];
     [self openSideMenu:YES];
@@ -591,15 +536,13 @@ typedef enum {
 }
 
 - (void)openSideMenu:(BOOL)leftSideMenu {
-    BOOL hidden = NO;
-    
     // notify that the menu state event is starting
-    [self sendMenuStateEventNotification:(hidden ? MFSideMenuStateEventMenuWillClose : MFSideMenuStateEventMenuWillOpen)];
+    [self sendMenuStateEventNotification:MFSideMenuStateEventMenuWillOpen];
     
     CGFloat x = ABS([self pointAdjustedForInterfaceOrientation:self.rootViewController.view.frame.origin].x);
     
     CGFloat navigationControllerXPosition = leftSideMenu ? kMFSideMenuSidebarWidth : -1*kMFSideMenuSidebarWidth;
-    CGFloat animationPositionDelta = (hidden) ? x : (navigationControllerXPosition  - x);
+    CGFloat animationPositionDelta = (navigationControllerXPosition - x);
     
     CGFloat duration;
     
@@ -615,18 +558,15 @@ typedef enum {
     if(duration > kMFSideMenuAnimationMaxDuration) duration = kMFSideMenuAnimationMaxDuration;
     
     [UIView animateWithDuration:duration animations:^{
-        CGFloat xPosition = (hidden) ? 0 : navigationControllerXPosition;
-        [self setRootControllerOffset:xPosition];
+        [self setRootControllerOffset:navigationControllerXPosition];
     } completion:^(BOOL finished) {
-        [self setupSideMenuBarButtonItem];
-        
         // disable user interaction on the current stack of view controllers if the menu is visible
         for(UIViewController* viewController in self.navigationController.viewControllers) {
             viewController.view.userInteractionEnabled = (self.menuState == MFSideMenuStateClosed);
         }
         
         // notify that the menu state event is done
-        [self sendMenuStateEventNotification:(hidden ? MFSideMenuStateEventMenuDidClose : MFSideMenuStateEventMenuDidOpen)];
+        [self sendMenuStateEventNotification:MFSideMenuStateEventMenuDidOpen];
     }];
 }
 
@@ -656,8 +596,6 @@ typedef enum {
         CGFloat xPosition = 0;
         [self setRootControllerOffset:xPosition];
     } completion:^(BOOL finished) {
-        [self setupSideMenuBarButtonItem];
-        
         // disable user interaction on the current stack of view controllers if the menu is visible
         for(UIViewController* viewController in self.navigationController.viewControllers) {
             viewController.view.userInteractionEnabled = (self.menuState == MFSideMenuStateClosed);
@@ -669,8 +607,6 @@ typedef enum {
 }
 
 - (void) sendMenuStateEventNotification:(MFSideMenuStateEvent)event {
-    //[[NSNotificationCenter defaultCenter] postNotificationName:MFSideMenuStateEventDidOccurNotification
-    //                                                    object:[NSNumber numberWithInt:event]];
     if(self.menuStateEventBlock) self.menuStateEventBlock(event);
 }
 
@@ -711,10 +647,11 @@ typedef enum {
 
 // draw a shadow between the navigation controller and the menu
 - (void) drawRootControllerShadowPath {
-    CGRect pathRect = self.rootViewController.view.bounds;
-    pathRect.size.width = self.rootViewController.view.bounds.size.width;
-    //pathRect.origin.x = -1*kMFSideMenuShadowWidth;
-    self.rootViewController.view.layer.shadowPath = [UIBezierPath bezierPathWithRect:pathRect].CGPath;
+    if([self shadowEnabled]) {
+        CGRect pathRect = self.rootViewController.view.bounds;
+        pathRect.size.width = self.rootViewController.view.bounds.size.width;
+        self.rootViewController.view.layer.shadowPath = [UIBezierPath bezierPathWithRect:pathRect].CGPath;
+    }
 }
 
 - (void) dealloc {

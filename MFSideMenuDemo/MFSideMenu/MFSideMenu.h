@@ -12,9 +12,7 @@ static const CGFloat kMFSideMenuAnimationDuration = 0.2f;
 static const CGFloat kMFSideMenuAnimationMaxDuration = 0.4f;
 
 typedef enum {
-    MFSideMenuOptionMenuButtonEnabled = 1 << 0, // enable the 'menu' UIBarButtonItem
-    MFSideMenuOptionBackButtonEnabled = 1 << 1, // enable the 'back' UIBarButtonItem
-    MFSideMenuOptionShadowEnabled = 1 << 2, // enable the shadow between the navigation controller & side menu
+    MFSideMenuOptionShadowEnabled = 1 << 0, // enable the shadow between the navigation controller & side menu
 } MFSideMenuOptions;
 
 typedef enum {
@@ -40,8 +38,6 @@ typedef void (^MFSideMenuStateEventBlock)(MFSideMenuStateEvent);
 @interface MFSideMenu : NSObject<UIGestureRecognizerDelegate>
 
 @property (nonatomic, readonly) UINavigationController *navigationController;
-@property (nonatomic, strong) UIViewController *leftSideMenuViewController;
-@property (nonatomic, strong) UIViewController *rightSideMenuViewController;
 
 @property (nonatomic, assign) MFSideMenuState menuState;
 @property (nonatomic, assign) MFSideMenuPanMode panMode;
@@ -66,10 +62,5 @@ typedef void (^MFSideMenuStateEventBlock)(MFSideMenuStateEvent);
                       rightSideMenuController:(id)rightMenuController
                                       options:(MFSideMenuOptions)options
                                       panMode:(MFSideMenuPanMode)panMode;
-
-- (UIBarButtonItem *)leftMenuBarButtonItem;
-- (UIBarButtonItem *)rightMenuBarButtonItem;
-- (UIBarButtonItem *) backBarButtonItem;
-- (void) setupSideMenuBarButtonItem;
 
 @end

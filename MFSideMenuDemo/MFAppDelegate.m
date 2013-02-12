@@ -27,8 +27,7 @@
     SideMenuViewController *rightSideMenuController = [[SideMenuViewController alloc] init];
     UINavigationController *navigationController = [self navigationController];
     
-    MFSideMenuOptions options = MFSideMenuOptionMenuButtonEnabled
-                                                                 |MFSideMenuOptionShadowEnabled;
+    MFSideMenuOptions options = MFSideMenuOptionShadowEnabled;
     MFSideMenuPanMode panMode = MFSideMenuPanModeNavigationBar|MFSideMenuPanModeNavigationController;
     
     MFSideMenu *sideMenu = [MFSideMenu menuWithNavigationController:navigationController
