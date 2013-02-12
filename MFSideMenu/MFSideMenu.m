@@ -1,9 +1,7 @@
 //
 //  MFSideMenu.m
-//  MFSideMenuDemo
 //
 //  Created by Michael Frederick on 10/22/12.
-//  Copyright (c) 2012 University of Wisconsin - Madison. All rights reserved.
 //
 
 #import "MFSideMenu.h"
@@ -48,21 +46,24 @@ typedef enum {
 #pragma mark -
 #pragma mark - Menu Creation
 
+- (id) init {
+    self = [super init];
+    if(self) {
+        _shadowEnabled = YES;
+        
+        self.menuContainerView = [[UIView alloc] init];
+        self.menuState = MFSideMenuStateClosed;
+    }
+    return self;
+}
+
 + (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
                         sideMenuController:(id)menuController {
     MFSideMenuPanMode panMode = MFSideMenuPanModeNavigationBar|MFSideMenuPanModeNavigationController;
     
     return [MFSideMenu menuWithNavigationController:controller
-                          sideMenuController:menuController
-                                     panMode:panMode];
-}
-
-+ (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
-                   sideMenuController:(id)menuController
-                              panMode:(MFSideMenuPanMode)panMode {
-    return [MFSideMenu menuWithNavigationController:controller
-                                 leftSideMenuController:menuController
-                                rightSideMenuController:nil
+                             leftSideMenuController:menuController
+                            rightSideMenuController:nil
                                             panMode:panMode];
 }
 
@@ -99,24 +100,10 @@ typedef enum {
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification
                                                object:nil];
     
-//    // we have to redraw the shadow when the device flips
-//    [[NSNotificationCenter defaultCenter] addObserver:menu
-//                                             selector:@selector(drawRootControllerShadowPath)
-//                                                 name:UIDeviceOrientationDidChangeNotification
-//                                               object:nil];
     return menu;
 }
 
-- (id) init {
-    self = [super init];
-    if(self) {
-        _shadowEnabled = YES;
-        
-        self.menuContainerView = [[UIView alloc] init];
-        self.menuState = MFSideMenuStateClosed;
-    }
-    return self;
-}
+
 
 - (void)setupMenuContainerView {
     if(menuContainerView.superview) return;
@@ -190,7 +177,7 @@ typedef enum {
     if(_shadowEnabled) {
         [self drawRootControllerShadowPath];
         self.navigationController.view.layer.shadowOpacity = 0.75f;
-        self.navigationController.view.layer.shadowRadius = kMFSideMenuShadowWidth;
+        self.navigationController.view.layer.shadowRadius = kMFSideMenuShadowRadius;
         self.navigationController.view.layer.shadowColor = [UIColor blackColor].CGColor;
     }
 }

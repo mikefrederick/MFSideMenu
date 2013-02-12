@@ -6,10 +6,10 @@
 
 #import "UINavigationController+MFSideMenu.h"
 
-static const CGFloat kMFSideMenuSidebarWidth = 270.0f;
-static const CGFloat kMFSideMenuShadowWidth = 10.0f;
-static const CGFloat kMFSideMenuAnimationDuration = 0.2f;
-static const CGFloat kMFSideMenuAnimationMaxDuration = 0.4f;
+static const CGFloat kMFSideMenuSidebarWidth = 270.0f; // size of the side menu(s)
+static const CGFloat kMFSideMenuShadowRadius = 10.0f; // radius of the shadow
+static const CGFloat kMFSideMenuAnimationDuration = 0.2f; // default duration for the open/close animation
+static const CGFloat kMFSideMenuAnimationMaxDuration = 0.4f; // maximum duration for the open/close animation
 
 typedef enum {
     MFSideMenuPanModeNavigationBar = 1 << 0, // enable panning on the navigation bar
@@ -17,9 +17,9 @@ typedef enum {
 } MFSideMenuPanMode;
 
 typedef enum {
-    MFSideMenuStateClosed,
-    MFSideMenuStateLeftMenuOpen,
-    MFSideMenuStateRightMenuOpen
+    MFSideMenuStateClosed, // the menu is closed
+    MFSideMenuStateLeftMenuOpen, // the left-hand menu is open
+    MFSideMenuStateRightMenuOpen // the right-hand menu is open
 } MFSideMenuState;
 
 typedef enum {
@@ -44,10 +44,6 @@ typedef void (^MFSideMenuStateEventBlock)(MFSideMenuStateEvent);
 
 + (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
                         sideMenuController:(id)menuController;
-
-+ (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
-                   sideMenuController:(id)menuController
-                              panMode:(MFSideMenuPanMode)panMode;
 
 + (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
                        leftSideMenuController:(id)leftMenuController
