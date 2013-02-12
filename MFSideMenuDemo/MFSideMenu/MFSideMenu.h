@@ -12,11 +12,6 @@ static const CGFloat kMFSideMenuAnimationDuration = 0.2f;
 static const CGFloat kMFSideMenuAnimationMaxDuration = 0.4f;
 
 typedef enum {
-    MFSideMenuLocationLeft, // show the menu on the left hand side
-    MFSideMenuLocationRight // show the menu on the right hand side
-} MFSideMenuLocation;
-
-typedef enum {
     MFSideMenuOptionMenuButtonEnabled = 1 << 0, // enable the 'menu' UIBarButtonItem
     MFSideMenuOptionBackButtonEnabled = 1 << 1, // enable the 'back' UIBarButtonItem
     MFSideMenuOptionShadowEnabled = 1 << 2, // enable the shadow between the navigation controller & side menu
@@ -28,8 +23,9 @@ typedef enum {
 } MFSideMenuPanMode;
 
 typedef enum {
-    MFSideMenuStateHidden, // the menu is hidden
-    MFSideMenuStateVisible // the menu is shown
+    MFSideMenuStateClosed,
+    MFSideMenuStateLeftMenuOpen,
+    MFSideMenuStateRightMenuOpen
 } MFSideMenuState;
 
 typedef enum {
@@ -44,7 +40,9 @@ typedef void (^MFSideMenuStateEventBlock)(MFSideMenuStateEvent);
 @interface MFSideMenu : NSObject<UIGestureRecognizerDelegate>
 
 @property (nonatomic, readonly) UINavigationController *navigationController;
-@property (nonatomic, strong, readonly) UITableViewController *sideMenuController;
+@property (nonatomic, strong) UIViewController *leftSideMenuViewController;
+@property (nonatomic, strong) UIViewController *rightSideMenuViewController;
+
 @property (nonatomic, assign) MFSideMenuState menuState;
 @property (nonatomic, assign) MFSideMenuPanMode panMode;
 
@@ -56,16 +54,21 @@ typedef void (^MFSideMenuStateEventBlock)(MFSideMenuStateEvent);
 
 + (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
                         sideMenuController:(id)menuController
-                                  location:(MFSideMenuLocation)side
                                    options:(MFSideMenuOptions)options;
 
 + (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
                    sideMenuController:(id)menuController
-                             location:(MFSideMenuLocation)side
                               options:(MFSideMenuOptions)options
                               panMode:(MFSideMenuPanMode)panMode;
 
-- (UIBarButtonItem *) menuBarButtonItem;
++ (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller
+                       leftSideMenuController:(id)leftMenuController
+                      rightSideMenuController:(id)rightMenuController
+                                      options:(MFSideMenuOptions)options
+                                      panMode:(MFSideMenuPanMode)panMode;
+
+- (UIBarButtonItem *)leftMenuBarButtonItem;
+- (UIBarButtonItem *)rightMenuBarButtonItem;
 - (UIBarButtonItem *) backBarButtonItem;
 - (void) setupSideMenuBarButtonItem;
 

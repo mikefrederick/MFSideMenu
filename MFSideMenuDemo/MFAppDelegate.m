@@ -23,20 +23,25 @@
 }
 
 - (MFSideMenu *)sideMenu {
-    SideMenuViewController *sideMenuController = [[SideMenuViewController alloc] init];
+    SideMenuViewController *leftSideMenuController = [[SideMenuViewController alloc] init];
+    SideMenuViewController *rightSideMenuController = [[SideMenuViewController alloc] init];
     UINavigationController *navigationController = [self navigationController];
     
-    MFSideMenuOptions options = MFSideMenuOptionMenuButtonEnabled|MFSideMenuOptionBackButtonEnabled
+    MFSideMenuOptions options = MFSideMenuOptionMenuButtonEnabled
                                                                  |MFSideMenuOptionShadowEnabled;
     MFSideMenuPanMode panMode = MFSideMenuPanModeNavigationBar|MFSideMenuPanModeNavigationController;
     
     MFSideMenu *sideMenu = [MFSideMenu menuWithNavigationController:navigationController
-                                                 sideMenuController:sideMenuController
-                                                           location:MFSideMenuLocationLeft
+                                            leftSideMenuController:leftSideMenuController
+                                            rightSideMenuController:rightSideMenuController
                                                             options:options
                                                             panMode:panMode];
     
-    sideMenuController.sideMenu = sideMenu;
+    leftSideMenuController.sideMenu = sideMenu;
+    rightSideMenuController.sideMenu = sideMenu;
+    
+    leftSideMenuController.title = @"LEFT";
+    leftSideMenuController.title = @"RIGHT";
     
     return sideMenu;
 }
