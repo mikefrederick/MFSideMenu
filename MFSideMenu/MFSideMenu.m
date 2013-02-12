@@ -27,12 +27,6 @@ typedef enum {
 
 @property (nonatomic, assign) MFSideMenuOptions options;
 
-// layout constraints for the sideMenuController
-@property (nonatomic, strong) NSLayoutConstraint *topConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *rightConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *bottomConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *leftConstraint;
-
 @property (nonatomic, assign) CGFloat panGestureVelocity;
 @property (nonatomic, assign) MFSideMenuPanDirection panDirection;
 
@@ -45,13 +39,8 @@ typedef enum {
 @synthesize leftSideMenuViewController;
 @synthesize rightSideMenuViewController;
 @synthesize menuContainerView;
-
 @synthesize options;
 @synthesize panMode;
-@synthesize topConstraint;
-@synthesize rightConstraint;
-@synthesize bottomConstraint;
-@synthesize leftConstraint;
 @synthesize panGestureVelocity;
 @synthesize menuState = _menuState;
 @synthesize menuStateEventBlock;
@@ -131,41 +120,12 @@ typedef enum {
     return menu;
 }
 
-
-#pragma mark -
-#pragma mark - Navigation Controller View Lifecycle
-
-- (void) navigationControllerDidAppear {
-    [self setupMenuContainerView];
-}
-
-- (void) navigationControllerDidDisappear {
-    // we don't want the menu to be visible if the navigation controller is gone
-    if(self.menuContainerView && self.menuContainerView.superview) {
-        [self.menuContainerView removeFromSuperview];
-    }
-    
-    NSArray *constraints = [NSArray arrayWithObjects:self.topConstraint, self.bottomConstraint,
-                            self.leftConstraint, self.rightConstraint, nil];
-    [self.rootViewController.view.superview removeConstraints:constraints];
-}
-
-+ (NSLayoutConstraint *)edgeConstraint:(NSLayoutAttribute)edge subview:(UIView *)subview {
-    return [NSLayoutConstraint constraintWithItem:subview
-                                        attribute:edge
-                                        relatedBy:NSLayoutRelationEqual
-                                           toItem:subview.superview
-                                        attribute:edge
-                                       multiplier:1
-                                         constant:0];
-}
-
 - (void)setupMenuContainerView {
     if(menuContainerView.superview) return;
     
     menuContainerView.frame = self.navigationController.view.window.bounds;
     menuContainerView.backgroundColor = [UIColor redColor];
-    menuContainerView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+    //menuContainerView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     
     if(self.leftSideMenuViewController) [menuContainerView insertSubview:self.leftSideMenuViewController.view atIndex:0];
     if(self.rightSideMenuViewController) [menuContainerView insertSubview:self.rightSideMenuViewController.view atIndex:0];
@@ -174,17 +134,6 @@ typedef enum {
     UIView *containerView = windowRootView.superview;
     
     [containerView insertSubview:menuContainerView belowSubview:windowRootView];
-    
-    [menuContainerView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    self.topConstraint = [[self class] edgeConstraint:NSLayoutAttributeTop subview:menuContainerView];
-    self.rightConstraint = [[self class] edgeConstraint:NSLayoutAttributeRight subview:menuContainerView];
-    self.bottomConstraint = [[self class] edgeConstraint:NSLayoutAttributeBottom subview:menuContainerView];
-    self.leftConstraint = [[self class] edgeConstraint:NSLayoutAttributeLeft subview:menuContainerView];
-    
-    [containerView addConstraint:self.topConstraint];
-    [containerView addConstraint:self.rightConstraint];
-    [containerView addConstraint:self.bottomConstraint];
-    [containerView addConstraint:self.leftConstraint];
     
     // we need to reorient from the status bar here incase the initial orientation is landscape
     [self orientSideMenuFromStatusBar];
@@ -217,6 +166,21 @@ typedef enum {
         rightFrame.origin.x = windowSize.width - kMFSideMenuSidebarWidth;
         self.rightSideMenuViewController.view.frame = rightFrame;
         self.rightSideMenuViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight;
+    }
+}
+
+
+#pragma mark -
+#pragma mark - Navigation Controller View Lifecycle
+
+- (void) navigationControllerDidAppear {
+    [self setupMenuContainerView];
+}
+
+- (void) navigationControllerDidDisappear {
+    // we don't want the menu to be visible if the navigation controller is gone
+    if(self.menuContainerView && self.menuContainerView.superview) {
+        [self.menuContainerView removeFromSuperview];
     }
 }
 
@@ -456,7 +420,7 @@ typedef enum {
 - (void) orientSideMenuFromStatusBar {
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     CGFloat angle = 0.0;
-        
+    
     switch (orientation) {
         case UIInterfaceOrientationPortrait:
             angle = 0.0;
@@ -472,8 +436,10 @@ typedef enum {
             break;
     }
     
+    CGRect newFrame = self.rootViewController.view.window.bounds;
     CGAffineTransform transform = CGAffineTransformMakeRotation(angle);
     self.menuContainerView.transform = transform;
+    self.menuContainerView.frame = newFrame;
 }
 
 - (void)statusBarOrientationDidChange:(NSNotification *)notification {
