@@ -60,8 +60,8 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    //[self setupNavigationControllerApp];
-    [self setupTabBarControllerApp];
+    [self setupNavigationControllerApp];
+    //[self setupTabBarControllerApp];
     
     return YES;
 }

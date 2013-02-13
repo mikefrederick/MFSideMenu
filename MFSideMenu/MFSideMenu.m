@@ -107,7 +107,6 @@ typedef enum {
 - (void)setupMenuContainerView {
     if(menuContainerView.superview) return;
     
-    menuContainerView.frame = self.navigationController.view.window.bounds;
     menuContainerView.backgroundColor = [UIColor redColor];
     //menuContainerView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     
@@ -129,6 +128,7 @@ typedef enum {
     if(self.leftSideMenuViewController) {
         CGRect leftFrame = self.leftSideMenuViewController.view.frame;
         leftFrame.size.width = kMFSideMenuSidebarWidth;
+        leftFrame.origin = CGPointZero;
         self.leftSideMenuViewController.view.frame = leftFrame;
         self.leftSideMenuViewController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleHeight;
     }
@@ -136,7 +136,8 @@ typedef enum {
     if(self.rightSideMenuViewController) {
         CGRect rightFrame = self.rightSideMenuViewController.view.frame;
         rightFrame.size.width = kMFSideMenuSidebarWidth;
-        rightFrame.origin.x = windowSize.width - kMFSideMenuSidebarWidth;
+        rightFrame.origin.x = self.navigationController.view.frame.size.width - kMFSideMenuSidebarWidth;
+        rightFrame.origin.y = 0;
         self.rightSideMenuViewController.view.frame = rightFrame;
         self.rightSideMenuViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight;
     }
@@ -445,6 +446,7 @@ typedef enum {
     }
     
     CGRect newFrame = self.rootViewController.view.window.bounds;
+    newFrame = self.rootViewController.view.window.screen.applicationFrame;
     CGAffineTransform transform = CGAffineTransformMakeRotation(angle);
     self.menuContainerView.transform = transform;
     self.menuContainerView.frame = newFrame;
