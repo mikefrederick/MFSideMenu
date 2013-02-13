@@ -427,28 +427,9 @@ typedef enum {
 #pragma mark - Menu Rotation
 
 - (void) orientSideMenuFromStatusBar {
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    CGFloat angle = 0.0;
-    
-    switch (orientation) {
-        case UIInterfaceOrientationPortrait:
-            angle = 0.0;
-            break;
-        case UIInterfaceOrientationPortraitUpsideDown:
-            angle = M_PI;
-            break;
-        case UIInterfaceOrientationLandscapeLeft:
-            angle = - M_PI / 2.0f;
-            break;
-        case UIInterfaceOrientationLandscapeRight:
-            angle = M_PI / 2.0f;
-            break;
-    }
-    
     CGRect newFrame = self.rootViewController.view.window.bounds;
     newFrame = self.rootViewController.view.window.screen.applicationFrame;
-    CGAffineTransform transform = CGAffineTransformMakeRotation(angle);
-    self.menuContainerView.transform = transform;
+    self.menuContainerView.transform = self.navigationController.view.transform;
     self.menuContainerView.frame = newFrame;
 }
 
