@@ -107,9 +107,6 @@ typedef enum {
 - (void)setupMenuContainerView {
     if(menuContainerView.superview) return;
     
-    menuContainerView.backgroundColor = [UIColor redColor];
-    //menuContainerView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-    
     if(self.leftSideMenuViewController) [menuContainerView insertSubview:self.leftSideMenuViewController.view atIndex:0];
     if(self.rightSideMenuViewController) [menuContainerView insertSubview:self.rightSideMenuViewController.view atIndex:0];
     
@@ -122,8 +119,6 @@ typedef enum {
     [self orientSideMenuFromStatusBar];
     
     if(self.shadowEnabled) [self drawMenuShadows];
-    
-    CGSize windowSize = self.navigationController.view.window.bounds.size;
     
     if(self.leftSideMenuViewController) {
         CGRect leftFrame = self.leftSideMenuViewController.view.frame;
@@ -251,9 +246,14 @@ typedef enum {
     
     if(self.panDirection == MFSideMenuPanDirectionNone) {
         CGPoint translatedPoint = [recognizer translationInView:view];
-        CGPoint adjustedOrigin = [self pointAdjustedForInterfaceOrientation:panGestureOrigin];
-        if(translatedPoint.x > adjustedOrigin.x) self.panDirection = MFSideMenuPanDirectionRight;
-        else if(translatedPoint.x < adjustedOrigin.x) self.panDirection = MFSideMenuPanDirectionLeft;
+        if(translatedPoint.x > 0) self.panDirection = MFSideMenuPanDirectionRight;
+        else if(translatedPoint.x < 0) self.panDirection = MFSideMenuPanDirectionLeft;
+    }
+    
+    if((self.menuState == MFSideMenuStateRightMenuOpen && self.panDirection == MFSideMenuPanDirectionLeft)
+       || (self.menuState == MFSideMenuStateLeftMenuOpen && self.panDirection == MFSideMenuPanDirectionRight)) {
+        self.panDirection = MFSideMenuPanDirectionNone;
+        return;
     }
     
     if(self.panDirection == MFSideMenuPanDirectionLeft) {
