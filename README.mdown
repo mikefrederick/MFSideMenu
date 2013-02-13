@@ -3,8 +3,6 @@
 
 This project was inspired by the Facebook iOS app. The idea is to give a slideout menu to a UINavigationController-based app.
 
-**Important**: As of version 0.3 MFSideMenu uses ARC. If you have a project that doesn't use ARC, just add the `-fobjc-arc` compiler flag to the MFSideMenu files.
-
 =======
 
 [![](http://i.imgur.com/Ah5mP.png)
@@ -24,7 +22,7 @@ Features
 
 Basic Setup
 =======
-The example project shows how to use the full configuration. It also includes an example of how to use the app with a UITabBarController.
+The example project shows how to use the full configuration. It also includes an example of how to use the app with a UITabBarController. MFSideMenu uses ARC. If you have a project that doesn't use ARC, just add the `-fobjc-arc` compiler flag to the MFSideMenu files.
 
 Note: QuartzCore is required for shadow rendering
 
@@ -33,23 +31,20 @@ Note: QuartzCore is required for shadow rendering
 3. Initiate MFSideMenu in your app delegate:<br />
 	```objective-c                                             
     MFSideMenu *sideMenu = [MFSideMenu menuWithNavigationController:navigationController
-                                                 sideMenuController:sideMenuController];
+                                            leftSideMenuController:leftSideMenuController
+                                            rightSideMenuController:rightSideMenuController];
                                                  
     self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];
     ```
-4. (Optional) For UIBarButtonItem support add this to your UIViewController. Note that the UIBarButtons will automatically be setup for the rootViewController of your UINavigationController. The UIBarButtonItems can be disabled, see MFSideMenuOptions.<br />
-    `[self.navigationController.sideMenu setupSideMenuBarButtonItem];`
 
 
 Configuration
 =======
 Checkout MFSideMenu.h to get the full gist of the configuration options.
 
-- **MFSideMenuLocation** lets you choose which side of the screen you want the menu to display on (left/right).
-- **MFSideMenuOptions** let you enable/disable the UIBarButtonItems as well as the shadow.
 - **MFSideMenuPanMode** lets you control the areas that can be panned in order to show the menu. You can use this to disable panning on the UINavigationBar or on the body of the UINavigationController.
-- **MFSideMenuState** tells you the current state of the menu (open or closed)
+- **MFSideMenuState** tells you the current state of the menu (left menu open, right menu open, or closed)
 - **MFSideMenuStateEventBlock** can be used to receive notifications of MFSideMenuStateEvents. You can do this like so:<br />
 
 ```objective-c
