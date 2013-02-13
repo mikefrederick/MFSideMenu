@@ -18,6 +18,10 @@
     self.navigationController.sideMenu.menuStateEventBlock = nil;
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return YES;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Demo!";
