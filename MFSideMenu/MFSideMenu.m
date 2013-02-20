@@ -246,8 +246,18 @@ typedef enum {
     
     if(self.panDirection == MFSideMenuPanDirectionNone) {
         CGPoint translatedPoint = [recognizer translationInView:view];
-        if(translatedPoint.x > 0) self.panDirection = MFSideMenuPanDirectionRight;
-        else if(translatedPoint.x < 0) self.panDirection = MFSideMenuPanDirectionLeft;
+        if(translatedPoint.x > 0) {
+            self.panDirection = MFSideMenuPanDirectionRight;
+            if(self.leftSideMenuViewController && self.menuState == MFSideMenuStateClosed) {
+                [self.menuContainerView bringSubviewToFront:self.leftSideMenuViewController.view];
+            }
+        }
+        else if(translatedPoint.x < 0) {
+            self.panDirection = MFSideMenuPanDirectionLeft;
+            if(self.rightSideMenuViewController && self.menuState == MFSideMenuStateClosed) {
+                [self.menuContainerView bringSubviewToFront:self.rightSideMenuViewController.view];
+            }
+        }
     }
     
     if((self.menuState == MFSideMenuStateRightMenuOpen && self.panDirection == MFSideMenuPanDirectionLeft)
@@ -264,6 +274,8 @@ typedef enum {
 }
 
 - (void) handleRightPan:(UIPanGestureRecognizer *)recognizer {
+    if(!self.leftSideMenuViewController) return;
+    
     UIView *view = self.rootViewController.view;
     
     CGPoint translatedPoint = [recognizer translationInView:view];
@@ -316,6 +328,8 @@ typedef enum {
 }
 
 - (void) handleLeftPan:(UIPanGestureRecognizer *)recognizer {
+    if(!self.rightSideMenuViewController) return;
+    
     UIView *view = self.rootViewController.view;
     
     CGPoint translatedPoint = [recognizer translationInView:view];
@@ -469,9 +483,11 @@ typedef enum {
             [self closeSideMenu];
             break;
         case MFSideMenuStateLeftMenuOpen:
+            if(!self.leftSideMenuViewController) return;
             [self openLeftSideMenu];
             break;
         case MFSideMenuStateRightMenuOpen:
+            if(!self.rightSideMenuViewController) return;
             [self openRightSideMenu];
             break;
         default:
