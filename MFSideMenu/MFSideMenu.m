@@ -50,7 +50,8 @@ typedef enum {
     if(self) {
         _shadowEnabled = YES;
         
-        self.menuContainerView = [[UIView alloc] init];
+        CGRect applicationFrame = [[UIApplication sharedApplication].delegate window].screen.applicationFrame;
+        self.menuContainerView = [[UIView alloc] initWithFrame:applicationFrame];
         self.menuState = MFSideMenuStateClosed;
     }
     return self;
