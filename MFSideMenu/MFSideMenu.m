@@ -274,8 +274,10 @@ typedef enum {
     }
 }
 
+// -- handleRightPan has been modified to fix issue 54 --
+
 - (void) handleRightPan:(UIPanGestureRecognizer *)recognizer {
-    if(!self.leftSideMenuViewController) return;
+//  if(!self.leftSideMenuViewController) return;                        // remove this line to fix issue 54 - ensure panning to right works in all cases
     
     UIView *view = self.rootViewController.view;
     
@@ -290,6 +292,7 @@ typedef enum {
         translatedPoint.x = MIN(translatedPoint.x, 0);
     } else {
         // we are opening the menu
+        if(!self.leftSideMenuViewController) return;                    // add this line to fix issue 54 - ensure panning to right works in all cases
         translatedPoint.x = MAX(translatedPoint.x, 0);
     }
     
@@ -328,8 +331,10 @@ typedef enum {
 	}
 }
 
+// -- handleLeftPan has been modified to fix issue 54 --
+
 - (void) handleLeftPan:(UIPanGestureRecognizer *)recognizer {
-    if(!self.rightSideMenuViewController) return;
+//  if(!self.rightSideMenuViewController) return;                   // remove this line to fix issue 54 - ensure panning to left works in all cases
     
     UIView *view = self.rootViewController.view;
     
@@ -344,6 +349,7 @@ typedef enum {
         translatedPoint.x = MAX(translatedPoint.x, 0);
     } else {
         // we are opening the menu
+        if(!self.rightSideMenuViewController) return;                   // add this line to fix issue 54 - ensure panning to left works in all cases
         translatedPoint.x = MIN(translatedPoint.x, 0);
     }
     
@@ -441,8 +447,11 @@ typedef enum {
 #pragma mark -
 #pragma mark - Menu Rotation
 
+// -- as part of fix 54 - a fix for the "dead store" analyzer warning is included below --
+
 - (void) orientSideMenuFromStatusBar {
-    CGRect newFrame = self.rootViewController.view.window.bounds;
+//  CGRect newFrame = self.rootViewController.view.window.bounds;                       // this line is flagged by the analyzer as a "dead store"
+    CGRect newFrame;                                                                    // create the variable here without initialization
     newFrame = self.rootViewController.view.window.screen.applicationFrame;
     self.menuContainerView.transform = self.navigationController.view.transform;
     self.menuContainerView.frame = newFrame;
