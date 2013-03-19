@@ -287,7 +287,7 @@ typedef enum {
 }
 
 - (void) handleRightPan:(UIPanGestureRecognizer *)recognizer {
-    if(!self.leftSideMenuViewController) return;
+    if(!self.leftSideMenuViewController && self.menuState == MFSideMenuStateClosed) return;
     
     UIView *view = self.rootViewController.view;
     
@@ -342,7 +342,7 @@ typedef enum {
 }
 
 - (void) handleLeftPan:(UIPanGestureRecognizer *)recognizer {
-    if(!self.rightSideMenuViewController) return;
+    if(!self.rightSideMenuViewController && self.menuState == MFSideMenuStateClosed) return;
     
     UIView *view = self.rootViewController.view;
     
