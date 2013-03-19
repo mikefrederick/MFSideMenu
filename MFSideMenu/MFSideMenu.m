@@ -64,7 +64,7 @@ typedef enum {
 + (MFSideMenu *)menuWithNavigationController:(UINavigationController *)controller
                       leftSideMenuController:(id)leftMenuController
                      rightSideMenuController:(id)rightMenuController {
-    MFSideMenuPanMode panMode = MFSideMenuPanModeNavigationBar|MFSideMenuPanModeNavigationController;
+    MFSideMenuPanMode panMode = MFSideMenuPanModeNavigationBar|MFSideMenuPanModeNavigationController|MFSideMenuPanModeSideMenu;
     return [MFSideMenu menuWithNavigationController:controller
                              leftSideMenuController:leftMenuController
                             rightSideMenuController:rightMenuController
@@ -81,19 +81,7 @@ typedef enum {
     menu.rightSideMenuViewController = rightMenuController;
     menu.panMode = panMode;
     controller.sideMenu = menu;
-    
-    UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc]
-                                          initWithTarget:menu action:@selector(navigationBarPanned:)];
-	[recognizer setMaximumNumberOfTouches:1];
-    [recognizer setDelegate:menu];
-    [controller.navigationBar addGestureRecognizer:recognizer];
-    
-    recognizer = [[UIPanGestureRecognizer alloc]
-                  initWithTarget:menu action:@selector(navigationControllerPanned:)];
-	[recognizer setMaximumNumberOfTouches:1];
-    [recognizer setDelegate:menu];
-    [controller.view addGestureRecognizer:recognizer];
-    
+
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]
                                              initWithTarget:menu action:@selector(navigationControllerTapped:)];
     [tapRecognizer setDelegate:menu];
@@ -106,8 +94,6 @@ typedef enum {
     
     return menu;
 }
-
-
 
 - (void)setupMenuContainerView {
     if(menuContainerView.superview) return;
@@ -141,6 +127,8 @@ typedef enum {
         self.rightSideMenuViewController.view.frame = rightFrame;
         self.rightSideMenuViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight;
     }
+    
+    [self addGestureRecognizers];
 }
 
 
@@ -218,6 +206,10 @@ typedef enum {
     return ((self.panMode & MFSideMenuPanModeNavigationBar) == MFSideMenuPanModeNavigationBar);
 }
 
+- (BOOL) sideMenuPanEnabled {
+    return ((self.panMode & MFSideMenuPanModeSideMenu) == MFSideMenuPanModeSideMenu);
+}
+
 
 #pragma mark - 
 #pragma mark - UIGestureRecognizerDelegate
@@ -233,6 +225,9 @@ typedef enum {
         if([gestureRecognizer.view isEqual:self.navigationController.navigationBar] &&
            self.menuState == MFSideMenuStateClosed &&
            [self navigationBarPanEnabled]) return YES;
+        
+        if([gestureRecognizer.view isEqual:self.menuContainerView] &&
+           [self sideMenuPanEnabled]) return YES;
     }
     
     return NO;
@@ -418,6 +413,20 @@ typedef enum {
 
 #pragma mark -
 #pragma mark - UIGestureRecognizer Helpers
+
+- (UIPanGestureRecognizer *)panGestureRecognizer {
+    UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(navigationBarPanned:)];
+	[recognizer setMaximumNumberOfTouches:1];
+    [recognizer setDelegate:self];
+    return recognizer;
+}
+
+- (void)addGestureRecognizers {
+    [self.navigationController.navigationBar addGestureRecognizer:[self panGestureRecognizer]];
+    [self.navigationController.view addGestureRecognizer:[self panGestureRecognizer]];
+    [menuContainerView addGestureRecognizer:[self panGestureRecognizer]];
+}
 
 - (CGPoint) pointAdjustedForInterfaceOrientation:(CGPoint)point {
     switch (self.rootViewController.interfaceOrientation)
