@@ -127,8 +127,6 @@ typedef enum {
         self.rightSideMenuViewController.view.frame = rightFrame;
         self.rightSideMenuViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight;
     }
-    
-    [self addGestureRecognizers];
 }
 
 
@@ -137,6 +135,7 @@ typedef enum {
 
 - (void) navigationControllerDidAppear {
     [self setupMenuContainerView];
+    [self addGestureRecognizers];
 }
 
 - (void) navigationControllerDidDisappear {
@@ -246,9 +245,9 @@ typedef enum {
 #pragma mark -
 #pragma mark - UIGestureRecognizer Callbacks
 
-// this method handles the navigation bar pan event
+// this method handles any pan event
 // and sets the navigation controller's frame as needed
-- (void) handleNavigationControllerPan:(UIPanGestureRecognizer *)recognizer {
+- (void) handlePan:(UIPanGestureRecognizer *)recognizer {
     UIView *view = self.rootViewController.view;
     
 	if(recognizer.state == UIGestureRecognizerStateBegan) {
@@ -400,23 +399,13 @@ typedef enum {
     }
 }
 
-- (void) navigationControllerPanned:(id)sender {
-    [self handleNavigationControllerPan:sender];
-}
-
-- (void) navigationBarPanned:(id)sender {
-    if(self.menuState != MFSideMenuStateClosed) return;
-    
-    [self handleNavigationControllerPan:sender];
-}
-
 
 #pragma mark -
 #pragma mark - UIGestureRecognizer Helpers
 
 - (UIPanGestureRecognizer *)panGestureRecognizer {
     UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc]
-                                          initWithTarget:self action:@selector(navigationBarPanned:)];
+                                          initWithTarget:self action:@selector(handlePan:)];
 	[recognizer setMaximumNumberOfTouches:1];
     [recognizer setDelegate:self];
     return recognizer;
