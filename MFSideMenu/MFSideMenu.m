@@ -470,8 +470,7 @@ typedef enum {
 #pragma mark - Menu Rotation
 
 - (void) orientSideMenuFromStatusBar {
-    CGRect newFrame = self.rootViewController.view.window.bounds;
-    newFrame = self.rootViewController.view.window.screen.applicationFrame;
+    CGRect newFrame = self.rootViewController.view.window.screen.applicationFrame;
     self.menuContainerView.transform = self.navigationController.view.transform;
     self.menuContainerView.frame = newFrame;
 }
@@ -609,28 +608,7 @@ typedef enum {
 - (void) setRootControllerOffset:(CGFloat)xOffset {
     UIViewController *rootController = self.rootViewController;
     CGRect frame = rootController.view.frame;
-    frame.origin = CGPointZero;
-    
-    // need to account for the controller's transform
-    switch (rootController.interfaceOrientation)
-    {
-        case UIInterfaceOrientationPortrait:
-            frame.origin.x = xOffset;
-            break;
-            
-        case UIInterfaceOrientationPortraitUpsideDown:
-            frame.origin.x = -1*xOffset;
-            break;
-            
-        case UIInterfaceOrientationLandscapeLeft:
-            frame.origin.y = -1*xOffset;
-            break;
-            
-        case UIInterfaceOrientationLandscapeRight:
-            frame.origin.y = xOffset;
-            break;
-    }
-    
+    frame.origin = CGPointMake(xOffset*rootController.view.transform.a, xOffset*rootController.view.transform.b);
     rootController.view.frame = frame;
 }
 
