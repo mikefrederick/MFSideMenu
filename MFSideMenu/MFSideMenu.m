@@ -40,6 +40,8 @@ typedef enum {
 @synthesize menuStateEventBlock;
 @synthesize panDirection;
 @synthesize shadowEnabled = _shadowEnabled;
+@synthesize menuWidth = _menuWidth;
+@synthesize shadowRadius = _shadowRadius;
 
 
 #pragma mark -
@@ -53,6 +55,8 @@ typedef enum {
         CGRect applicationFrame = [[UIApplication sharedApplication].delegate window].screen.applicationFrame;
         self.menuContainerView = [[UIView alloc] initWithFrame:applicationFrame];
         self.menuState = MFSideMenuStateClosed;
+        self.menuWidth = 270.0f;
+        self.shadowRadius = 10.0f;
     }
     return self;
 }
@@ -123,7 +127,7 @@ typedef enum {
     
     if(self.leftSideMenuViewController) {
         CGRect leftFrame = self.leftSideMenuViewController.view.frame;
-        leftFrame.size.width = kMFSideMenuSidebarWidth;
+        leftFrame.size.width = self.menuWidth;
         leftFrame.origin = CGPointZero;
         self.leftSideMenuViewController.view.frame = leftFrame;
         self.leftSideMenuViewController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleHeight;
@@ -131,8 +135,8 @@ typedef enum {
     
     if(self.rightSideMenuViewController) {
         CGRect rightFrame = self.rightSideMenuViewController.view.frame;
-        rightFrame.size.width = kMFSideMenuSidebarWidth;
-        rightFrame.origin.x = self.navigationController.view.frame.size.width - kMFSideMenuSidebarWidth;
+        rightFrame.size.width = self.menuWidth;
+        rightFrame.origin.x = self.navigationController.view.frame.size.width - self.menuWidth;
         rightFrame.origin.y = 0;
         self.rightSideMenuViewController.view.frame = rightFrame;
         self.rightSideMenuViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight;
@@ -169,13 +173,26 @@ typedef enum {
     }
 }
 
+- (void)setMenuWidth:(CGFloat)menuWidth {
+    _menuWidth = menuWidth;
+    
+    if(self.menuState != MFSideMenuStateClosed) {
+        [self setMenuState:self.menuState];
+    }
+}
+
+- (void)setShadowRadius:(CGFloat)shadowRadius {
+    _shadowRadius = shadowRadius;
+    [self drawMenuShadows];
+}
+
 - (void) drawMenuShadows {
     if(_shadowEnabled) {
         // we draw the shadow on the rootViewController, because it might not always be the uinavigationcontroller
         // i.e. it could be a uitabbarcontroller
         [self drawRootControllerShadowPath];
         self.rootViewController.view.layer.shadowOpacity = 0.75f;
-        self.rootViewController.view.layer.shadowRadius = kMFSideMenuShadowRadius;
+        self.rootViewController.view.layer.shadowRadius = self.shadowRadius;
         self.rootViewController.view.layer.shadowColor = [UIColor blackColor].CGColor;
     }
 }
@@ -284,7 +301,8 @@ typedef enum {
     translatedPoint = CGPointMake(adjustedOrigin.x + translatedPoint.x,
                                   adjustedOrigin.y + translatedPoint.y);
     
-    translatedPoint.x = MIN(translatedPoint.x, kMFSideMenuSidebarWidth);
+    translatedPoint.x = MAX(translatedPoint.x, -1*self.menuWidth);
+    translatedPoint.x = MIN(translatedPoint.x, self.menuWidth);
     if(self.menuState == MFSideMenuStateRightMenuOpen) {
         // menu is already open, the most the user can do is close it in this gesture
         translatedPoint.x = MIN(translatedPoint.x, 0);
@@ -338,7 +356,8 @@ typedef enum {
     translatedPoint = CGPointMake(adjustedOrigin.x + translatedPoint.x,
                                   adjustedOrigin.y + translatedPoint.y);
     
-    translatedPoint.x = MAX(translatedPoint.x, -1*kMFSideMenuSidebarWidth);
+    translatedPoint.x = MAX(translatedPoint.x, -1*self.menuWidth);
+    translatedPoint.x = MIN(translatedPoint.x, self.menuWidth);
     if(self.menuState == MFSideMenuStateLeftMenuOpen) {
         // don't let the pan go less than 0 if the menu is already open
         translatedPoint.x = MAX(translatedPoint.x, 0);
@@ -515,26 +534,11 @@ typedef enum {
     // notify that the menu state event is starting
     [self sendMenuStateEventNotification:MFSideMenuStateEventMenuWillOpen];
     
-    CGFloat x = ABS([self pointAdjustedForInterfaceOrientation:self.rootViewController.view.frame.origin].x);
-    
-    CGFloat navigationControllerXPosition = leftSideMenu ? kMFSideMenuSidebarWidth : -1*kMFSideMenuSidebarWidth;
-    CGFloat animationPositionDelta = (navigationControllerXPosition - x);
-    
-    CGFloat duration;
-    
-    if(ABS(self.panGestureVelocity) > 1.0) {
-        // try to continue the animation at the speed the user was swiping
-        duration = animationPositionDelta / ABS(self.panGestureVelocity);
-    } else {
-        // no swipe was used, user tapped the bar button item
-        CGFloat animationDurationPerPixel = kMFSideMenuAnimationDuration / navigationControllerXPosition;
-        duration = animationDurationPerPixel * animationPositionDelta;
-    }
-    
-    if(duration > kMFSideMenuAnimationMaxDuration) duration = kMFSideMenuAnimationMaxDuration;
+    CGFloat navigationControllerXPosition = ABS([self pointAdjustedForInterfaceOrientation:self.rootViewController.view.frame.origin].x);
+    CGFloat duration = [self animationDurationFromStartPosition:navigationControllerXPosition toEndPosition:self.menuWidth];
     
     [UIView animateWithDuration:duration animations:^{
-        [self setRootControllerOffset:navigationControllerXPosition];
+        [self setRootControllerOffset:(leftSideMenu ? self.menuWidth : -1*self.menuWidth)];
     } completion:^(BOOL finished) {
         // disable user interaction on the current stack of view controllers if the menu is visible
         for(UIViewController* viewController in self.navigationController.viewControllers) {
@@ -550,24 +554,8 @@ typedef enum {
     // notify that the menu state event is starting
     [self sendMenuStateEventNotification:MFSideMenuStateEventMenuWillClose];
     
-    CGFloat x = ABS([self pointAdjustedForInterfaceOrientation:self.rootViewController.view.frame.origin].x);
-    
-    CGFloat navigationControllerXPosition = (self.menuState == MFSideMenuStateLeftMenuOpen) ? kMFSideMenuSidebarWidth : -1*kMFSideMenuSidebarWidth;
-    CGFloat animationPositionDelta = x;
-    
-    CGFloat duration;
-    
-    if(ABS(self.panGestureVelocity) > 1.0) {
-        // try to continue the animation at the speed the user was swiping
-        duration = animationPositionDelta / ABS(self.panGestureVelocity);
-    } else {
-        // no swipe was used, user tapped the bar button item
-        CGFloat animationDurationPerPixel = kMFSideMenuAnimationDuration / navigationControllerXPosition;
-        duration = animationDurationPerPixel * animationPositionDelta;
-    }
-    
-    if(duration > kMFSideMenuAnimationMaxDuration) duration = kMFSideMenuAnimationMaxDuration;
-    
+    CGFloat navigationControllerXPosition = ABS([self pointAdjustedForInterfaceOrientation:self.rootViewController.view.frame.origin].x);
+    CGFloat duration = [self animationDurationFromStartPosition:navigationControllerXPosition toEndPosition:0];
     [UIView animateWithDuration:duration animations:^{
         CGFloat xPosition = 0;
         [self setRootControllerOffset:xPosition];
@@ -584,6 +572,22 @@ typedef enum {
 
 - (void) sendMenuStateEventNotification:(MFSideMenuStateEvent)event {
     if(self.menuStateEventBlock) self.menuStateEventBlock(event);
+}
+
+- (CGFloat)animationDurationFromStartPosition:(CGFloat)startPosition toEndPosition:(CGFloat)endPosition {
+    CGFloat animationPositionDelta = ABS(endPosition - startPosition);
+    
+    CGFloat duration;
+    if(ABS(self.panGestureVelocity) > 1.0) {
+        // try to continue the animation at the speed the user was swiping
+        duration = animationPositionDelta / ABS(self.panGestureVelocity);
+    } else {
+        // no swipe was used, user tapped the bar button item
+        CGFloat animationDurationPerPixel = kMFSideMenuAnimationDuration / endPosition;
+        duration = animationDurationPerPixel * animationPositionDelta;
+    }
+    
+    return MIN(duration, kMFSideMenuAnimationMaxDuration);
 }
 
 #pragma mark -
