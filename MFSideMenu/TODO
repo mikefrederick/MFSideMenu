@@ -1,0 +1,12 @@
+// TODO:
+// 1. Ability to switch the side menu controllers
+// 2. Elastic bounce option
+// 3. Delegate?
+// 4. Improve interaction with the menu, i.e. from the side menu controllers
+// 5. Improve the look of rotations -- the shadow is a bit odd right now
+// 6. Maybe MFSideMenu should inherit from UIViewController instead, w/ IBOutlets for menu controllers
+// 7. View controller containment
+// 8. Move constants to properties of the side menu. Allow for the entire menu to be opened.
+// 9. Setter for menuWidth
+10. The menu should be a class of it's own, having a menuWidth property etc. (or should they be a property of a uiviewcontroller category?)
+
