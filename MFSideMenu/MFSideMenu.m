@@ -522,8 +522,9 @@ typedef enum {
             break;
     }
     
-    if (self.navigationController.isViewLoaded)
-      self.navigationController.view.accessibilityViewIsModal = menuState == MFSideMenuStateClosed;
+    if (self.navigationController.isViewLoaded && [self.navigationController.view respondsToSelector:@selector(accessibilityViewIsModal)]) {
+        self.navigationController.view.accessibilityViewIsModal = menuState == MFSideMenuStateClosed;
+    }
     
     _menuState = menuState;
 }
