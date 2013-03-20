@@ -22,20 +22,20 @@ static char menuKey;
     return (MFSideMenu *)objc_getAssociatedObject(self, &menuKey);
 }
 
-- (void) viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+- (void) MFSideMenu_viewWillAppear:(BOOL)animated {
+    [self MFSideMenu_viewWillAppear:animated]; // Method has been swizzled, call on self
     
     [self.sideMenu performSelector:@selector(navigationControllerWillAppear)];
 }
 
-- (void) viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void) MFSideMenu_viewDidAppear:(BOOL)animated {
+    [self MFSideMenu_viewDidAppear:animated]; // Method has been swizzled, call on self
     
     [self.sideMenu performSelector:@selector(navigationControllerDidAppear)];
 }
 
-- (void) viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
+- (void) MFSideMenu_viewDidDisappear:(BOOL)animated {
+    [self MFSideMenu_viewDidDisappear:animated]; // Method has been swizzled, call on self
     
     [self.sideMenu performSelector:@selector(navigationControllerDidDisappear)];
 }

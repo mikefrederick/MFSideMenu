@@ -108,6 +108,19 @@
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification
                                                object:nil];
     
+    // Swizzle methods in UINavigationController category
+    Method customViewWillAppear = class_getInstanceMethod([UINavigationController class], @selector(MFSideMenu_viewWillAppear:));
+    Method viewWillAppear = class_getInstanceMethod([UINavigationController class], @selector(viewWillAppear:));
+    method_exchangeImplementations(customViewWillAppear, viewWillAppear);
+    
+    Method customViewDidAppear = class_getInstanceMethod([UINavigationController class], @selector(MFSideMenu_viewDidAppear:));
+    Method viewDidAppear = class_getInstanceMethod([UINavigationController class], @selector(viewDidAppear:));
+    method_exchangeImplementations(customViewDidAppear, viewDidAppear);
+    
+    Method customViewDidDisappear = class_getInstanceMethod([UINavigationController class], @selector(MFSideMenu_viewDidDisappear:));
+    Method viewDidDisappear = class_getInstanceMethod([UINavigationController class], @selector(viewDidDisappear:));
+    method_exchangeImplementations(customViewDidDisappear, viewDidDisappear);
+    
     return menu;
 }
 
