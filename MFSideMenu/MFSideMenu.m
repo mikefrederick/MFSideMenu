@@ -42,6 +42,8 @@ typedef enum {
 @synthesize shadowEnabled = _shadowEnabled;
 @synthesize menuWidth = _menuWidth;
 @synthesize shadowRadius = _shadowRadius;
+@synthesize shadowColor = _shadowColor;
+@synthesize shadowOpacity = _shadowOpacity;
 
 
 #pragma mark -
@@ -57,6 +59,8 @@ typedef enum {
         self.menuState = MFSideMenuStateClosed;
         self.menuWidth = 270.0f;
         self.shadowRadius = 10.0f;
+        self.shadowOpacity = 0.75f;
+        self.shadowColor = [UIColor blackColor].CGColor;
     }
     return self;
 }
@@ -173,14 +177,24 @@ typedef enum {
     [self drawMenuShadows];
 }
 
+- (void)setShadowColor:(CGColorRef)shadowColor {
+    _shadowColor = shadowColor;
+    [self drawMenuShadows];
+}
+
+- (void)setShadowOpacity:(CGFloat)shadowOpacity {
+    _shadowOpacity = shadowOpacity;
+    [self drawMenuShadows];
+}
+
 - (void) drawMenuShadows {
     if(_shadowEnabled) {
         // we draw the shadow on the rootViewController, because it might not always be the uinavigationcontroller
         // i.e. it could be a uitabbarcontroller
         [self drawRootControllerShadowPath];
-        self.rootViewController.view.layer.shadowOpacity = 0.75f;
+        self.rootViewController.view.layer.shadowOpacity = self.shadowOpacity;
         self.rootViewController.view.layer.shadowRadius = self.shadowRadius;
-        self.rootViewController.view.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.rootViewController.view.layer.shadowColor = self.shadowColor;
     }
 }
 
