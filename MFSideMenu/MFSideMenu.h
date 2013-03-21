@@ -40,7 +40,7 @@ typedef void (^MFSideMenuStateEventBlock)(MFSideMenuStateEvent);
 @property (nonatomic, assign) CGFloat menuWidth; // size of the side menu(s)
 @property (nonatomic, assign) CGFloat shadowRadius; // radius of the shadow
 @property (nonatomic, assign) CGFloat shadowOpacity;
-@property (nonatomic, assign) UIColor *shadowColor;
+@property (nonatomic, strong) UIColor *shadowColor;
 
 // this can be used to observe all MFSideMenuStateEvents
 @property (copy) MFSideMenuStateEventBlock menuStateEventBlock;
