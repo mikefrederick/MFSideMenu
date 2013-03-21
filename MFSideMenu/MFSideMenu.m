@@ -57,6 +57,8 @@ typedef enum {
         self.menuState = MFSideMenuStateClosed;
         self.menuWidth = 270.0f;
         self.shadowRadius = 10.0f;
+        
+        [UINavigationController swizzleViewMethods];
     }
     return self;
 }

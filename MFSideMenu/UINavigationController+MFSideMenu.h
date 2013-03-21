@@ -14,4 +14,6 @@
 
 @property (nonatomic, strong) MFSideMenu *sideMenu;
 
++ (void)swizzleViewMethods;
+
 @end
