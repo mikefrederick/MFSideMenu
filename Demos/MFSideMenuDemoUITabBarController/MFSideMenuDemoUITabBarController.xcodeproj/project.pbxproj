@@ -13,7 +13,6 @@
 		273D114616F8841300C187E0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 273D114416F8841300C187E0 /* InfoPlist.strings */; };
 		273D114816F8841300C187E0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 273D114716F8841300C187E0 /* main.m */; };
 		273D114C16F8841300C187E0 /* MFAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 273D114B16F8841300C187E0 /* MFAppDelegate.m */; };
-		273D116016F8843600C187E0 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 273D115916F8843600C187E0 /* LICENSE */; };
 		273D116116F8843600C187E0 /* MFSideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 273D115B16F8843600C187E0 /* MFSideMenu.m */; };
 		273D116416F8843600C187E0 /* UINavigationController+MFSideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 273D115F16F8843600C187E0 /* UINavigationController+MFSideMenu.m */; };
 		273D116A16F884F900C187E0 /* DemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 273D116616F884F900C187E0 /* DemoViewController.m */; };
@@ -37,7 +36,6 @@
 		273D114916F8841300C187E0 /* MFSideMenuDemoUITabBarController-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MFSideMenuDemoUITabBarController-Prefix.pch"; sourceTree = "<group>"; };
 		273D114A16F8841300C187E0 /* MFAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MFAppDelegate.h; sourceTree = "<group>"; };
 		273D114B16F8841300C187E0 /* MFAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MFAppDelegate.m; sourceTree = "<group>"; };
-		273D115916F8843600C187E0 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		273D115A16F8843600C187E0 /* MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenu.h; sourceTree = "<group>"; };
 		273D115B16F8843600C187E0 /* MFSideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSideMenu.m; sourceTree = "<group>"; };
 		273D115E16F8843600C187E0 /* UINavigationController+MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+MFSideMenu.h"; sourceTree = "<group>"; };
@@ -126,7 +124,6 @@
 		273D115816F8843600C187E0 /* MFSideMenu */ = {
 			isa = PBXGroup;
 			children = (
-				273D115916F8843600C187E0 /* LICENSE */,
 				273D115A16F8843600C187E0 /* MFSideMenu.h */,
 				273D115B16F8843600C187E0 /* MFSideMenu.m */,
 				273D115E16F8843600C187E0 /* UINavigationController+MFSideMenu.h */,
@@ -201,7 +198,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				273D114616F8841300C187E0 /* InfoPlist.strings in Resources */,
-				273D116016F8843600C187E0 /* LICENSE in Resources */,
 				273D116B16F884F900C187E0 /* DemoViewController.xib in Resources */,
 				273D117316F8859B00C187E0 /* back-arrow.png in Resources */,
 				273D117416F8859B00C187E0 /* back-arrow@2x.png in Resources */,

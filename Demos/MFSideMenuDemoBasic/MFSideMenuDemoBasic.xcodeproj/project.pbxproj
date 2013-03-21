@@ -12,10 +12,7 @@
 		273D0F8F16CB344600C187E0 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 273D0F8A16CB344600C187E0 /* Default-568h@2x.png */; };
 		273D0F9016CB344600C187E0 /* menu-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 273D0F8B16CB344600C187E0 /* menu-icon.png */; };
 		273D0F9116CB344600C187E0 /* menu-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 273D0F8C16CB344600C187E0 /* menu-icon@2x.png */; };
-		273D111B16F632CD00C187E0 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 273D111416F632CD00C187E0 /* LICENSE */; };
 		273D111C16F632CD00C187E0 /* MFSideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 273D111616F632CD00C187E0 /* MFSideMenu.m */; };
-		273D111D16F632CD00C187E0 /* MFSideMenu.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 273D111716F632CD00C187E0 /* MFSideMenu.podspec */; };
-		273D111E16F632CD00C187E0 /* TODO in Resources */ = {isa = PBXBuildFile; fileRef = 273D111816F632CD00C187E0 /* TODO */; };
 		273D111F16F632CD00C187E0 /* UINavigationController+MFSideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 273D111A16F632CD00C187E0 /* UINavigationController+MFSideMenu.m */; };
 		275F15881517E9B80052A240 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 275F15871517E9B80052A240 /* UIKit.framework */; };
 		275F158A1517E9B80052A240 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 275F15891517E9B80052A240 /* Foundation.framework */; };
@@ -36,11 +33,8 @@
 		273D0F8B16CB344600C187E0 /* menu-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu-icon.png"; sourceTree = "<group>"; };
 		273D0F8C16CB344600C187E0 /* menu-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu-icon@2x.png"; sourceTree = "<group>"; };
 		273D0FA216E98A5A00C187E0 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		273D111416F632CD00C187E0 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		273D111516F632CD00C187E0 /* MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenu.h; sourceTree = "<group>"; };
 		273D111616F632CD00C187E0 /* MFSideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSideMenu.m; sourceTree = "<group>"; };
-		273D111716F632CD00C187E0 /* MFSideMenu.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MFSideMenu.podspec; sourceTree = "<group>"; };
-		273D111816F632CD00C187E0 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		273D111916F632CD00C187E0 /* UINavigationController+MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+MFSideMenu.h"; sourceTree = "<group>"; };
 		273D111A16F632CD00C187E0 /* UINavigationController+MFSideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+MFSideMenu.m"; sourceTree = "<group>"; };
 		275F15831517E9B80052A240 /* MFSideMenuDemoBasic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MFSideMenuDemoBasic.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,11 +85,8 @@
 		273D111316F632CD00C187E0 /* MFSideMenu */ = {
 			isa = PBXGroup;
 			children = (
-				273D111416F632CD00C187E0 /* LICENSE */,
 				273D111516F632CD00C187E0 /* MFSideMenu.h */,
 				273D111616F632CD00C187E0 /* MFSideMenu.m */,
-				273D111716F632CD00C187E0 /* MFSideMenu.podspec */,
-				273D111816F632CD00C187E0 /* TODO */,
 				273D111916F632CD00C187E0 /* UINavigationController+MFSideMenu.h */,
 				273D111A16F632CD00C187E0 /* UINavigationController+MFSideMenu.m */,
 			);
@@ -219,9 +210,6 @@
 				273D0F8F16CB344600C187E0 /* Default-568h@2x.png in Resources */,
 				273D0F9016CB344600C187E0 /* menu-icon.png in Resources */,
 				273D0F9116CB344600C187E0 /* menu-icon@2x.png in Resources */,
-				273D111B16F632CD00C187E0 /* LICENSE in Resources */,
-				273D111D16F632CD00C187E0 /* MFSideMenu.podspec in Resources */,
-				273D111E16F632CD00C187E0 /* TODO in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
