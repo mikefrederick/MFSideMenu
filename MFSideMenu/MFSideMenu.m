@@ -60,7 +60,7 @@ typedef enum {
         self.menuWidth = 270.0f;
         self.shadowRadius = 10.0f;
         self.shadowOpacity = 0.75f;
-        self.shadowColor = [UIColor blackColor].CGColor;
+        self.shadowColor = [UIColor blackColor];
         
         [UINavigationController swizzleViewMethods];
     }
@@ -179,7 +179,7 @@ typedef enum {
     [self drawMenuShadows];
 }
 
-- (void)setShadowColor:(CGColorRef)shadowColor {
+- (void)setShadowColor:(UIColor *)shadowColor {
     _shadowColor = shadowColor;
     [self drawMenuShadows];
 }
@@ -196,7 +196,7 @@ typedef enum {
         [self drawRootControllerShadowPath];
         self.rootViewController.view.layer.shadowOpacity = self.shadowOpacity;
         self.rootViewController.view.layer.shadowRadius = self.shadowRadius;
-        self.rootViewController.view.layer.shadowColor = self.shadowColor;
+        self.rootViewController.view.layer.shadowColor = [self.shadowColor CGColor];
     }
 }
 
