@@ -17,10 +17,7 @@
 		273D107716F3E7FE00C187E0 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 273D107616F3E7FE00C187E0 /* Default@2x.png */; };
 		273D107916F3E7FE00C187E0 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 273D107816F3E7FE00C187E0 /* Default-568h@2x.png */; };
 		273D107C16F3E7FE00C187E0 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 273D107A16F3E7FE00C187E0 /* MainStoryboard.storyboard */; };
-		273D112A16F6331D00C187E0 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 273D112316F6331D00C187E0 /* LICENSE */; };
 		273D112B16F6331D00C187E0 /* MFSideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 273D112516F6331D00C187E0 /* MFSideMenu.m */; };
-		273D112C16F6331D00C187E0 /* MFSideMenu.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 273D112616F6331D00C187E0 /* MFSideMenu.podspec */; };
-		273D112D16F6331D00C187E0 /* TODO in Resources */ = {isa = PBXBuildFile; fileRef = 273D112716F6331D00C187E0 /* TODO */; };
 		273D112E16F6331D00C187E0 /* UINavigationController+MFSideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 273D112916F6331D00C187E0 /* UINavigationController+MFSideMenu.m */; };
 /* End PBXBuildFile section */
 
@@ -39,11 +36,8 @@
 		273D107616F3E7FE00C187E0 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		273D107816F3E7FE00C187E0 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		273D107B16F3E7FE00C187E0 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		273D112316F6331D00C187E0 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		273D112416F6331D00C187E0 /* MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenu.h; sourceTree = "<group>"; };
 		273D112516F6331D00C187E0 /* MFSideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSideMenu.m; sourceTree = "<group>"; };
-		273D112616F6331D00C187E0 /* MFSideMenu.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MFSideMenu.podspec; sourceTree = "<group>"; };
-		273D112716F6331D00C187E0 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		273D112816F6331D00C187E0 /* UINavigationController+MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+MFSideMenu.h"; sourceTree = "<group>"; };
 		273D112916F6331D00C187E0 /* UINavigationController+MFSideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+MFSideMenu.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -118,11 +112,8 @@
 		273D112216F6331D00C187E0 /* MFSideMenu */ = {
 			isa = PBXGroup;
 			children = (
-				273D112316F6331D00C187E0 /* LICENSE */,
 				273D112416F6331D00C187E0 /* MFSideMenu.h */,
 				273D112516F6331D00C187E0 /* MFSideMenu.m */,
-				273D112616F6331D00C187E0 /* MFSideMenu.podspec */,
-				273D112716F6331D00C187E0 /* TODO */,
 				273D112816F6331D00C187E0 /* UINavigationController+MFSideMenu.h */,
 				273D112916F6331D00C187E0 /* UINavigationController+MFSideMenu.m */,
 			);
@@ -186,9 +177,6 @@
 				273D107716F3E7FE00C187E0 /* Default@2x.png in Resources */,
 				273D107916F3E7FE00C187E0 /* Default-568h@2x.png in Resources */,
 				273D107C16F3E7FE00C187E0 /* MainStoryboard.storyboard in Resources */,
-				273D112A16F6331D00C187E0 /* LICENSE in Resources */,
-				273D112C16F6331D00C187E0 /* MFSideMenu.podspec in Resources */,
-				273D112D16F6331D00C187E0 /* TODO in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

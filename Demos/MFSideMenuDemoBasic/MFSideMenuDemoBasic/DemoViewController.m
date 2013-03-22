@@ -40,11 +40,6 @@
             case MFSideMenuStateEventMenuDidOpen: {
                 // the menu finished opening
                 weakSelf.navigationItem.title = @"Menu Opened!";
-//                double delayInSeconds = 2.0;
-//                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-//                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-//                    self.navigationController.sideMenu.menuWidth = 100.0f;
-//                });
                 break;
             }
             case MFSideMenuStateEventMenuWillClose:
@@ -54,7 +49,6 @@
             case MFSideMenuStateEventMenuDidClose:
                 // the menu finished closing
                 weakSelf.navigationItem.title = @"Menu Closed!";
-                //self.navigationController.sideMenu.menuWidth = 280.0f;
                 break;
         }
         NSLog(@"event occurred: %@", weakSelf.navigationItem.title);
