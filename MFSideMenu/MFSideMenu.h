@@ -42,6 +42,12 @@ typedef void (^MFSideMenuStateEventBlock)(MFSideMenuStateEvent);
 @property (nonatomic, assign) CGFloat shadowOpacity;
 @property (nonatomic, strong) UIColor *shadowColor;
 
+/*
+    Wunderlist alike function where the menu slides as well.
+    Set asyncSlideFactor to 3 and see the result.
+*/ 
+@property (nonatomic, assign) CGFloat asyncSlideFactor;
+
 // this can be used to observe all MFSideMenuStateEvents
 @property (copy) MFSideMenuStateEventBlock menuStateEventBlock;
 
@@ -53,7 +59,6 @@ typedef void (^MFSideMenuStateEventBlock)(MFSideMenuStateEvent);
                        leftSideMenuController:(id)leftMenuController
                       rightSideMenuController:(id)rightMenuController
                                       panMode:(MFSideMenuPanMode)panMode;
-
 
 - (void)toggleLeftSideMenu;
 - (void)toggleRightSideMenu;

@@ -44,6 +44,7 @@ typedef enum {
 @synthesize shadowRadius = _shadowRadius;
 @synthesize shadowColor = _shadowColor;
 @synthesize shadowOpacity = _shadowOpacity;
+@synthesize asyncSlideFactor;
 
 
 #pragma mark -
@@ -616,6 +617,22 @@ typedef enum {
     CGRect frame = rootController.view.frame;
     frame.origin = CGPointMake(xOffset*rootController.view.transform.a, xOffset*rootController.view.transform.b);
     rootController.view.frame = frame;
+    
+    if(self.asyncSlideFactor){
+        if(xOffset >= 0){
+            CGRect leftMenuFrame = self.leftSideMenuViewController.view.frame;
+            
+            CGFloat menuX = (xOffset/self.asyncSlideFactor)-(leftMenuFrame.size.width/self.asyncSlideFactor);
+            leftMenuFrame.origin.x = menuX;
+            self.leftSideMenuViewController.view.frame = leftMenuFrame;
+        }
+        if(xOffset <= 0){
+            CGRect rightMenuFrame = self.rightSideMenuViewController.view.frame;
+            CGFloat menuX = ([self widthAdjustedForInterfaceOrientation:rootController.view]-rightMenuFrame.size.width)+(xOffset/self.asyncSlideFactor)+(rightMenuFrame.size.width/self.asyncSlideFactor);
+            rightMenuFrame.origin.x = menuX;
+            self.rightSideMenuViewController.view.frame = rightMenuFrame;
+        }
+    }
 }
 
 - (void) dealloc {
