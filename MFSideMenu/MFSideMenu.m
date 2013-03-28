@@ -44,6 +44,7 @@ typedef enum {
 @synthesize shadowRadius = _shadowRadius;
 @synthesize shadowColor = _shadowColor;
 @synthesize shadowOpacity = _shadowOpacity;
+@synthesize menuSlideAnimationEnabled;
 
 
 #pragma mark -
@@ -117,22 +118,8 @@ typedef enum {
     
     if(self.shadowEnabled) [self drawMenuShadows];
     
-    if(self.leftSideMenuViewController) {
-        CGRect leftFrame = self.leftSideMenuViewController.view.frame;
-        leftFrame.size.width = self.menuWidth;
-        leftFrame.origin = CGPointZero;
-        self.leftSideMenuViewController.view.frame = leftFrame;
-        self.leftSideMenuViewController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleHeight;
-    }
-    
-    if(self.rightSideMenuViewController) {
-        CGRect rightFrame = self.rightSideMenuViewController.view.frame;
-        rightFrame.size.width = self.menuWidth;
-        rightFrame.origin.x = self.navigationController.view.frame.size.width - self.menuWidth;
-        rightFrame.origin.y = 0;
-        self.rightSideMenuViewController.view.frame = rightFrame;
-        self.rightSideMenuViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight;
-    }
+    [self setLeftSideMenuFrameToClosedPosition];
+    [self setRightSideMenuFrameToClosedPosition];
 }
 
 
@@ -168,6 +155,14 @@ typedef enum {
 
 - (void)setMenuWidth:(CGFloat)menuWidth {
     _menuWidth = menuWidth;
+    
+    CGRect frame = self.leftSideMenuViewController.view.frame;
+    frame.size.width = menuWidth;
+    self.leftSideMenuViewController.view.frame = frame;
+    
+    frame = self.rightSideMenuViewController.view.frame;
+    frame.size.width = menuWidth;
+    self.rightSideMenuViewController.view.frame = frame;
     
     if(self.menuState != MFSideMenuStateClosed) {
         [self setMenuState:self.menuState];
@@ -604,6 +599,48 @@ typedef enum {
     return MIN(duration, kMFSideMenuAnimationMaxDuration);
 }
 
+
+#pragma mark -
+#pragma mark - Side Menu Positioning
+
+- (void) setLeftSideMenuFrameToClosedPosition {
+    if(!self.leftSideMenuViewController) return;
+    CGRect leftFrame = self.leftSideMenuViewController.view.frame;
+    leftFrame.size.width = self.menuWidth;
+    leftFrame.origin.x = (self.menuSlideAnimationEnabled) ? -1*leftFrame.size.width : 0;
+    leftFrame.origin.y = 0;
+    self.leftSideMenuViewController.view.frame = leftFrame;
+    self.leftSideMenuViewController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleHeight;
+}
+
+- (void) setRightSideMenuFrameToClosedPosition {
+    if(!self.rightSideMenuViewController) return;
+    CGRect rightFrame = self.rightSideMenuViewController.view.frame;
+    rightFrame.size.width = self.menuWidth;
+    rightFrame.origin.y = 0;
+    rightFrame.origin.x = [self widthAdjustedForInterfaceOrientation:self.rootViewController.view];
+    if(!self.menuSlideAnimationEnabled) rightFrame.origin.x -= self.menuWidth;
+    self.rightSideMenuViewController.view.frame = rightFrame;
+    self.rightSideMenuViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)alignLeftMenuControllerWithRootViewController {
+    CGRect leftMenuFrame = self.leftSideMenuViewController.view.frame;
+    CGFloat menuX = [self pointAdjustedForInterfaceOrientation:self.rootViewController.view.frame.origin].x -
+    leftMenuFrame.size.width;
+    leftMenuFrame.origin.x = menuX;
+    self.leftSideMenuViewController.view.frame = leftMenuFrame;
+}
+
+- (void)alignRightMenuControllerWithRootViewController {
+    CGRect rightMenuFrame = self.rightSideMenuViewController.view.frame;
+    CGFloat menuX = [self widthAdjustedForInterfaceOrientation:self.rootViewController.view] +
+    [self pointAdjustedForInterfaceOrientation:self.rootViewController.view.frame.origin].x;
+    rightMenuFrame.origin.x = menuX;
+    self.rightSideMenuViewController.view.frame = rightMenuFrame;
+}
+
+
 #pragma mark -
 #pragma mark - Root Controller
 
@@ -616,6 +653,19 @@ typedef enum {
     CGRect frame = rootController.view.frame;
     frame.origin = CGPointMake(xOffset*rootController.view.transform.a, xOffset*rootController.view.transform.b);
     rootController.view.frame = frame;
+    
+    if(!self.menuSlideAnimationEnabled) return;
+    
+    if(xOffset > 0){
+        [self alignLeftMenuControllerWithRootViewController];
+        [self setRightSideMenuFrameToClosedPosition];
+    } else if(xOffset < 0){
+        [self alignRightMenuControllerWithRootViewController];
+        [self setLeftSideMenuFrameToClosedPosition];
+    } else {
+        [self setLeftSideMenuFrameToClosedPosition];
+        [self setRightSideMenuFrameToClosedPosition];
+    }
 }
 
 - (void) dealloc {
