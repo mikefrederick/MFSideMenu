@@ -58,5 +58,6 @@ typedef void (^MFSideMenuStateEventBlock)(MFSideMenuStateEvent);
 
 - (void)toggleLeftSideMenu;
 - (void)toggleRightSideMenu;
+- (void)setMenuWidth:(CGFloat)menuWidth animated:(BOOL)animated;
 
 @end

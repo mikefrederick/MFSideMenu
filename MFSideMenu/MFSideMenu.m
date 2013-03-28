@@ -154,19 +154,32 @@ typedef enum {
 }
 
 - (void)setMenuWidth:(CGFloat)menuWidth {
+    [self setMenuWidth:menuWidth animated:YES];
+}
+
+- (void)setMenuWidth:(CGFloat)menuWidth animated:(BOOL)animated {
+    if(animated) [UIView beginAnimations:nil context:NULL];
+    
     _menuWidth = menuWidth;
     
-    CGRect frame = self.leftSideMenuViewController.view.frame;
-    frame.size.width = menuWidth;
-    self.leftSideMenuViewController.view.frame = frame;
-    
-    frame = self.rightSideMenuViewController.view.frame;
-    frame.size.width = menuWidth;
-    self.rightSideMenuViewController.view.frame = frame;
-    
-    if(self.menuState != MFSideMenuStateClosed) {
-        [self setMenuState:self.menuState];
+    switch (self.menuState) {
+        case MFSideMenuStateClosed:
+            [self setLeftSideMenuFrameToClosedPosition];
+            [self setRightSideMenuFrameToClosedPosition];
+            break;
+        case MFSideMenuStateLeftMenuOpen:
+            [self setRootControllerOffset:_menuWidth];
+            [self alignLeftMenuControllerWithRootViewController];
+            [self setRightSideMenuFrameToClosedPosition];
+            break;
+        case MFSideMenuStateRightMenuOpen:
+            [self setRootControllerOffset:-1*_menuWidth];
+            [self alignRightMenuControllerWithRootViewController];
+            [self setLeftSideMenuFrameToClosedPosition];
+            break;
     }
+    
+    if(animated) [UIView commitAnimations];
 }
 
 - (void)setShadowRadius:(CGFloat)shadowRadius {
@@ -626,6 +639,7 @@ typedef enum {
 
 - (void)alignLeftMenuControllerWithRootViewController {
     CGRect leftMenuFrame = self.leftSideMenuViewController.view.frame;
+    leftMenuFrame.size.width = _menuWidth;
     CGFloat menuX = [self pointAdjustedForInterfaceOrientation:self.rootViewController.view.frame.origin].x -
     leftMenuFrame.size.width;
     leftMenuFrame.origin.x = menuX;
@@ -634,6 +648,7 @@ typedef enum {
 
 - (void)alignRightMenuControllerWithRootViewController {
     CGRect rightMenuFrame = self.rightSideMenuViewController.view.frame;
+    rightMenuFrame.size.width = _menuWidth;
     CGFloat menuX = [self widthAdjustedForInterfaceOrientation:self.rootViewController.view] +
     [self pointAdjustedForInterfaceOrientation:self.rootViewController.view.frame.origin].x;
     rightMenuFrame.origin.x = menuX;
