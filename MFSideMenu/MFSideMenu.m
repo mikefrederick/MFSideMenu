@@ -24,6 +24,7 @@ typedef enum {
 @property (nonatomic, assign) CGPoint panGestureOrigin;
 @property (nonatomic, assign) CGFloat panGestureVelocity;
 @property (nonatomic, assign) MFSideMenuPanDirection panDirection;
+@property (nonatomic, assign) BOOL hasSetViewControllersForAsyncFirstTime;
 @end
 
 
@@ -45,6 +46,7 @@ typedef enum {
 @synthesize shadowColor = _shadowColor;
 @synthesize shadowOpacity = _shadowOpacity;
 @synthesize asyncSlideFactor;
+@synthesize hasSetViewControllersForAsyncFirstTime;
 
 
 #pragma mark -
@@ -551,7 +553,10 @@ typedef enum {
     
     CGFloat navigationControllerXPosition = ABS([self pointAdjustedForInterfaceOrientation:self.rootViewController.view.frame.origin].x);
     CGFloat duration = [self animationDurationFromStartPosition:navigationControllerXPosition toEndPosition:self.menuWidth];
-    
+    if(self.asyncSlideFactor && !self.hasSetViewControllersForAsyncFirstTime){
+        [self setViewControllerOffset:0];
+        self.hasSetViewControllersForAsyncFirstTime = YES;
+    }
     [UIView animateWithDuration:duration animations:^{
         [self setRootControllerOffset:(leftSideMenu ? self.menuWidth : -1*self.menuWidth)];
     } completion:^(BOOL finished) {
@@ -611,7 +616,18 @@ typedef enum {
 - (UIViewController *) rootViewController {
     return self.navigationController.view.window.rootViewController;
 }
-
+- (void) setViewControllerOffset:(CGFloat)rootOffset{
+    if(rootOffset >= 0){
+        CGRect leftMenuFrame = self.leftSideMenuViewController.view.frame;
+        leftMenuFrame.origin.x = (rootOffset/self.asyncSlideFactor)-(leftMenuFrame.size.width/self.asyncSlideFactor);
+        self.leftSideMenuViewController.view.frame = leftMenuFrame;
+    }
+    if(rootOffset <= 0){
+        CGRect rightMenuFrame = self.rightSideMenuViewController.view.frame;
+        rightMenuFrame.origin.x = ([self widthAdjustedForInterfaceOrientation:self.rootViewController.view]-rightMenuFrame.size.width)+(rootOffset/self.asyncSlideFactor)+(rightMenuFrame.size.width/self.asyncSlideFactor);
+        self.rightSideMenuViewController.view.frame = rightMenuFrame;
+    }
+}
 - (void) setRootControllerOffset:(CGFloat)xOffset {
     UIViewController *rootController = self.rootViewController;
     CGRect frame = rootController.view.frame;
@@ -619,19 +635,7 @@ typedef enum {
     rootController.view.frame = frame;
     
     if(self.asyncSlideFactor){
-        if(xOffset >= 0){
-            CGRect leftMenuFrame = self.leftSideMenuViewController.view.frame;
-            
-            CGFloat menuX = (xOffset/self.asyncSlideFactor)-(leftMenuFrame.size.width/self.asyncSlideFactor);
-            leftMenuFrame.origin.x = menuX;
-            self.leftSideMenuViewController.view.frame = leftMenuFrame;
-        }
-        if(xOffset <= 0){
-            CGRect rightMenuFrame = self.rightSideMenuViewController.view.frame;
-            CGFloat menuX = ([self widthAdjustedForInterfaceOrientation:rootController.view]-rightMenuFrame.size.width)+(xOffset/self.asyncSlideFactor)+(rightMenuFrame.size.width/self.asyncSlideFactor);
-            rightMenuFrame.origin.x = menuX;
-            self.rightSideMenuViewController.view.frame = rightMenuFrame;
-        }
+        [self setViewControllerOffset:xOffset];
     }
 }
 
