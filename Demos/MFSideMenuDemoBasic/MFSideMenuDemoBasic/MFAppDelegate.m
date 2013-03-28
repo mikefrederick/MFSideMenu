@@ -30,7 +30,7 @@
     MFSideMenu *sideMenu = [MFSideMenu menuWithNavigationController:navigationController
                                             leftSideMenuController:leftSideMenuController
                                             rightSideMenuController:rightSideMenuController];
-    
+    sideMenu.menuSlideAnimationEnabled = YES;
     leftSideMenuController.sideMenu = sideMenu;
     rightSideMenuController.sideMenu = sideMenu;
     
