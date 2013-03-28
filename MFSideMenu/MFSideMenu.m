@@ -554,7 +554,7 @@ typedef enum {
     CGFloat navigationControllerXPosition = ABS([self pointAdjustedForInterfaceOrientation:self.rootViewController.view.frame.origin].x);
     CGFloat duration = [self animationDurationFromStartPosition:navigationControllerXPosition toEndPosition:self.menuWidth];
     if(self.asyncSlideFactor && !self.hasSetViewControllersForAsyncFirstTime){
-        [self setViewControllerOffset:0];
+        [self setViewControllersForRootOffset:0];
         self.hasSetViewControllersForAsyncFirstTime = YES;
     }
     [UIView animateWithDuration:duration animations:^{
@@ -616,7 +616,7 @@ typedef enum {
 - (UIViewController *) rootViewController {
     return self.navigationController.view.window.rootViewController;
 }
-- (void) setViewControllerOffset:(CGFloat)rootOffset{
+- (void) setViewControllersForRootOffset:(CGFloat)rootOffset{
     if(rootOffset >= 0){
         CGRect leftMenuFrame = self.leftSideMenuViewController.view.frame;
         leftMenuFrame.origin.x = (rootOffset/self.asyncSlideFactor)-(leftMenuFrame.size.width/self.asyncSlideFactor);
@@ -635,7 +635,7 @@ typedef enum {
     rootController.view.frame = frame;
     
     if(self.asyncSlideFactor){
-        [self setViewControllerOffset:xOffset];
+        [self setViewControllersForRootOffset:xOffset];
     }
 }
 
