@@ -45,6 +45,7 @@ typedef enum {
 @synthesize shadowColor = _shadowColor;
 @synthesize shadowOpacity = _shadowOpacity;
 @synthesize menuSlideAnimationEnabled;
+@synthesize menuSlideFactor;
 
 
 #pragma mark -
@@ -62,6 +63,7 @@ typedef enum {
         self.shadowRadius = 10.0f;
         self.shadowOpacity = 0.75f;
         self.shadowColor = [UIColor blackColor];
+        self.menuSlideFactor = 3.0f;
         
         [UINavigationController swizzleViewMethods];
     }
@@ -620,7 +622,7 @@ typedef enum {
     if(!self.leftSideMenuViewController) return;
     CGRect leftFrame = self.leftSideMenuViewController.view.frame;
     leftFrame.size.width = self.menuWidth;
-    leftFrame.origin.x = (self.menuSlideAnimationEnabled) ? -1*leftFrame.size.width : 0;
+    leftFrame.origin.x = (self.menuSlideAnimationEnabled) ? -1*leftFrame.size.width / self.menuSlideFactor : 0;
     leftFrame.origin.y = 0;
     self.leftSideMenuViewController.view.frame = leftFrame;
     self.leftSideMenuViewController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleHeight;
@@ -631,8 +633,8 @@ typedef enum {
     CGRect rightFrame = self.rightSideMenuViewController.view.frame;
     rightFrame.size.width = self.menuWidth;
     rightFrame.origin.y = 0;
-    rightFrame.origin.x = [self widthAdjustedForInterfaceOrientation:self.rootViewController.view];
-    if(!self.menuSlideAnimationEnabled) rightFrame.origin.x -= self.menuWidth;
+    rightFrame.origin.x = [self widthAdjustedForInterfaceOrientation:self.rootViewController.view] - self.menuWidth;
+    if(self.menuSlideAnimationEnabled) rightFrame.origin.x += self.menuWidth / self.menuSlideFactor;
     self.rightSideMenuViewController.view.frame = rightFrame;
     self.rightSideMenuViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight;
 }

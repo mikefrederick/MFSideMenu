@@ -42,6 +42,8 @@ typedef void (^MFSideMenuStateEventBlock)(MFSideMenuStateEvent);
 @property (nonatomic, assign) CGFloat shadowOpacity;
 @property (nonatomic, strong) UIColor *shadowColor;
 @property (nonatomic, assign) BOOL menuSlideAnimationEnabled; // should the menus slide in/out with the root controller?
+@property (nonatomic, assign) CGFloat menuSlideFactor; // higher = less menu movement on the menu slide animation
+                                                       // (only applicable if menuSlideAnimationEnabled is YES)
 
 // this can be used to observe all MFSideMenuStateEvents
 @property (copy) MFSideMenuStateEventBlock menuStateEventBlock;
