@@ -8,29 +8,38 @@
 #import "MFSideMenu.h"
 #import "DemoViewController.h"
 
+@interface SideMenuViewController()
+@property(nonatomic, strong) UISearchBar *searchBar;
+@end
+
 @implementation SideMenuViewController
 
 @synthesize sideMenu;
+@synthesize searchBar;
 
 - (void) viewDidLoad {
     [super viewDidLoad];
+    
     CGRect searchBarFrame = CGRectMake(0, 0, self.tableView.frame.size.width, 45.0);
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:searchBarFrame];
-    searchBar.delegate = self;
-    self.tableView.tableHeaderView = searchBar;
+    self.searchBar = [[UISearchBar alloc] initWithFrame:searchBarFrame];
+    self.searchBar.delegate = self;
+    
+    self.tableView.tableHeaderView = self.searchBar;
 }
+
+
+#pragma mark -
+#pragma mark - UITableViewDataSource
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return [NSString stringWithFormat:@"Section %d", section];
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 10;
 }
 
@@ -49,6 +58,7 @@
 }
 
 
+#pragma mark -
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -58,16 +68,50 @@
     NSArray *controllers = [NSArray arrayWithObject:demoController];
     self.sideMenu.navigationController.viewControllers = controllers;
     [self.sideMenu setMenuState:MFSideMenuStateClosed];
+    
+    if(self.searchBar.isFirstResponder) [self.searchBar resignFirstResponder];
 }
 
+
+#pragma mark - 
 #pragma mark - UISearchBarDelegate
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+    return YES;
+}
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
     return YES;
 }
 
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [self.searchBar resignFirstResponder];
+}
+
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    [searchBar resignFirstResponder];
+    [self.searchBar resignFirstResponder];
+}
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    [UIView beginAnimations:nil context:NULL];
+    [self.sideMenu setMenuWidth:320.0f animated:NO];
+    [self.searchBar layoutSubviews];
+    [UIView commitAnimations];
+    
+    [self.searchBar setShowsCancelButton:YES animated:YES];
+    
+    self.sideMenu.panMode = MFSideMenuPanModeNone;
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
+    [UIView beginAnimations:nil context:NULL];
+    [self.sideMenu setMenuWidth:280.0f animated:NO];
+    [self.searchBar layoutSubviews];
+    [UIView commitAnimations];
+    
+    [self.searchBar setShowsCancelButton:NO animated:YES];
+    
+    self.sideMenu.panMode = MFSideMenuPanModeDefault;
 }
 
 @end
