@@ -73,11 +73,10 @@ typedef enum {
 + (MFSideMenu *)menuWithNavigationController:(UINavigationController *)controller
                       leftSideMenuController:(id)leftMenuController
                      rightSideMenuController:(id)rightMenuController {
-    MFSideMenuPanMode panMode = MFSideMenuPanModeNavigationBar|MFSideMenuPanModeNavigationController|MFSideMenuPanModeSideMenu;
     return [MFSideMenu menuWithNavigationController:controller
                              leftSideMenuController:leftMenuController
                             rightSideMenuController:rightMenuController
-                                            panMode:panMode];
+                                            panMode:MFSideMenuPanModeDefault];
 }
 
 + (MFSideMenu *) menuWithNavigationController:(UINavigationController *)controller

@@ -10,9 +10,11 @@ static const CGFloat kMFSideMenuAnimationDuration = 0.2f; // default duration fo
 static const CGFloat kMFSideMenuAnimationMaxDuration = 0.4f; // maximum duration for the open/close animation
 
 typedef enum {
+    MFSideMenuPanModeNone = 0, // pan disabled
     MFSideMenuPanModeNavigationBar = 1 << 0, // enable panning on the navigation bar
     MFSideMenuPanModeNavigationController = 1 << 1, // enable panning on the body of the navigation controller
-    MFSideMenuPanModeSideMenu = 2 << 1 // enable panning on side menus
+    MFSideMenuPanModeSideMenu = 1 << 2, // enable panning on side menus
+    MFSideMenuPanModeDefault = MFSideMenuPanModeNavigationBar | MFSideMenuPanModeNavigationController| MFSideMenuPanModeSideMenu
 } MFSideMenuPanMode;
 
 typedef enum {
