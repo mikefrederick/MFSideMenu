@@ -54,8 +54,6 @@ typedef enum {
 - (id) init {
     self = [super init];
     if(self) {
-        _shadowEnabled = YES;
-        
         CGRect applicationFrame = [[UIApplication sharedApplication].delegate window].screen.applicationFrame;
         self.menuContainerView = [[UIView alloc] initWithFrame:applicationFrame];
         self.menuState = MFSideMenuStateClosed;
@@ -64,8 +62,12 @@ typedef enum {
         self.shadowOpacity = 0.75f;
         self.shadowColor = [UIColor blackColor];
         self.menuSlideFactor = 3.0f;
+        self.shadowEnabled = YES;
         
-        [UINavigationController swizzleViewMethods];
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+           [UINavigationController swizzleViewMethods]; 
+        });
     }
     return self;
 }
@@ -99,7 +101,7 @@ typedef enum {
                                              selector:@selector(statusBarOrientationDidChange:)
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification
                                                object:nil];
-    
+
     return menu;
 }
 
@@ -418,7 +420,7 @@ typedef enum {
 	}
 }
 
-- (void) navigationControllerTapped:(id)sender {
+- (void)navigationControllerTapped:(id)sender {
     if(self.menuState != MFSideMenuStateClosed) {
         [self setMenuState:MFSideMenuStateClosed];
     }
@@ -442,7 +444,7 @@ typedef enum {
     [menuContainerView addGestureRecognizer:[self panGestureRecognizer]];
 }
 
-- (CGPoint) pointAdjustedForInterfaceOrientation:(CGPoint)point {
+- (CGPoint)pointAdjustedForInterfaceOrientation:(CGPoint)point {
     switch (self.rootViewController.interfaceOrientation)
     {
         case UIInterfaceOrientationPortrait:
@@ -463,7 +465,7 @@ typedef enum {
     }
 }
 
-- (CGFloat) widthAdjustedForInterfaceOrientation:(UIView *)view {
+- (CGFloat)widthAdjustedForInterfaceOrientation:(UIView *)view {
     if(UIInterfaceOrientationIsPortrait(self.rootViewController.interfaceOrientation)) {
         return view.frame.size.width;
     } else {
@@ -471,7 +473,7 @@ typedef enum {
     }
 }
 
-- (CGSize) sizeAdjustedForInterfaceOrientation:(UIView *)view {
+- (CGSize)sizeAdjustedForInterfaceOrientation:(UIView *)view {
     if(UIInterfaceOrientationIsPortrait(self.rootViewController.interfaceOrientation)) {
         return CGSizeMake(view.frame.size.width, view.frame.size.height);
     } else {
@@ -483,9 +485,9 @@ typedef enum {
 #pragma mark -
 #pragma mark - Menu Rotation
 
-- (void) orientSideMenuFromStatusBar {
+- (void)orientSideMenuFromStatusBar {
     CGRect newFrame = self.rootViewController.view.window.screen.applicationFrame;
-    self.menuContainerView.transform = self.navigationController.view.transform;
+    self.menuContainerView.transform = self.rootViewController.view.transform;
     self.menuContainerView.frame = newFrame;
 }
 
@@ -660,14 +662,16 @@ typedef enum {
 #pragma mark -
 #pragma mark - Root Controller
 
-- (UIViewController *) rootViewController {
-    return self.navigationController.view.window.rootViewController;
+- (UIViewController *)rootViewController {
+    return [UIApplication sharedApplication].keyWindow.rootViewController;
 }
 
 - (void) setRootControllerOffset:(CGFloat)xOffset {
     UIViewController *rootController = self.rootViewController;
     CGRect frame = rootController.view.frame;
-    frame.origin = CGPointMake(xOffset*rootController.view.transform.a, xOffset*rootController.view.transform.b);
+    CGAffineTransform transform = rootController.view.transform;
+    frame.origin = CGPointMake(transform.a == 0 ? frame.origin.x : xOffset*transform.a,
+                               transform.b == 0 ? frame.origin.y : xOffset*transform.b);
     rootController.view.frame = frame;
     
     if(!self.menuSlideAnimationEnabled) return;
