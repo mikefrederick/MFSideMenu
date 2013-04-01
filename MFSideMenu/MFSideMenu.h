@@ -11,10 +11,9 @@ static const CGFloat kMFSideMenuAnimationMaxDuration = 0.4f; // maximum duration
 
 typedef enum {
     MFSideMenuPanModeNone = 0, // pan disabled
-    MFSideMenuPanModeNavigationBar = 1 << 0, // enable panning on the navigation bar
-    MFSideMenuPanModeNavigationController = 1 << 1, // enable panning on the body of the navigation controller
+    MFSideMenuPanModeRootViewController = 1 << 0, // enable panning on the root view controller, i.e. the navigation controller
     MFSideMenuPanModeSideMenu = 1 << 2, // enable panning on side menus
-    MFSideMenuPanModeDefault = MFSideMenuPanModeNavigationBar | MFSideMenuPanModeNavigationController| MFSideMenuPanModeSideMenu
+    MFSideMenuPanModeDefault = MFSideMenuPanModeRootViewController | MFSideMenuPanModeSideMenu
 } MFSideMenuPanMode;
 
 typedef enum {

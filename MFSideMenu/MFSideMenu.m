@@ -224,12 +224,8 @@ typedef enum {
 #pragma mark -
 #pragma mark - MFSideMenuPanMode
 
-- (BOOL) navigationControllerPanEnabled {
-    return ((self.panMode & MFSideMenuPanModeNavigationController) == MFSideMenuPanModeNavigationController);
-}
-
-- (BOOL) navigationBarPanEnabled {
-    return ((self.panMode & MFSideMenuPanModeNavigationBar) == MFSideMenuPanModeNavigationBar);
+- (BOOL) rootViewControllerPanEnabled {
+    return ((self.panMode & MFSideMenuPanModeRootViewController) == MFSideMenuPanModeRootViewController);
 }
 
 - (BOOL) sideMenuPanEnabled {
@@ -245,12 +241,8 @@ typedef enum {
        self.menuState != MFSideMenuStateClosed) return YES;
     
     if([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
-        if([gestureRecognizer.view isEqual:self.navigationController.view] &&
-           [self navigationControllerPanEnabled]) return YES;
-        
-        if([gestureRecognizer.view isEqual:self.navigationController.navigationBar] &&
-           self.menuState == MFSideMenuStateClosed &&
-           [self navigationBarPanEnabled]) return YES;
+        if([gestureRecognizer.view isEqual:self.rootViewController.view] &&
+           [self rootViewControllerPanEnabled]) return YES;
         
         if([gestureRecognizer.view isEqual:self.menuContainerView] &&
            [self sideMenuPanEnabled]) return YES;
@@ -439,8 +431,7 @@ typedef enum {
 }
 
 - (void)addGestureRecognizers {
-    [self.navigationController.navigationBar addGestureRecognizer:[self panGestureRecognizer]];
-    [self.navigationController.view addGestureRecognizer:[self panGestureRecognizer]];
+    [self.rootViewController.view addGestureRecognizer:[self panGestureRecognizer]];
     [menuContainerView addGestureRecognizer:[self panGestureRecognizer]];
 }
 
