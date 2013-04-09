@@ -91,11 +91,6 @@ typedef enum {
     menu.rightSideMenuViewController = rightMenuController;
     menu.panMode = panMode;
     controller.sideMenu = menu;
-
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]
-                                             initWithTarget:menu action:@selector(navigationControllerTapped:)];
-    [tapRecognizer setDelegate:menu];
-    [controller.view addGestureRecognizer:tapRecognizer];
     
     [[NSNotificationCenter defaultCenter] addObserver:menu
                                              selector:@selector(statusBarOrientationDidChange:)
@@ -431,6 +426,12 @@ typedef enum {
 }
 
 - (void)addGestureRecognizers {
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]
+                                             initWithTarget:self
+                                             action:@selector(navigationControllerTapped:)];
+    [tapRecognizer setDelegate:self];
+    [self.rootViewController.view addGestureRecognizer:tapRecognizer];
+    
     [self.rootViewController.view addGestureRecognizer:[self panGestureRecognizer]];
     [menuContainerView addGestureRecognizer:[self panGestureRecognizer]];
 }
