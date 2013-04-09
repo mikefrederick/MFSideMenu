@@ -18,9 +18,12 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:[NSBundle mainBundle]];
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     UIViewController *leftSideMenuViewController = [storyboard instantiateViewControllerWithIdentifier:@"leftSideMenuViewController"];
+    UIViewController *rightSideMenuViewController = [storyboard instantiateViewControllerWithIdentifier:@"rightSideMenuViewController"];
     [MFSideMenu menuWithNavigationController:navigationController
                                              leftSideMenuController:leftSideMenuViewController
-                                            rightSideMenuController:nil];
+                                            rightSideMenuController:rightSideMenuViewController];
+    
+    
     return YES;
 }
 

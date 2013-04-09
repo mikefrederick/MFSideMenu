@@ -19,6 +19,7 @@
 		273D107C16F3E7FE00C187E0 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 273D107A16F3E7FE00C187E0 /* MainStoryboard.storyboard */; };
 		273D112B16F6331D00C187E0 /* MFSideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 273D112516F6331D00C187E0 /* MFSideMenu.m */; };
 		273D112E16F6331D00C187E0 /* UINavigationController+MFSideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 273D112916F6331D00C187E0 /* UINavigationController+MFSideMenu.m */; };
+		279CE767171433C00056366A /* DemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 279CE766171433C00056366A /* DemoViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,8 @@
 		273D112516F6331D00C187E0 /* MFSideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSideMenu.m; sourceTree = "<group>"; };
 		273D112816F6331D00C187E0 /* UINavigationController+MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+MFSideMenu.h"; sourceTree = "<group>"; };
 		273D112916F6331D00C187E0 /* UINavigationController+MFSideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+MFSideMenu.m"; sourceTree = "<group>"; };
+		279CE765171433C00056366A /* DemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoViewController.h; sourceTree = "<group>"; };
+		279CE766171433C00056366A /* DemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +94,8 @@
 				273D107216F3E7FE00C187E0 /* AppDelegate.m */,
 				273D107A16F3E7FE00C187E0 /* MainStoryboard.storyboard */,
 				273D106916F3E7FE00C187E0 /* Supporting Files */,
+				279CE765171433C00056366A /* DemoViewController.h */,
+				279CE766171433C00056366A /* DemoViewController.m */,
 			);
 			path = MFSideMenuDemoStoryboard;
 			sourceTree = "<group>";
@@ -191,6 +196,7 @@
 				273D107316F3E7FE00C187E0 /* AppDelegate.m in Sources */,
 				273D112B16F6331D00C187E0 /* MFSideMenu.m in Sources */,
 				273D112E16F6331D00C187E0 /* UINavigationController+MFSideMenu.m in Sources */,
+				279CE767171433C00056366A /* DemoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
