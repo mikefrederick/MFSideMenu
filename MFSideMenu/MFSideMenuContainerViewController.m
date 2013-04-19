@@ -38,7 +38,6 @@ typedef enum {
 @synthesize panGestureOrigin;
 @synthesize panGestureVelocity;
 @synthesize menuState = _menuState;
-@synthesize menuStateEventBlock;
 @synthesize panDirection;
 @synthesize shadowEnabled = _shadowEnabled;
 @synthesize menuWidth = _menuWidth;
@@ -182,39 +181,60 @@ typedef enum {
 #pragma mark -
 #pragma mark - Menu State & Open/Close Animation
 
-- (void)toggleLeftSideMenu {
+- (void)toggleLeftSideMenuCompletion:(void (^)(void))completion {
     if(self.menuState == MFSideMenuStateLeftMenuOpen) {
-        [self setMenuState:MFSideMenuStateClosed];
+        [self setMenuState:MFSideMenuStateClosed completion:completion];
     } else {
-        [self setMenuState:MFSideMenuStateLeftMenuOpen];
+        [self setMenuState:MFSideMenuStateLeftMenuOpen completion:completion];
     }
 }
 
-- (void) toggleRightSideMenu {
+- (void)toggleRightSideMenuCompletion:(void (^)(void))completion {
     if(self.menuState == MFSideMenuStateRightMenuOpen) {
-        [self setMenuState:MFSideMenuStateClosed];
+        [self setMenuState:MFSideMenuStateClosed completion:completion];
     } else {
-        [self setMenuState:MFSideMenuStateRightMenuOpen];
+        [self setMenuState:MFSideMenuStateRightMenuOpen completion:completion];
     }
+}
+
+- (void)openLeftSideMenuCompletion:(void (^)(void))completion {
+    if(!self.leftSideMenuViewController) return;
+    [self.menuContainerView bringSubviewToFront:self.leftSideMenuViewController.view];
+    [self setCenterViewControllerOffsetWithAnimation:self.menuWidth completion:completion];
+}
+
+- (void)openRightSideMenuCompletion:(void (^)(void))completion {
+    if(!self.rightSideMenuViewController) return;
+    [self.menuContainerView bringSubviewToFront:self.rightSideMenuViewController.view];
+    [self setCenterViewControllerOffsetWithAnimation:-1*self.menuWidth completion:completion];
+}
+
+- (void)closeSideMenuCompletion:(void (^)(void))completion {
+    [self setCenterViewControllerOffsetWithAnimation:0 completion:completion];
 }
 
 - (void)setMenuState:(MFSideMenuState)menuState {
+    [self setMenuState:menuState completion:nil];
+}
+
+- (void)setMenuState:(MFSideMenuState)menuState completion:(void (^)(void))completion {
     switch (menuState) {
         case MFSideMenuStateClosed:
-            [self closeSideMenu];
+            [self closeSideMenuCompletion:completion];
             break;
         case MFSideMenuStateLeftMenuOpen:
             if(!self.leftSideMenuViewController) return;
-            [self openLeftSideMenu];
+            [self openLeftSideMenuCompletion:completion];
             break;
         case MFSideMenuStateRightMenuOpen:
             if(!self.rightSideMenuViewController) return;
-            [self openRightSideMenu];
+            [self openRightSideMenuCompletion:completion];
             break;
         default:
             break;
     }
     
+    // TODO: do we still need this?
     if (self.navigationController.isViewLoaded && [self.navigationController.view respondsToSelector:@selector(accessibilityViewIsModal)]) {
         self.navigationController.view.accessibilityViewIsModal = menuState == MFSideMenuStateClosed;
     }
@@ -222,58 +242,6 @@ typedef enum {
     _menuState = menuState;
 }
 
-- (void)openLeftSideMenu {
-    [self.menuContainerView bringSubviewToFront:self.leftSideMenuViewController.view];
-    [self openSideMenu:YES];
-}
-
-- (void)openRightSideMenu {
-    [self.menuContainerView bringSubviewToFront:self.rightSideMenuViewController.view];
-    [self openSideMenu:NO];
-}
-
-- (void)openSideMenu:(BOOL)leftSideMenu {
-    // notify that the menu state event is starting
-    [self sendMenuStateEventNotification:MFSideMenuStateEventMenuWillOpen];
-    
-    CGFloat navigationControllerXPosition = ABS(self.centerViewController.view.frame.origin.x);
-    CGFloat duration = [self animationDurationFromStartPosition:navigationControllerXPosition toEndPosition:self.menuWidth];
-    
-    [UIView animateWithDuration:duration animations:^{
-        [self setCenterControllerOffset:(leftSideMenu ? self.menuWidth : -1*self.menuWidth)];
-    } completion:^(BOOL finished) {
-        // disable user interaction on the current stack of view controllers if the menu is visible
-        for(UIViewController* viewController in self.navigationController.viewControllers) {
-            viewController.view.userInteractionEnabled = (self.menuState == MFSideMenuStateClosed);
-        }
-        
-        // notify that the menu state event is done
-        [self sendMenuStateEventNotification:MFSideMenuStateEventMenuDidOpen];
-    }];
-}
-
-- (void)closeSideMenu {
-    // notify that the menu state event is starting
-    [self sendMenuStateEventNotification:MFSideMenuStateEventMenuWillClose];
-    
-    CGFloat navigationControllerXPosition = ABS(self.centerViewController.view.frame.origin.x);
-    CGFloat duration = [self animationDurationFromStartPosition:navigationControllerXPosition toEndPosition:0];
-    [UIView animateWithDuration:duration animations:^{
-        [self setCenterControllerOffset:0];
-    } completion:^(BOOL finished) {
-        // disable user interaction on the current stack of view controllers if the menu is visible
-        for(UIViewController* viewController in self.navigationController.viewControllers) {
-            viewController.view.userInteractionEnabled = (self.menuState == MFSideMenuStateClosed);
-        }
-        
-        // notify that the menu state event is done
-        [self sendMenuStateEventNotification:MFSideMenuStateEventMenuDidClose];
-    }];
-}
-
-- (void) sendMenuStateEventNotification:(MFSideMenuStateEvent)event {
-    if(self.menuStateEventBlock) self.menuStateEventBlock(event);
-}
 
 #pragma mark -
 #pragma mark - Side Menu Positioning
@@ -595,6 +563,22 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 #pragma mark -
 #pragma mark - Root Controller
+
+- (void)setCenterViewControllerOffsetWithAnimation:(CGFloat)offset completion:(void (^)(void))completion {
+    CGFloat navigationControllerXPosition = ABS(self.centerViewController.view.frame.origin.x);
+    CGFloat duration = [self animationDurationFromStartPosition:navigationControllerXPosition toEndPosition:offset];
+    
+    [UIView animateWithDuration:duration animations:^{
+        [self setCenterControllerOffset:offset];
+    } completion:^(BOOL finished) {
+        // disable user interaction on the current stack of view controllers if the menu is visible
+        for(UIViewController* viewController in self.navigationController.viewControllers) {
+            viewController.view.userInteractionEnabled = (self.menuState == MFSideMenuStateClosed);
+        }
+        
+        if(completion) completion();
+    }];
+}
 
 - (void) setCenterControllerOffset:(CGFloat)xOffset {
     CGRect frame = self.centerViewController.view.frame;

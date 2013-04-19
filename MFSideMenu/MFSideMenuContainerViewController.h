@@ -21,14 +21,6 @@ typedef enum {
     MFSideMenuStateRightMenuOpen // the right-hand menu is open
 } MFSideMenuState;
 
-typedef enum {
-    MFSideMenuStateEventMenuWillOpen, // the menu is going to open
-    MFSideMenuStateEventMenuDidOpen, // the menu finished opening
-    MFSideMenuStateEventMenuWillClose, // the menu is going to close
-    MFSideMenuStateEventMenuDidClose // the menu finished closing
-} MFSideMenuStateEvent;
-
-typedef void (^MFSideMenuStateEventBlock)(MFSideMenuStateEvent);
 
 @interface MFSideMenuContainerViewController : UIViewController<UIGestureRecognizerDelegate>
 
@@ -52,10 +44,9 @@ typedef void (^MFSideMenuStateEventBlock)(MFSideMenuStateEvent);
 @property (nonatomic, assign) BOOL menuSlideAnimationEnabled; // should the menus slide in/out with the root controller?
 @property (nonatomic, assign) CGFloat menuSlideFactor; // higher = less menu movement on animation (only applicable if menuSlideAnimationEnabled is YES)
 
-@property (copy) MFSideMenuStateEventBlock menuStateEventBlock;
-
-- (void)toggleLeftSideMenu;
-- (void)toggleRightSideMenu;
+- (void)toggleLeftSideMenuCompletion:(void (^)(void))completion;
+- (void)toggleRightSideMenuCompletion:(void (^)(void))completion;
+- (void)setMenuState:(MFSideMenuState)menuState completion:(void (^)(void))completion;
 - (void)setMenuWidth:(CGFloat)menuWidth animated:(BOOL)animated;
 
 @end
