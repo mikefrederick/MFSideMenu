@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Demos/MFSideMenuDemoViewControllerContainment/MFSideMenuDemoViewControllerContainment.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Demos/MFSideMenuDemoSplitViewController/MFSideMenuDemoSplitViewController.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Demos/MFSideMenuDemoUITabBarController/MFSideMenuDemoUITabBarController.xcodeproj">
    </FileRef>
    <FileRef
@@ -9,5 +15,8 @@
    </FileRef>
    <FileRef
       location = "group:Demos/MFSideMenuDemoStoryboard/MFSideMenuDemoStoryboard.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>
