@@ -31,7 +31,7 @@
     MFSideMenuContainerViewController *container = [MFSideMenuContainerViewController
                                                     controllerWithLeftSideMenuViewController:leftSideMenuController
                                                     centerViewController:[self navigationController]
-                                                    rightSideMenuViewController:nil];
+                                                    rightSideMenuViewController:rightSideMenuController];
 
     self.window.rootViewController = container;
     [self.window makeKeyAndVisible];
