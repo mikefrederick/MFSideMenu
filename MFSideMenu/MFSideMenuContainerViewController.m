@@ -47,6 +47,8 @@ typedef enum {
 @synthesize shadowOpacity = _shadowOpacity;
 @synthesize menuSlideAnimationEnabled;
 @synthesize menuSlideFactor;
+@synthesize menuAnimationDefaultDuration;
+@synthesize menuAnimationMaxDuration;
 
 
 + (MFSideMenuContainerViewController *)controllerWithLeftSideMenuViewController:(id)leftSideMenuViewController
@@ -73,6 +75,8 @@ typedef enum {
         self.shadowColor = [UIColor blackColor];
         self.menuSlideFactor = 3.0f;
         self.shadowEnabled = YES;
+        self.menuAnimationDefaultDuration = 0.2f;
+        self.menuAnimationMaxDuration = 0.4f;
         self.panMode = MFSideMenuPanModeDefault;
     }
     return self;
@@ -270,23 +274,6 @@ typedef enum {
 - (void) sendMenuStateEventNotification:(MFSideMenuStateEvent)event {
     if(self.menuStateEventBlock) self.menuStateEventBlock(event);
 }
-
-- (CGFloat)animationDurationFromStartPosition:(CGFloat)startPosition toEndPosition:(CGFloat)endPosition {
-    CGFloat animationPositionDelta = ABS(endPosition - startPosition);
-    
-    CGFloat duration;
-    if(ABS(self.panGestureVelocity) > 1.0) {
-        // try to continue the animation at the speed the user was swiping
-        duration = animationPositionDelta / ABS(self.panGestureVelocity);
-    } else {
-        // no swipe was used, user tapped the bar button item
-        CGFloat animationDurationPerPixel = kMFSideMenuAnimationDuration / endPosition;
-        duration = animationDurationPerPixel * animationPositionDelta;
-    }
-    
-    return MIN(duration, kMFSideMenuAnimationMaxDuration);
-}
-
 
 #pragma mark -
 #pragma mark - Side Menu Positioning
@@ -626,6 +613,22 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         [self setLeftSideMenuFrameToClosedPosition];
         [self setRightSideMenuFrameToClosedPosition];
     }
+}
+
+- (CGFloat)animationDurationFromStartPosition:(CGFloat)startPosition toEndPosition:(CGFloat)endPosition {
+    CGFloat animationPositionDelta = ABS(endPosition - startPosition);
+    
+    CGFloat duration;
+    if(ABS(self.panGestureVelocity) > 1.0) {
+        // try to continue the animation at the speed the user was swiping
+        duration = animationPositionDelta / ABS(self.panGestureVelocity);
+    } else {
+        // no swipe was used, user tapped the bar button item
+        CGFloat animationDurationPerPixel = self.menuAnimationDefaultDuration / endPosition;
+        duration = animationDurationPerPixel * animationPositionDelta;
+    }
+    
+    return MIN(duration, self.menuAnimationMaxDuration);
 }
 
 

@@ -8,9 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-static const CGFloat kMFSideMenuAnimationDuration = 0.2f; // default duration for the open/close animation
-static const CGFloat kMFSideMenuAnimationMaxDuration = 0.4f; // maximum duration for the open/close animation
-
 typedef enum {
     MFSideMenuPanModeNone = 0, // pan disabled
     MFSideMenuPanModeRootViewController = 1 << 0, // enable panning on the root view controller, i.e. the navigation controller
@@ -41,6 +38,9 @@ typedef void (^MFSideMenuStateEventBlock)(MFSideMenuStateEvent);
 
 @property (nonatomic, assign) MFSideMenuState menuState;
 @property (nonatomic, assign) MFSideMenuPanMode panMode;
+
+@property (nonatomic, assign) CGFloat menuAnimationDefaultDuration; // default duration for the open/close animation
+@property (nonatomic, assign) CGFloat menuAnimationMaxDuration; // maximum duration for the open/close animation
 
 @property (nonatomic, assign) CGFloat menuWidth; // size of the side menu(s)
 
