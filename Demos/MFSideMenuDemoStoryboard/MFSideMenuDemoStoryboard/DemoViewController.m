@@ -7,7 +7,7 @@
 //
 
 #import "DemoViewController.h"
-#import "MFSideMenu.h"
+#import "MFSideMenuContainerViewController.h"
 
 @interface DemoViewController ()
 
@@ -20,12 +20,16 @@
     [super viewDidLoad];
 }
 
+- (MFSideMenuContainerViewController *)menuContainerViewController {
+    return (MFSideMenuContainerViewController *)self.navigationController.parentViewController;
+}
+
 - (IBAction)showLeftMenuPressed:(id)sender {
-    [self.navigationController.sideMenu performSelector:@selector(toggleLeftSideMenu)];
+    [self.menuContainerViewController toggleLeftSideMenuCompletion:nil];
 }
 
 - (IBAction)showRightMenuPressed:(id)sender {
-    [self.navigationController.sideMenu performSelector:@selector(toggleRightSideMenu)];
+    [self.menuContainerViewController toggleRightSideMenuCompletion:nil];
 }
 
 @end

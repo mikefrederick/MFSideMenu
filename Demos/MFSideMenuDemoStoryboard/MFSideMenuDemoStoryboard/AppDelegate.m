@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "MFSideMenu.h"
+#import "MFSideMenuContainerViewController.h"
 
 @implementation AppDelegate
 
@@ -16,13 +16,14 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:[NSBundle mainBundle]];
-    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+    MFSideMenuContainerViewController *container = (MFSideMenuContainerViewController *)self.window.rootViewController;
+    UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"navigationController"];
     UIViewController *leftSideMenuViewController = [storyboard instantiateViewControllerWithIdentifier:@"leftSideMenuViewController"];
     UIViewController *rightSideMenuViewController = [storyboard instantiateViewControllerWithIdentifier:@"rightSideMenuViewController"];
-    [MFSideMenu menuWithNavigationController:navigationController
-                                             leftSideMenuController:leftSideMenuViewController
-                                            rightSideMenuController:rightSideMenuViewController];
     
+    [container setLeftSideMenuViewController:leftSideMenuViewController];
+    [container setRightSideMenuViewController:rightSideMenuViewController];
+    [container setCenterViewController:navigationController];
     
     return YES;
 }
