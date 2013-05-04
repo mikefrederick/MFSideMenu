@@ -115,7 +115,7 @@ typedef enum {
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     
-    [self drawRootControllerShadowPath];
+    [self drawCenterControllerShadowPath];
     self.centerViewController.view.layer.shouldRasterize = NO;
 }
 
@@ -124,6 +124,8 @@ typedef enum {
 #pragma mark - UIViewController Containment
 
 - (void)setLeftSideMenuViewController:(UIViewController *)leftSideMenuViewController {
+    [self removeChildViewController:_leftSideMenuViewController];
+    
     _leftSideMenuViewController = leftSideMenuViewController;
     if(!_leftSideMenuViewController) return;
     
@@ -135,6 +137,8 @@ typedef enum {
 }
 
 - (void)setCenterViewController:(UIViewController *)centerViewController {
+    [self removeChildViewController:_centerViewController];
+    
     _centerViewController = centerViewController;
     if(!_centerViewController) return;
     
@@ -144,6 +148,8 @@ typedef enum {
 }
 
 - (void)setRightSideMenuViewController:(UIViewController *)rightSideMenuViewController {
+    [self removeChildViewController:_rightSideMenuViewController];
+    
     _rightSideMenuViewController = rightSideMenuViewController;
     if(!_rightSideMenuViewController) return;
     
@@ -152,6 +158,12 @@ typedef enum {
     [_rightSideMenuViewController didMoveToParentViewController:self];
     
     [self setRightSideMenuFrameToClosedPosition];
+}
+
+- (void)removeChildViewController:(UIViewController *)childViewController {
+    if(!childViewController) return;
+    [childViewController willMoveToParentViewController:nil];
+    [childViewController removeFromParentViewController];
 }
 
 
@@ -313,12 +325,12 @@ typedef enum {
             [self setRightSideMenuFrameToClosedPosition];
             break;
         case MFSideMenuStateLeftMenuOpen:
-            [self setCenterControllerOffset:_menuWidth];
+            [self setCenterViewControllerOffset:_menuWidth];
             [self alignLeftMenuControllerWithCenterViewController];
             [self setRightSideMenuFrameToClosedPosition];
             break;
         case MFSideMenuStateRightMenuOpen:
-            [self setCenterControllerOffset:-1*_menuWidth];
+            [self setCenterViewControllerOffset:-1*_menuWidth];
             [self alignRightMenuControllerWithCenterViewController];
             [self setLeftSideMenuFrameToClosedPosition];
             break;
@@ -346,7 +358,7 @@ typedef enum {
     if(_shadowEnabled) {
         // we draw the shadow on the centerViewController, because it might not always be the uinavigationcontroller
         // i.e. it could be a uitabbarcontroller
-        [self drawRootControllerShadowPath];
+        [self drawCenterControllerShadowPath];
         self.centerViewController.view.layer.shadowOpacity = self.shadowOpacity;
         self.centerViewController.view.layer.shadowRadius = self.shadowRadius;
         self.centerViewController.view.layer.shadowColor = [self.shadowColor CGColor];
@@ -354,7 +366,7 @@ typedef enum {
 }
 
 // draw a shadow between the navigation controller and the menu
-- (void) drawRootControllerShadowPath {
+- (void) drawCenterControllerShadowPath {
     if(_shadowEnabled) {
         CGRect pathRect = self.centerViewController.view.bounds;
         pathRect.size = self.centerViewController.view.frame.size;
@@ -367,7 +379,7 @@ typedef enum {
 #pragma mark - MFSideMenuPanMode
 
 - (BOOL) centerViewControllerPanEnabled {
-    return ((self.panMode & MFSideMenuPanModeRootViewController) == MFSideMenuPanModeRootViewController);
+    return ((self.panMode & MFSideMenuPanModeCenterViewController) == MFSideMenuPanModeCenterViewController);
 }
 
 - (BOOL) sideMenuPanEnabled {
@@ -466,7 +478,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         translatedPoint.x = MAX(translatedPoint.x, 0);
     }
     
-    [self setCenterControllerOffset:translatedPoint.x];
+    [self setCenterViewControllerOffset:translatedPoint.x];
     
     if(recognizer.state == UIGestureRecognizerStateEnded) {
         CGPoint velocity = [recognizer velocityInView:view];
@@ -481,7 +493,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
             } else {
                 self.panGestureVelocity = 0;
                 [UIView beginAnimations:nil context:NULL];
-                [self setCenterControllerOffset:0];
+                [self setCenterViewControllerOffset:0];
                 [UIView commitAnimations];
             }
         } else {
@@ -492,7 +504,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
             } else {
                 self.panGestureVelocity = 0;
                 [UIView beginAnimations:nil context:NULL];
-                [self setCenterControllerOffset:adjustedOrigin.x];
+                [self setCenterViewControllerOffset:adjustedOrigin.x];
                 [UIView commitAnimations];
             }
         }
@@ -521,7 +533,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         translatedPoint.x = MIN(translatedPoint.x, 0);
     }
     
-    [self setCenterControllerOffset:translatedPoint.x];
+    [self setCenterViewControllerOffset:translatedPoint.x];
     
 	if(recognizer.state == UIGestureRecognizerStateEnded) {
         CGPoint velocity = [recognizer velocityInView:view];
@@ -536,7 +548,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
             } else {
                 self.panGestureVelocity = 0;
                 [UIView beginAnimations:nil context:NULL];
-                [self setCenterControllerOffset:0];
+                [self setCenterViewControllerOffset:0];
                 [UIView commitAnimations];
             }
         } else {
@@ -547,7 +559,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
             } else {
                 self.panGestureVelocity = 0;
                 [UIView beginAnimations:nil context:NULL];
-                [self setCenterControllerOffset:adjustedOrigin.x];
+                [self setCenterViewControllerOffset:adjustedOrigin.x];
                 [UIView commitAnimations];
             }
         }
@@ -562,14 +574,14 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 
 #pragma mark -
-#pragma mark - Root Controller
+#pragma mark - Center View Controller Movement
 
 - (void)setCenterViewControllerOffsetWithAnimation:(CGFloat)offset completion:(void (^)(void))completion {
     CGFloat navigationControllerXPosition = ABS(self.centerViewController.view.frame.origin.x);
     CGFloat duration = [self animationDurationFromStartPosition:navigationControllerXPosition toEndPosition:offset];
     
     [UIView animateWithDuration:duration animations:^{
-        [self setCenterControllerOffset:offset];
+        [self setCenterViewControllerOffset:offset];
     } completion:^(BOOL finished) {
         // disable user interaction on the current stack of view controllers if the menu is visible
         for(UIViewController* viewController in self.navigationController.viewControllers) {
@@ -580,7 +592,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     }];
 }
 
-- (void) setCenterControllerOffset:(CGFloat)xOffset {
+- (void) setCenterViewControllerOffset:(CGFloat)xOffset {
     CGRect frame = self.centerViewController.view.frame;
     frame.origin.x = xOffset;
     self.centerViewController.view.frame = frame;

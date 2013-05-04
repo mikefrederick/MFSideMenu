@@ -10,9 +10,9 @@
 
 typedef enum {
     MFSideMenuPanModeNone = 0, // pan disabled
-    MFSideMenuPanModeRootViewController = 1 << 0, // enable panning on the root view controller, i.e. the navigation controller
+    MFSideMenuPanModeCenterViewController = 1 << 0, // enable panning on the Center view controller, i.e. the navigation controller
     MFSideMenuPanModeSideMenu = 1 << 2, // enable panning on side menus
-    MFSideMenuPanModeDefault = MFSideMenuPanModeRootViewController | MFSideMenuPanModeSideMenu
+    MFSideMenuPanModeDefault = MFSideMenuPanModeCenterViewController | MFSideMenuPanModeSideMenu
 } MFSideMenuPanMode;
 
 typedef enum {
@@ -41,7 +41,7 @@ typedef enum {
 @property (nonatomic, assign) CGFloat shadowOpacity;
 @property (nonatomic, strong) UIColor *shadowColor;
 
-@property (nonatomic, assign) BOOL menuSlideAnimationEnabled; // should the menus slide in/out with the root controller?
+@property (nonatomic, assign) BOOL menuSlideAnimationEnabled; // should the menus slide in/out with the Center controller?
 @property (nonatomic, assign) CGFloat menuSlideFactor; // higher = less menu movement on animation (only applicable if menuSlideAnimationEnabled is YES)
 
 - (void)toggleLeftSideMenuCompletion:(void (^)(void))completion;
