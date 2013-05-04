@@ -18,9 +18,6 @@ typedef enum {
 
 
 @interface MFSideMenuContainerViewController ()
-@property (nonatomic, strong) UIViewController *leftSideMenuViewController;
-@property (nonatomic, strong) UIViewController *centerViewController;
-@property (nonatomic, strong) UIViewController *rightSideMenuViewController;
 @property (nonatomic, strong) UIView *menuContainerView;
 
 @property (nonatomic, assign) CGPoint panGestureOrigin;
@@ -63,22 +60,32 @@ typedef enum {
 - (id) init {
     self = [super init];
     if(self) {
-        CGRect applicationFrame = [[UIApplication sharedApplication].delegate window].screen.applicationFrame;
-        CGRect menuContainerFrame = (CGRect){CGPointZero, applicationFrame.size};
-        self.menuContainerView = [[UIView alloc] initWithFrame:menuContainerFrame];
-        self.menuContainerView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-        self.menuState = MFSideMenuStateClosed;
-        self.menuWidth = 270.0f;
-        self.shadowRadius = 10.0f;
-        self.shadowOpacity = 0.75f;
-        self.shadowColor = [UIColor blackColor];
-        self.menuSlideFactor = 3.0f;
-        self.shadowEnabled = YES;
-        self.menuAnimationDefaultDuration = 0.2f;
-        self.menuAnimationMaxDuration = 0.4f;
-        self.panMode = MFSideMenuPanModeDefault;
+        [self setDefaultSettings];
     }
     return self;
+}
+
+- (id)initWithCoder:(NSCoder *)inCoder {
+    id coder = [super initWithCoder:inCoder];
+    [self setDefaultSettings];
+    return coder;
+}
+
+- (void)setDefaultSettings {
+    CGRect applicationFrame = [[UIApplication sharedApplication].delegate window].screen.applicationFrame;
+    CGRect menuContainerFrame = (CGRect){CGPointZero, applicationFrame.size};
+    self.menuContainerView = [[UIView alloc] initWithFrame:menuContainerFrame];
+    self.menuContainerView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+    self.menuState = MFSideMenuStateClosed;
+    self.menuWidth = 270.0f;
+    self.shadowRadius = 10.0f;
+    self.shadowOpacity = 0.75f;
+    self.shadowColor = [UIColor blackColor];
+    self.menuSlideFactor = 3.0f;
+    self.shadowEnabled = YES;
+    self.menuAnimationDefaultDuration = 0.2f;
+    self.menuAnimationMaxDuration = 0.4f;
+    self.panMode = MFSideMenuPanModeDefault;
 }
 
 - (void)viewDidAppear:(BOOL)animated {

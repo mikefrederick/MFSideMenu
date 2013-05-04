@@ -28,6 +28,10 @@ typedef enum {
                                                            centerViewController:(id)centerViewController
                                                     rightSideMenuViewController:(id)rightSideMenuViewController;
 
+@property (nonatomic, strong) UIViewController *leftSideMenuViewController;
+@property (nonatomic, strong) UIViewController *centerViewController;
+@property (nonatomic, strong) UIViewController *rightSideMenuViewController;
+
 @property (nonatomic, assign) MFSideMenuState menuState;
 @property (nonatomic, assign) MFSideMenuPanMode panMode;
 
