@@ -13,8 +13,6 @@
 		273D114616F8841300C187E0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 273D114416F8841300C187E0 /* InfoPlist.strings */; };
 		273D114816F8841300C187E0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 273D114716F8841300C187E0 /* main.m */; };
 		273D114C16F8841300C187E0 /* MFAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 273D114B16F8841300C187E0 /* MFAppDelegate.m */; };
-		273D116116F8843600C187E0 /* MFSideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 273D115B16F8843600C187E0 /* MFSideMenu.m */; };
-		273D116416F8843600C187E0 /* UINavigationController+MFSideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 273D115F16F8843600C187E0 /* UINavigationController+MFSideMenu.m */; };
 		273D116A16F884F900C187E0 /* DemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 273D116616F884F900C187E0 /* DemoViewController.m */; };
 		273D116B16F884F900C187E0 /* DemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 273D116716F884F900C187E0 /* DemoViewController.xib */; };
 		273D116C16F884F900C187E0 /* SideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 273D116916F884F900C187E0 /* SideMenuViewController.m */; };
@@ -23,6 +21,7 @@
 		273D117516F8859B00C187E0 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 273D117016F8859B00C187E0 /* Default-568h@2x.png */; };
 		273D117616F8859B00C187E0 /* menu-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 273D117116F8859B00C187E0 /* menu-icon.png */; };
 		273D117716F8859B00C187E0 /* menu-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 273D117216F8859B00C187E0 /* menu-icon@2x.png */; };
+		276985BC1733D69200536685 /* MFSideMenuContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 276985BB1733D69200536685 /* MFSideMenuContainerViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,10 +35,6 @@
 		273D114916F8841300C187E0 /* MFSideMenuDemoUITabBarController-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MFSideMenuDemoUITabBarController-Prefix.pch"; sourceTree = "<group>"; };
 		273D114A16F8841300C187E0 /* MFAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MFAppDelegate.h; sourceTree = "<group>"; };
 		273D114B16F8841300C187E0 /* MFAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MFAppDelegate.m; sourceTree = "<group>"; };
-		273D115A16F8843600C187E0 /* MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenu.h; sourceTree = "<group>"; };
-		273D115B16F8843600C187E0 /* MFSideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSideMenu.m; sourceTree = "<group>"; };
-		273D115E16F8843600C187E0 /* UINavigationController+MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+MFSideMenu.h"; sourceTree = "<group>"; };
-		273D115F16F8843600C187E0 /* UINavigationController+MFSideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+MFSideMenu.m"; sourceTree = "<group>"; };
 		273D116516F884F900C187E0 /* DemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoViewController.h; sourceTree = "<group>"; };
 		273D116616F884F900C187E0 /* DemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoViewController.m; sourceTree = "<group>"; };
 		273D116716F884F900C187E0 /* DemoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DemoViewController.xib; sourceTree = "<group>"; };
@@ -50,6 +45,8 @@
 		273D117016F8859B00C187E0 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		273D117116F8859B00C187E0 /* menu-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu-icon.png"; sourceTree = "<group>"; };
 		273D117216F8859B00C187E0 /* menu-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu-icon@2x.png"; sourceTree = "<group>"; };
+		276985BA1733D69200536685 /* MFSideMenuContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenuContainerViewController.h; sourceTree = "<group>"; };
+		276985BB1733D69200536685 /* MFSideMenuContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSideMenuContainerViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,10 +121,8 @@
 		273D115816F8843600C187E0 /* MFSideMenu */ = {
 			isa = PBXGroup;
 			children = (
-				273D115A16F8843600C187E0 /* MFSideMenu.h */,
-				273D115B16F8843600C187E0 /* MFSideMenu.m */,
-				273D115E16F8843600C187E0 /* UINavigationController+MFSideMenu.h */,
-				273D115F16F8843600C187E0 /* UINavigationController+MFSideMenu.m */,
+				276985BA1733D69200536685 /* MFSideMenuContainerViewController.h */,
+				276985BB1733D69200536685 /* MFSideMenuContainerViewController.m */,
 			);
 			name = MFSideMenu;
 			path = ../../MFSideMenu;
@@ -216,10 +211,9 @@
 			files = (
 				273D114816F8841300C187E0 /* main.m in Sources */,
 				273D114C16F8841300C187E0 /* MFAppDelegate.m in Sources */,
-				273D116116F8843600C187E0 /* MFSideMenu.m in Sources */,
-				273D116416F8843600C187E0 /* UINavigationController+MFSideMenu.m in Sources */,
 				273D116A16F884F900C187E0 /* DemoViewController.m in Sources */,
 				273D116C16F884F900C187E0 /* SideMenuViewController.m in Sources */,
+				276985BC1733D69200536685 /* MFSideMenuContainerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,6 +330,7 @@
 				273D115716F8841300C187E0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

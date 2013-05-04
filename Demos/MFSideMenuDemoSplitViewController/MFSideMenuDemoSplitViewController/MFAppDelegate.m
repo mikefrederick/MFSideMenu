@@ -9,7 +9,7 @@
 #import "MFAppDelegate.h"
 #import "MFMasterViewController.h"
 #import "MFDetailViewController.h"
-#import "MFSideMenu.h"
+#import "MFSideMenuContainerViewController.h"
 #import "SideMenuViewController.h"
 
 @implementation MFAppDelegate
@@ -18,28 +18,30 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-
+    
     MFMasterViewController *masterViewController = [[MFMasterViewController alloc] initWithNibName:@"MFMasterViewController" bundle:nil];
     UINavigationController *masterNavigationController = [[UINavigationController alloc] initWithRootViewController:masterViewController];
-
+    
     MFDetailViewController *detailViewController = [[MFDetailViewController alloc] initWithNibName:@"MFDetailViewController" bundle:nil];
     UINavigationController *detailNavigationController = [[UINavigationController alloc] initWithRootViewController:detailViewController];
-
+    
     masterViewController.detailViewController = detailViewController;
-
+    
     self.splitViewController = [[UISplitViewController alloc] init];
     self.splitViewController.delegate = detailViewController;
+    CGRect frame = self.splitViewController.view.frame;
+    frame.origin = CGPointZero;
+    self.splitViewController.view.frame = frame;
     self.splitViewController.viewControllers = @[masterNavigationController, detailNavigationController];
     
     SideMenuViewController *leftSideMenuController = [[SideMenuViewController alloc] init];
     SideMenuViewController *rightSideMenuController = [[SideMenuViewController alloc] init];
-    [MFSideMenu menuWithNavigationController:masterNavigationController
-                      leftSideMenuController:leftSideMenuController
-                     rightSideMenuController:rightSideMenuController];
-    
-    self.window.rootViewController = self.splitViewController;
+    MFSideMenuContainerViewController *container = [MFSideMenuContainerViewController
+                                                    controllerWithLeftSideMenuViewController:leftSideMenuController
+                                                    centerViewController:self.splitViewController
+                                                    rightSideMenuViewController:rightSideMenuController];
+    self.window.rootViewController = container;
     [self.window makeKeyAndVisible];
-    
     return YES;
 }
 

@@ -21,8 +21,6 @@
 		27FDAE901706737700F84DFA /* MFDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FDAE8F1706737700F84DFA /* MFDetailViewController.m */; };
 		27FDAE931706737700F84DFA /* MFMasterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27FDAE911706737700F84DFA /* MFMasterViewController.xib */; };
 		27FDAE961706737700F84DFA /* MFDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27FDAE941706737700F84DFA /* MFDetailViewController.xib */; };
-		27FDAEA11706739B00F84DFA /* MFSideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FDAE9E1706739B00F84DFA /* MFSideMenu.m */; };
-		27FDAEA21706739B00F84DFA /* UINavigationController+MFSideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FDAEA01706739B00F84DFA /* UINavigationController+MFSideMenu.m */; };
 		27FDAEA51706741900F84DFA /* SideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FDAEA41706741900F84DFA /* SideMenuViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -48,10 +46,6 @@
 		27FDAE8F1706737700F84DFA /* MFDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MFDetailViewController.m; sourceTree = "<group>"; };
 		27FDAE921706737700F84DFA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MFMasterViewController.xib; sourceTree = "<group>"; };
 		27FDAE951706737700F84DFA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MFDetailViewController.xib; sourceTree = "<group>"; };
-		27FDAE9D1706739B00F84DFA /* MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenu.h; sourceTree = "<group>"; };
-		27FDAE9E1706739B00F84DFA /* MFSideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSideMenu.m; sourceTree = "<group>"; };
-		27FDAE9F1706739B00F84DFA /* UINavigationController+MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+MFSideMenu.h"; sourceTree = "<group>"; };
-		27FDAEA01706739B00F84DFA /* UINavigationController+MFSideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+MFSideMenu.m"; sourceTree = "<group>"; };
 		27FDAEA31706741900F84DFA /* SideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideMenuViewController.h; sourceTree = "<group>"; };
 		27FDAEA41706741900F84DFA /* SideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideMenuViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -133,10 +127,6 @@
 		27FDAE9C1706739B00F84DFA /* MFSideMenu */ = {
 			isa = PBXGroup;
 			children = (
-				27FDAE9D1706739B00F84DFA /* MFSideMenu.h */,
-				27FDAE9E1706739B00F84DFA /* MFSideMenu.m */,
-				27FDAE9F1706739B00F84DFA /* UINavigationController+MFSideMenu.h */,
-				27FDAEA01706739B00F84DFA /* UINavigationController+MFSideMenu.m */,
 				27C808DA170AF4A3000584DA /* MFSideMenuContainerViewController.h */,
 				27C808DB170AF4A3000584DA /* MFSideMenuContainerViewController.m */,
 			);
@@ -216,8 +206,6 @@
 				27FDAE841706737700F84DFA /* MFAppDelegate.m in Sources */,
 				27FDAE8D1706737700F84DFA /* MFMasterViewController.m in Sources */,
 				27FDAE901706737700F84DFA /* MFDetailViewController.m in Sources */,
-				27FDAEA11706739B00F84DFA /* MFSideMenu.m in Sources */,
-				27FDAEA21706739B00F84DFA /* UINavigationController+MFSideMenu.m in Sources */,
 				27FDAEA51706741900F84DFA /* SideMenuViewController.m in Sources */,
 				27C808DC170AF4A3000584DA /* MFSideMenuContainerViewController.m in Sources */,
 			);
