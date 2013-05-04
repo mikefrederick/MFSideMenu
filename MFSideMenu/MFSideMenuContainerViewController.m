@@ -486,7 +486,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         CGFloat viewWidth = view.frame.size.width;
         
         if(self.menuState == MFSideMenuStateClosed) {
-            BOOL showMenu = (finalX > viewWidth/2);
+            BOOL showMenu = (finalX > viewWidth/2) || (finalX > self.menuWidth/2);
             if(showMenu) {
                 self.panGestureVelocity = velocity.x;
                 [self setMenuState:MFSideMenuStateLeftMenuOpen];
@@ -541,7 +541,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         CGFloat viewWidth = view.frame.size.width;
         
         if(self.menuState == MFSideMenuStateClosed) {
-            BOOL showMenu = (finalX < -1*viewWidth/2);
+            BOOL showMenu = (finalX < -1*viewWidth/2) || (finalX < -1*self.menuWidth/2);
             if(showMenu) {
                 self.panGestureVelocity = velocity.x;
                 [self setMenuState:MFSideMenuStateRightMenuOpen];
