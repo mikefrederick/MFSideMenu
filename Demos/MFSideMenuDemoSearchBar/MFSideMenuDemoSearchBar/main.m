@@ -1,6 +1,5 @@
 //
 //  main.m
-//  MFSideMenuDemoViewControllerContainment
 //
 //  Created by Michael Frederick on 4/4/13.
 //  Copyright (c) 2013 Frederick Development. All rights reserved.
