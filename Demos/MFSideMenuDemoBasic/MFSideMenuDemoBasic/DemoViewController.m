@@ -6,17 +6,10 @@
 //
 
 #import "DemoViewController.h"
-#import "MFSideMenu.h"
-
-@interface DemoViewController ()
-
-@end
+#import "MFSideMenuContainerViewController.h"
 
 @implementation DemoViewController
 
-- (void) dealloc {
-    self.navigationController.sideMenu.menuStateEventBlock = nil;
-}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     return YES;
@@ -27,37 +20,18 @@
     self.title = @"Demo!";
     
     [self setupMenuBarButtonItems];
-    
-    __weak DemoViewController *weakSelf = self;
-    // if you want to listen for menu open/close events
-    // this is useful, for example, if you want to change a UIBarButtonItem when the menu closes
-    self.navigationController.sideMenu.menuStateEventBlock = ^(MFSideMenuStateEvent event) {
-        switch (event) {
-            case MFSideMenuStateEventMenuWillOpen:
-                // the menu will open
-                weakSelf.navigationItem.title = @"Menu Will Open!";
-                break;
-            case MFSideMenuStateEventMenuDidOpen: {
-                // the menu finished opening
-                weakSelf.navigationItem.title = @"Menu Opened!";
-                break;
-            }
-            case MFSideMenuStateEventMenuWillClose:
-                // the menu will close
-                weakSelf.navigationItem.title = @"Menu Will Close!";
-                break;
-            case MFSideMenuStateEventMenuDidClose:
-                // the menu finished closing
-                weakSelf.navigationItem.title = @"Menu Closed!";
-                break;
-        }
-        NSLog(@"event occurred: %@", weakSelf.navigationItem.title);
-        [weakSelf setupMenuBarButtonItems];  
-    };
 }
 
+- (MFSideMenuContainerViewController *)menuContainerViewController {
+    return (MFSideMenuContainerViewController *)self.navigationController.parentViewController;
+}
+
+
+#pragma mark -
+#pragma mark - UIBarButtonItems
+
 - (void)setupMenuBarButtonItems {
-    switch (self.navigationController.sideMenu.menuState) {
+    switch (self.menuContainerViewController.menuState) {
         case MFSideMenuStateClosed:
             if([[self.navigationController.viewControllers objectAtIndex:0] isEqual:self]) {
                 self.navigationItem.leftBarButtonItem = [self leftMenuBarButtonItem];
@@ -78,15 +52,15 @@
 - (UIBarButtonItem *)leftMenuBarButtonItem {
     return [[UIBarButtonItem alloc]
             initWithImage:[UIImage imageNamed:@"menu-icon.png"] style:UIBarButtonItemStyleBordered
-            target:self.navigationController.sideMenu
-            action:@selector(toggleLeftSideMenu)];
+            target:self
+            action:@selector(leftSideMenuButtonPressed:)];
 }
 
 - (UIBarButtonItem *)rightMenuBarButtonItem {
     return [[UIBarButtonItem alloc]
             initWithImage:[UIImage imageNamed:@"menu-icon.png"] style:UIBarButtonItemStyleBordered
-            target:self.navigationController.sideMenu
-            action:@selector(toggleRightSideMenu)];
+            target:self
+            action:@selector(rightSideMenuButtonPressed:)];
 }
 
 - (UIBarButtonItem *)backBarButtonItem {
@@ -96,9 +70,29 @@
                                            action:@selector(backButtonPressed:)];
 }
 
+
+#pragma mark -
+#pragma mark - UIBarButtonItem Callbacks
+
 - (void)backButtonPressed:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+- (void)leftSideMenuButtonPressed:(id)sender {
+    [self.menuContainerViewController toggleLeftSideMenuCompletion:^{
+        [self setupMenuBarButtonItems];
+    }];
+}
+
+- (void)rightSideMenuButtonPressed:(id)sender {
+    [self.menuContainerViewController toggleRightSideMenuCompletion:^{
+        [self setupMenuBarButtonItems];
+    }];
+}
+
+
+#pragma mark -
+#pragma mark - IBActions
 
 - (IBAction)pushAnotherPressed:(id)sender {
     DemoViewController *demoController = [[DemoViewController alloc]
