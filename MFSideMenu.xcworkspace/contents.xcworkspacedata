@@ -2,16 +2,16 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:Demos/MFSideMenuDemoViewControllerContainment/MFSideMenuDemoViewControllerContainment.xcodeproj">
+      location = "group:Demos/MFSideMenuDemoBasic/MFSideMenuDemoBasic.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Demos/MFSideMenuDemoSearchBar/MFSideMenuDemoSearchBar.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Demos/MFSideMenuDemoSplitViewController/MFSideMenuDemoSplitViewController.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Demos/MFSideMenuDemoUITabBarController/MFSideMenuDemoUITabBarController.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:Demos/MFSideMenuDemoBasic/MFSideMenuDemoBasic.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Demos/MFSideMenuDemoStoryboard/MFSideMenuDemoStoryboard.xcodeproj">
