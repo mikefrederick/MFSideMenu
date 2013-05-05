@@ -502,9 +502,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
                 [self setMenuState:MFSideMenuStateLeftMenuOpen];
             } else {
                 self.panGestureVelocity = 0;
-                [UIView beginAnimations:nil context:NULL];
-                [self setCenterViewControllerOffset:0];
-                [UIView commitAnimations];
+                [self setCenterViewControllerOffsetWithAnimation:0 completion:nil];
             }
         } else {
             BOOL hideMenu = (finalX > adjustedOrigin.x);
@@ -513,9 +511,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
                 [self setMenuState:MFSideMenuStateClosed];
             } else {
                 self.panGestureVelocity = 0;
-                [UIView beginAnimations:nil context:NULL];
-                [self setCenterViewControllerOffset:adjustedOrigin.x];
-                [UIView commitAnimations];
+                [self setCenterViewControllerOffsetWithAnimation:adjustedOrigin.x completion:nil];
             }
         }
         
@@ -557,9 +553,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
                 [self setMenuState:MFSideMenuStateRightMenuOpen];
             } else {
                 self.panGestureVelocity = 0;
-                [UIView beginAnimations:nil context:NULL];
-                [self setCenterViewControllerOffset:0];
-                [UIView commitAnimations];
+                [self setCenterViewControllerOffsetWithAnimation:0 completion:nil];
             }
         } else {
             BOOL hideMenu = (finalX < adjustedOrigin.x);
@@ -568,9 +562,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
                 [self setMenuState:MFSideMenuStateClosed];
             } else {
                 self.panGestureVelocity = 0;
-                [UIView beginAnimations:nil context:NULL];
-                [self setCenterViewControllerOffset:adjustedOrigin.x];
-                [UIView commitAnimations];
+                [self setCenterViewControllerOffsetWithAnimation:adjustedOrigin.x completion:nil];
             }
         }
 	}
