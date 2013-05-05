@@ -237,17 +237,22 @@ typedef enum {
 }
 
 - (void)setMenuState:(MFSideMenuState)menuState completion:(void (^)(void))completion {
+    void (^innerCompletion)() = ^ {
+        _menuState = menuState;
+        if(completion) completion();
+    };
+    
     switch (menuState) {
         case MFSideMenuStateClosed:
-            [self closeSideMenuCompletion:completion];
+            [self closeSideMenuCompletion:innerCompletion];
             break;
         case MFSideMenuStateLeftMenuOpen:
             if(!self.leftSideMenuViewController) return;
-            [self openLeftSideMenuCompletion:completion];
+            [self openLeftSideMenuCompletion:innerCompletion];
             break;
         case MFSideMenuStateRightMenuOpen:
             if(!self.rightSideMenuViewController) return;
-            [self openRightSideMenuCompletion:completion];
+            [self openRightSideMenuCompletion:innerCompletion];
             break;
         default:
             break;
@@ -257,8 +262,6 @@ typedef enum {
     if (self.navigationController.isViewLoaded && [self.navigationController.view respondsToSelector:@selector(accessibilityViewIsModal)]) {
         self.navigationController.view.accessibilityViewIsModal = menuState == MFSideMenuStateClosed;
     }
-    
-    _menuState = menuState;
 }
 
 
