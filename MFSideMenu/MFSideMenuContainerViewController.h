@@ -11,7 +11,7 @@
 typedef enum {
     MFSideMenuPanModeNone = 0, // pan disabled
     MFSideMenuPanModeCenterViewController = 1 << 0, // enable panning on the Center view controller, i.e. the navigation controller
-    MFSideMenuPanModeSideMenu = 1 << 2, // enable panning on side menus
+    MFSideMenuPanModeSideMenu = 1 << 1, // enable panning on side menus
     MFSideMenuPanModeDefault = MFSideMenuPanModeCenterViewController | MFSideMenuPanModeSideMenu
 } MFSideMenuPanMode;
 
