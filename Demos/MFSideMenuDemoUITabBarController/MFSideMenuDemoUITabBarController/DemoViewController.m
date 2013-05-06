@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"Demo!";
+    if(!self.title) self.title = @"Demo!";
     
     [self setupMenuBarButtonItems];
 }
@@ -31,21 +31,12 @@
 #pragma mark - UIBarButtonItems
 
 - (void)setupMenuBarButtonItems {
-    switch (self.menuContainerViewController.menuState) {
-        case MFSideMenuStateClosed:
-            if([[self.navigationController.viewControllers objectAtIndex:0] isEqual:self]) {
-                self.navigationItem.leftBarButtonItem = [self leftMenuBarButtonItem];
-            } else {
-                self.navigationItem.leftBarButtonItem = [self backBarButtonItem];
-            }
-            self.navigationItem.rightBarButtonItem = [self rightMenuBarButtonItem];
-            break;
-        case MFSideMenuStateLeftMenuOpen:
-            self.navigationItem.leftBarButtonItem = [self leftMenuBarButtonItem];
-            break;
-        case MFSideMenuStateRightMenuOpen:
-            self.navigationItem.rightBarButtonItem = [self rightMenuBarButtonItem];
-            break;
+    self.navigationItem.rightBarButtonItem = [self rightMenuBarButtonItem];
+    if(self.menuContainerViewController.menuState == MFSideMenuStateClosed &&
+       ![[self.navigationController.viewControllers objectAtIndex:0] isEqual:self]) {
+        self.navigationItem.leftBarButtonItem = [self backBarButtonItem];
+    } else {
+        self.navigationItem.leftBarButtonItem = [self leftMenuBarButtonItem];
     }
 }
 
