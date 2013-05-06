@@ -250,15 +250,22 @@ typedef enum {
     };
     
     switch (menuState) {
-        case MFSideMenuStateClosed:
-            [self closeSideMenuCompletion:innerCompletion];
+        case MFSideMenuStateClosed: {
+            [self closeSideMenuCompletion:^{
+                self.leftSideMenuViewController.view.hidden = YES;
+                self.rightSideMenuViewController.view.hidden = YES;
+                innerCompletion();
+            }];
             break;
+        }
         case MFSideMenuStateLeftMenuOpen:
             if(!self.leftSideMenuViewController) return;
+            self.leftSideMenuViewController.view.hidden = NO;
             [self openLeftSideMenuCompletion:innerCompletion];
             break;
         case MFSideMenuStateRightMenuOpen:
             if(!self.rightSideMenuViewController) return;
+            self.rightSideMenuViewController.view.hidden = NO;
             [self openRightSideMenuCompletion:innerCompletion];
             break;
         default:
