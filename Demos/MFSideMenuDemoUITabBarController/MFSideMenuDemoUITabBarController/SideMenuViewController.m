@@ -47,10 +47,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     DemoViewController *demoController = [[DemoViewController alloc] initWithNibName:@"DemoViewController" bundle:nil];
-    demoController.title = [NSString stringWithFormat:@"Demo Controller #%d-%d", indexPath.section, indexPath.row];
+    demoController.title = [NSString stringWithFormat:@"Demo #%d-%d", indexPath.section, indexPath.row];
     
+    UITabBarController *tabBarController = self.menuContainerViewController.centerViewController;
+    UINavigationController *navigationController = (UINavigationController *)tabBarController.selectedViewController;
     NSArray *controllers = [NSArray arrayWithObject:demoController];
-    self.navigationController.viewControllers = controllers;
+    navigationController.viewControllers = controllers;
     [self.menuContainerViewController setMenuState:MFSideMenuStateClosed];
 }
 
