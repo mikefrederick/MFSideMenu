@@ -21,8 +21,8 @@
     UIViewController *leftSideMenuViewController = [storyboard instantiateViewControllerWithIdentifier:@"leftSideMenuViewController"];
     UIViewController *rightSideMenuViewController = [storyboard instantiateViewControllerWithIdentifier:@"rightSideMenuViewController"];
     
-    [container setLeftSideMenuViewController:leftSideMenuViewController];
-    [container setRightSideMenuViewController:rightSideMenuViewController];
+    [container setLeftMenuViewController:leftSideMenuViewController];
+    [container setRightMenuViewController:rightSideMenuViewController];
     [container setCenterViewController:navigationController];
     
     return YES;

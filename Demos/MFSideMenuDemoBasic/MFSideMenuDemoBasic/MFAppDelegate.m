@@ -25,12 +25,12 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    SideMenuViewController *leftSideMenuController = [[SideMenuViewController alloc] init];
-    SideMenuViewController *rightSideMenuController = [[SideMenuViewController alloc] init];
+    SideMenuViewController *leftMenuViewController = [[SideMenuViewController alloc] init];
+    SideMenuViewController *rightMenuViewController = [[SideMenuViewController alloc] init];
     MFSideMenuContainerViewController *container = [MFSideMenuContainerViewController
-                                                    controllerWithLeftSideMenuViewController:leftSideMenuController
-                                                    centerViewController:[self navigationController]
-                                                    rightSideMenuViewController:rightSideMenuController];
+                                                    containerWithCenterViewController:[self navigationController]
+                                                    leftMenuViewController:leftMenuViewController
+                                                    rightMenuViewController:rightMenuViewController];
     self.window.rootViewController = container;
     [self.window makeKeyAndVisible];
     

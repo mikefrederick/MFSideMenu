@@ -19,9 +19,9 @@ typedef enum {
 } MFSideMenuPanDirection;
 
 @interface MFSideMenuContainerViewController()
-@property (nonatomic, strong) UIViewController *leftSideMenuViewController;
+@property (nonatomic, strong) UIViewController *leftMenuViewController;
 @property (nonatomic, strong) UIViewController *centerViewController;
-@property (nonatomic, strong) UIViewController *rightSideMenuViewController;
+@property (nonatomic, strong) UIViewController *rightMenuViewController;
 @property (nonatomic, strong) UIView *menuContainerView;
 @property (nonatomic, assign) CGPoint panGestureOrigin;
 @property (nonatomic, assign) CGFloat panGestureVelocity;
@@ -49,9 +49,9 @@ typedef enum {
     UINavigationController *navigationController = [[UINavigationController alloc]
                                                     initWithRootViewController:demoViewController];
     self.container = [MFSideMenuContainerViewController
-                      controllerWithLeftSideMenuViewController:leftSideMenuController
-                      centerViewController:navigationController
-                      rightSideMenuViewController:rightSideMenuController];
+                      containerWithCenterViewController:leftSideMenuController
+                      leftMenuViewController:navigationController
+                      rightMenuViewController:rightSideMenuController];
 }
 
 - (void)tearDownClass {

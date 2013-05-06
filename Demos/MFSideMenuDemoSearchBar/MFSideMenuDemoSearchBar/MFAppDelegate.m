@@ -28,9 +28,9 @@
     SideMenuViewController *leftSideMenuController = [[SideMenuViewController alloc] init];
     SideMenuViewController *rightSideMenuController = [[SideMenuViewController alloc] init];
     MFSideMenuContainerViewController *container = [MFSideMenuContainerViewController
-                                                    controllerWithLeftSideMenuViewController:leftSideMenuController
-                                                    centerViewController:[self navigationController]
-                                                    rightSideMenuViewController:rightSideMenuController];
+                                                    containerWithCenterViewController:[self navigationController]
+                                                    leftMenuViewController:leftSideMenuController
+                                                    rightMenuViewController:rightSideMenuController];
     self.window.rootViewController = container;
     [self.window makeKeyAndVisible];
     

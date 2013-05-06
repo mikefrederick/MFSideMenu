@@ -27,9 +27,9 @@ typedef enum {
 
 @implementation MFSideMenuContainerViewController
 
-@synthesize leftSideMenuViewController = _leftSideMenuViewController;
+@synthesize leftMenuViewController = _leftSideMenuViewController;
 @synthesize centerViewController = _centerViewController;
-@synthesize rightSideMenuViewController = _rightSideMenuViewController;
+@synthesize rightMenuViewController = _rightSideMenuViewController;
 @synthesize menuContainerView;
 @synthesize panMode;
 @synthesize panGestureOrigin;
@@ -42,7 +42,7 @@ typedef enum {
 @synthesize shadowColor = _shadowColor;
 @synthesize shadowOpacity = _shadowOpacity;
 @synthesize menuSlideAnimationEnabled;
-@synthesize menuSlideFactor;
+@synthesize menuSlideAnimationFactor;
 @synthesize menuAnimationDefaultDuration;
 @synthesize menuAnimationMaxDuration;
 
@@ -50,13 +50,13 @@ typedef enum {
 #pragma mark -
 #pragma mark - Initialization
 
-+ (MFSideMenuContainerViewController *)controllerWithLeftSideMenuViewController:(id)leftSideMenuViewController
-                                                           centerViewController:(id)centerViewController
-                                                    rightSideMenuViewController:(id)rightSideMenuViewController {
++ (MFSideMenuContainerViewController *)containerWithCenterViewController:(id)centerViewController
+                                                  leftMenuViewController:(id)leftMenuViewController
+                                                 rightMenuViewController:(id)rightMenuViewController {
     MFSideMenuContainerViewController *controller = [MFSideMenuContainerViewController new];
-    controller.leftSideMenuViewController = leftSideMenuViewController;
+    controller.leftMenuViewController = leftMenuViewController;
     controller.centerViewController = centerViewController;
-    controller.rightSideMenuViewController = rightSideMenuViewController;
+    controller.rightMenuViewController = rightMenuViewController;
     return controller;
 }
 
@@ -84,7 +84,7 @@ typedef enum {
     self.shadowRadius = 10.0f;
     self.shadowOpacity = 0.75f;
     self.shadowColor = [UIColor blackColor];
-    self.menuSlideFactor = 3.0f;
+    self.menuSlideAnimationFactor = 3.0f;
     self.shadowEnabled = YES;
     self.menuAnimationDefaultDuration = 0.2f;
     self.menuAnimationMaxDuration = 0.4f;
@@ -137,7 +137,7 @@ typedef enum {
 #pragma mark -
 #pragma mark - UIViewController Containment
 
-- (void)setLeftSideMenuViewController:(UIViewController *)leftSideMenuViewController {
+- (void)setLeftMenuViewController:(UIViewController *)leftSideMenuViewController {
     [self removeChildViewController:_leftSideMenuViewController];
     
     _leftSideMenuViewController = leftSideMenuViewController;
@@ -161,7 +161,7 @@ typedef enum {
     [_centerViewController didMoveToParentViewController:self];
 }
 
-- (void)setRightSideMenuViewController:(UIViewController *)rightSideMenuViewController {
+- (void)setRightMenuViewController:(UIViewController *)rightSideMenuViewController {
     [self removeChildViewController:_rightSideMenuViewController];
     
     _rightSideMenuViewController = rightSideMenuViewController;
@@ -224,14 +224,14 @@ typedef enum {
 }
 
 - (void)openLeftSideMenuCompletion:(void (^)(void))completion {
-    if(!self.leftSideMenuViewController) return;
-    [self.menuContainerView bringSubviewToFront:self.leftSideMenuViewController.view];
+    if(!self.leftMenuViewController) return;
+    [self.menuContainerView bringSubviewToFront:self.leftMenuViewController.view];
     [self setCenterViewControllerOffsetWithAnimation:self.menuWidth completion:completion];
 }
 
 - (void)openRightSideMenuCompletion:(void (^)(void))completion {
-    if(!self.rightSideMenuViewController) return;
-    [self.menuContainerView bringSubviewToFront:self.rightSideMenuViewController.view];
+    if(!self.rightMenuViewController) return;
+    [self.menuContainerView bringSubviewToFront:self.rightMenuViewController.view];
     [self setCenterViewControllerOffsetWithAnimation:-1*self.menuWidth completion:completion];
 }
 
@@ -252,20 +252,20 @@ typedef enum {
     switch (menuState) {
         case MFSideMenuStateClosed: {
             [self closeSideMenuCompletion:^{
-                self.leftSideMenuViewController.view.hidden = YES;
-                self.rightSideMenuViewController.view.hidden = YES;
+                self.leftMenuViewController.view.hidden = YES;
+                self.rightMenuViewController.view.hidden = YES;
                 innerCompletion();
             }];
             break;
         }
         case MFSideMenuStateLeftMenuOpen:
-            if(!self.leftSideMenuViewController) return;
-            self.leftSideMenuViewController.view.hidden = NO;
+            if(!self.leftMenuViewController) return;
+            [self leftMenuWillShow];
             [self openLeftSideMenuCompletion:innerCompletion];
             break;
         case MFSideMenuStateRightMenuOpen:
-            if(!self.rightSideMenuViewController) return;
-            self.rightSideMenuViewController.view.hidden = NO;
+            if(!self.rightMenuViewController) return;
+            [self rightMenuWillShow];
             [self openRightSideMenuCompletion:innerCompletion];
             break;
         default:
@@ -288,40 +288,40 @@ typedef enum {
 #pragma mark - Side Menu Positioning
 
 - (void) setLeftSideMenuFrameToClosedPosition {
-    if(!self.leftSideMenuViewController) return;
-    CGRect leftFrame = self.leftSideMenuViewController.view.frame;
+    if(!self.leftMenuViewController) return;
+    CGRect leftFrame = self.leftMenuViewController.view.frame;
     leftFrame.size.width = self.menuWidth;
-    leftFrame.origin.x = (self.menuSlideAnimationEnabled) ? -1*leftFrame.size.width / self.menuSlideFactor : 0;
+    leftFrame.origin.x = (self.menuSlideAnimationEnabled) ? -1*leftFrame.size.width / self.menuSlideAnimationFactor : 0;
     leftFrame.origin.y = 0;
-    self.leftSideMenuViewController.view.frame = leftFrame;
-    self.leftSideMenuViewController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleHeight;
+    self.leftMenuViewController.view.frame = leftFrame;
+    self.leftMenuViewController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleHeight;
 }
 
 - (void) setRightSideMenuFrameToClosedPosition {
-    if(!self.rightSideMenuViewController) return;
-    CGRect rightFrame = self.rightSideMenuViewController.view.frame;
+    if(!self.rightMenuViewController) return;
+    CGRect rightFrame = self.rightMenuViewController.view.frame;
     rightFrame.size.width = self.menuWidth;
     rightFrame.origin.y = 0;
     rightFrame.origin.x = self.centerViewController.view.frame.size.width - self.menuWidth;
-    if(self.menuSlideAnimationEnabled) rightFrame.origin.x += self.menuWidth / self.menuSlideFactor;
-    self.rightSideMenuViewController.view.frame = rightFrame;
-    self.rightSideMenuViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight;
+    if(self.menuSlideAnimationEnabled) rightFrame.origin.x += self.menuWidth / self.menuSlideAnimationFactor;
+    self.rightMenuViewController.view.frame = rightFrame;
+    self.rightMenuViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight;
 }
 
 - (void)alignLeftMenuControllerWithCenterViewController {
-    CGRect leftMenuFrame = self.leftSideMenuViewController.view.frame;
+    CGRect leftMenuFrame = self.leftMenuViewController.view.frame;
     leftMenuFrame.size.width = _menuWidth;
     CGFloat menuX = self.centerViewController.view.frame.origin.x - leftMenuFrame.size.width;
     leftMenuFrame.origin.x = menuX;
-    self.leftSideMenuViewController.view.frame = leftMenuFrame;
+    self.leftMenuViewController.view.frame = leftMenuFrame;
 }
 
 - (void)alignRightMenuControllerWithCenterViewController {
-    CGRect rightMenuFrame = self.rightSideMenuViewController.view.frame;
+    CGRect rightMenuFrame = self.rightMenuViewController.view.frame;
     rightMenuFrame.size.width = _menuWidth;
     CGFloat menuX = self.centerViewController.view.frame.size.width + self.centerViewController.view.frame.origin.x;
     rightMenuFrame.origin.x = menuX;
-    self.rightSideMenuViewController.view.frame = rightMenuFrame;
+    self.rightMenuViewController.view.frame = rightMenuFrame;
 }
 
 
@@ -462,14 +462,14 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         CGPoint translatedPoint = [recognizer translationInView:view];
         if(translatedPoint.x > 0) {
             self.panDirection = MFSideMenuPanDirectionRight;
-            if(self.leftSideMenuViewController && self.menuState == MFSideMenuStateClosed) {
-                [self.menuContainerView bringSubviewToFront:self.leftSideMenuViewController.view];
+            if(self.leftMenuViewController && self.menuState == MFSideMenuStateClosed) {
+                [self leftMenuWillShow];
             }
         }
         else if(translatedPoint.x < 0) {
             self.panDirection = MFSideMenuPanDirectionLeft;
-            if(self.rightSideMenuViewController && self.menuState == MFSideMenuStateClosed) {
-                [self.menuContainerView bringSubviewToFront:self.rightSideMenuViewController.view];
+            if(self.rightMenuViewController && self.menuState == MFSideMenuStateClosed) {
+                [self rightMenuWillShow];
             }
         }
     }
@@ -488,7 +488,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 }
 
 - (void) handleRightPan:(UIPanGestureRecognizer *)recognizer {
-    if(!self.leftSideMenuViewController && self.menuState == MFSideMenuStateClosed) return;
+    if(!self.leftMenuViewController && self.menuState == MFSideMenuStateClosed) return;
     
     UIView *view = self.centerViewController.view;
     
@@ -539,7 +539,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 }
 
 - (void) handleLeftPan:(UIPanGestureRecognizer *)recognizer {
-    if(!self.rightSideMenuViewController && self.menuState == MFSideMenuStateClosed) return;
+    if(!self.rightMenuViewController && self.menuState == MFSideMenuStateClosed) return;
     
     UIView *view = self.centerViewController.view;
     

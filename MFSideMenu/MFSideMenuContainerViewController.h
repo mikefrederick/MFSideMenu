@@ -10,7 +10,7 @@
 
 typedef enum {
     MFSideMenuPanModeNone = 0, // pan disabled
-    MFSideMenuPanModeCenterViewController = 1 << 0, // enable panning on the Center view controller, i.e. the navigation controller
+    MFSideMenuPanModeCenterViewController = 1 << 0, // enable panning on the centerViewController
     MFSideMenuPanModeSideMenu = 1 << 1, // enable panning on side menus
     MFSideMenuPanModeDefault = MFSideMenuPanModeCenterViewController | MFSideMenuPanModeSideMenu
 } MFSideMenuPanMode;
@@ -24,29 +24,34 @@ typedef enum {
 
 @interface MFSideMenuContainerViewController : UIViewController<UIGestureRecognizerDelegate>
 
-+ (MFSideMenuContainerViewController *)controllerWithLeftSideMenuViewController:(id)leftSideMenuViewController
-                                                           centerViewController:(id)centerViewController
-                                                    rightSideMenuViewController:(id)rightSideMenuViewController;
++ (MFSideMenuContainerViewController *)containerWithCenterViewController:(id)centerViewController
+                                                  leftMenuViewController:(id)leftMenuViewController
+                                                 rightMenuViewController:(id)rightMenuViewController;
 
-@property (nonatomic, strong) UIViewController *leftSideMenuViewController;
 @property (nonatomic, strong) UIViewController *centerViewController;
-@property (nonatomic, strong) UIViewController *rightSideMenuViewController;
+@property (nonatomic, strong) UIViewController *leftMenuViewController;
+@property (nonatomic, strong) UIViewController *rightMenuViewController;
 
 @property (nonatomic, assign) MFSideMenuState menuState;
 @property (nonatomic, assign) MFSideMenuPanMode panMode;
 
-@property (nonatomic, assign) CGFloat menuAnimationDefaultDuration; // default duration for the open/close animation
-@property (nonatomic, assign) CGFloat menuAnimationMaxDuration; // maximum duration for the open/close animation
+// menu open/close animation duration -- user can pan faster than default duration, max duration sets the limit
+@property (nonatomic, assign) CGFloat menuAnimationDefaultDuration;
+@property (nonatomic, assign) CGFloat menuAnimationMaxDuration;
 
-@property (nonatomic, assign) CGFloat menuWidth; // size of the side menu(s)
+// width of the side menus
+@property (nonatomic, assign) CGFloat menuWidth;
 
+// shadow
 @property (nonatomic, assign) BOOL shadowEnabled;
 @property (nonatomic, assign) CGFloat shadowRadius;
 @property (nonatomic, assign) CGFloat shadowOpacity;
 @property (nonatomic, strong) UIColor *shadowColor;
 
-@property (nonatomic, assign) BOOL menuSlideAnimationEnabled; // should the menus slide in/out with the Center controller?
-@property (nonatomic, assign) CGFloat menuSlideFactor; // higher = less menu movement on animation (only applicable if menuSlideAnimationEnabled is YES)
+// menu slide-in animation
+@property (nonatomic, assign) BOOL menuSlideAnimationEnabled;
+@property (nonatomic, assign) CGFloat menuSlideAnimationFactor; // higher = less menu movement on animation
+
 
 - (void)toggleLeftSideMenuCompletion:(void (^)(void))completion;
 - (void)toggleRightSideMenuCompletion:(void (^)(void))completion;
