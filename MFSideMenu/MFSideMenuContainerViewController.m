@@ -47,6 +47,9 @@ typedef enum {
 @synthesize menuAnimationMaxDuration;
 
 
+#pragma mark -
+#pragma mark - Initialization
+
 + (MFSideMenuContainerViewController *)controllerWithLeftSideMenuViewController:(id)leftSideMenuViewController
                                                            centerViewController:(id)centerViewController
                                                     rightSideMenuViewController:(id)rightSideMenuViewController {
@@ -87,6 +90,10 @@ typedef enum {
     self.menuAnimationMaxDuration = 0.4f;
     self.panMode = MFSideMenuPanModeDefault;
 }
+
+
+#pragma mark -
+#pragma mark - View Lifecycle
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -198,7 +205,7 @@ typedef enum {
 
 
 #pragma mark -
-#pragma mark - Menu State & Open/Close Animation
+#pragma mark - Menu State
 
 - (void)toggleLeftSideMenuCompletion:(void (^)(void))completion {
     if(self.menuState == MFSideMenuStateLeftMenuOpen) {
