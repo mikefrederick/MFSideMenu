@@ -271,11 +271,6 @@ typedef enum {
         default:
             break;
     }
-    
-    // TODO: do we still need this?
-    if (self.navigationController.isViewLoaded && [self.navigationController.view respondsToSelector:@selector(accessibilityViewIsModal)]) {
-        self.navigationController.view.accessibilityViewIsModal = menuState == MFSideMenuStateClosed;
-    }
 }
 
 
