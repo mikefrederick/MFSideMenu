@@ -25,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2769860D1737D77F00536685 /* MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenu.h; sourceTree = "<group>"; };
 		27C808DA170AF4A3000584DA /* MFSideMenuContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenuContainerViewController.h; sourceTree = "<group>"; };
 		27C808DB170AF4A3000584DA /* MFSideMenuContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSideMenuContainerViewController.m; sourceTree = "<group>"; };
 		27FDAE701706737700F84DFA /* MFSideMenuDemoSplitViewController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MFSideMenuDemoSplitViewController.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -127,6 +128,7 @@
 		27FDAE9C1706739B00F84DFA /* MFSideMenu */ = {
 			isa = PBXGroup;
 			children = (
+				2769860D1737D77F00536685 /* MFSideMenu.h */,
 				27C808DA170AF4A3000584DA /* MFSideMenuContainerViewController.h */,
 				27C808DB170AF4A3000584DA /* MFSideMenuContainerViewController.m */,
 			);

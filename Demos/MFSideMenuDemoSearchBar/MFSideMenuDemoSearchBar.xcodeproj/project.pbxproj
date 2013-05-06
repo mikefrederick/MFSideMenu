@@ -66,6 +66,7 @@
 		276985F017355AB300536685 /* DemoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DemoViewController.xib; sourceTree = "<group>"; };
 		276985F117355AB300536685 /* SideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideMenuViewController.h; sourceTree = "<group>"; };
 		276985F217355AB300536685 /* SideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideMenuViewController.m; sourceTree = "<group>"; };
+		2769860C1737D77100536685 /* MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenu.h; sourceTree = "<group>"; };
 		27C808E9170D9DD0000584DA /* MFSideMenuDemoSearchBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MFSideMenuDemoSearchBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27C808EC170D9DD0000584DA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		27C808EE170D9DD0000584DA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -203,6 +204,7 @@
 		27C80917170D9F08000584DA /* MFSideMenu */ = {
 			isa = PBXGroup;
 			children = (
+				2769860C1737D77100536685 /* MFSideMenu.h */,
 				27C8091A170D9F08000584DA /* MFSideMenuContainerViewController.h */,
 				27C8091B170D9F08000584DA /* MFSideMenuContainerViewController.m */,
 			);

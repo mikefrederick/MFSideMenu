@@ -50,6 +50,7 @@
 		275F15BB1517F7A20052A240 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		2769860117355C4C00536685 /* MFSideMenuContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenuContainerViewController.h; sourceTree = "<group>"; };
 		2769860217355C4C00536685 /* MFSideMenuContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSideMenuContainerViewController.m; sourceTree = "<group>"; };
+		2769860B1737D76900536685 /* MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenu.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +83,7 @@
 		273D111316F632CD00C187E0 /* MFSideMenu */ = {
 			isa = PBXGroup;
 			children = (
+				2769860B1737D76900536685 /* MFSideMenu.h */,
 				2769860117355C4C00536685 /* MFSideMenuContainerViewController.h */,
 				2769860217355C4C00536685 /* MFSideMenuContainerViewController.m */,
 			);
