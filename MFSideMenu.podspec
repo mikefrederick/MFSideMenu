@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'MFSideMenu'
-  s.version  = '0.4.8'
+  s.version  = '0.5.0'
   s.license  = 'BSD'
   s.summary  = 'Facebook-like side menu for iOS.'
   s.homepage = 'https://github.com/mikefrederick/MFSideMenu'
@@ -8,6 +8,6 @@ Pod::Spec.new do |s|
   s.source   = { :git => 'https://github.com/mikefrederick/MFSideMenu.git', :tag => s.version.to_s }
   s.platform = :ios
   s.requires_arc = true
-  s.source_files = 'MFSideMenu/*.{h,m}'
+  s.source_files = 'MFSideMenu/*'
   s.frameworks   = 'QuartzCore'
 end
