@@ -273,6 +273,16 @@ typedef enum {
     }
 }
 
+- (void)leftMenuWillShow {
+    self.leftMenuViewController.view.hidden = NO;
+    [self.menuContainerView bringSubviewToFront:self.leftMenuViewController.view];
+}
+
+- (void)rightMenuWillShow {
+    self.rightMenuViewController.view.hidden = NO;
+    [self.menuContainerView bringSubviewToFront:self.rightMenuViewController.view];
+}
+
 
 #pragma mark -
 #pragma mark - Side Menu Positioning
