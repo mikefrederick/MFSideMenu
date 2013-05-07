@@ -247,10 +247,13 @@ typedef enum {
     void (^innerCompletion)() = ^ {
         _menuState = menuState;
         if(completion) completion();
+        MFSideMenuStateEvent eventType = (_menuState == MFSideMenuStateClosed) ? MFSideMenuStateEventMenuDidClose : MFSideMenuStateEventMenuDidOpen;
+        [self sendStateEventNotification:eventType];
     };
     
     switch (menuState) {
         case MFSideMenuStateClosed: {
+            [self sendStateEventNotification:MFSideMenuStateEventMenuWillClose];
             [self closeSideMenuCompletion:^{
                 [self.leftMenuViewController view].hidden = YES;
                 [self.rightMenuViewController view].hidden = YES;
@@ -260,11 +263,13 @@ typedef enum {
         }
         case MFSideMenuStateLeftMenuOpen:
             if(!self.leftMenuViewController) return;
+            [self sendStateEventNotification:MFSideMenuStateEventMenuWillOpen];
             [self leftMenuWillShow];
             [self openLeftSideMenuCompletion:innerCompletion];
             break;
         case MFSideMenuStateRightMenuOpen:
             if(!self.rightMenuViewController) return;
+            [self sendStateEventNotification:MFSideMenuStateEventMenuWillOpen];
             [self rightMenuWillShow];
             [self openRightSideMenuCompletion:innerCompletion];
             break;
@@ -273,6 +278,7 @@ typedef enum {
     }
 }
 
+// these callbacks are called when the menu will become visible, not neccessarily when they will OPEN
 - (void)leftMenuWillShow {
     [self.leftMenuViewController view].hidden = NO;
     [self.menuContainerView bringSubviewToFront:[self.leftMenuViewController view]];
@@ -281,6 +287,18 @@ typedef enum {
 - (void)rightMenuWillShow {
     [self.rightMenuViewController view].hidden = NO;
     [self.menuContainerView bringSubviewToFront:[self.rightMenuViewController view]];
+}
+
+
+#pragma mark -
+#pragma mark - State Event Notification
+
+- (void)sendStateEventNotification:(MFSideMenuStateEvent)event {
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:event]
+                                                         forKey:@"eventType"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:MFSideMenuStateNotificationEvent
+                                                        object:self
+                                                      userInfo:userInfo];
 }
 
 

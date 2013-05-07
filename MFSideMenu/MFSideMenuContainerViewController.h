@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+static NSString *MFSideMenuStateNotificationEvent = @"MFSideMenuStateNotificationEvent";
+
 typedef enum {
     MFSideMenuPanModeNone = 0, // pan disabled
     MFSideMenuPanModeCenterViewController = 1 << 0, // enable panning on the centerViewController
@@ -20,6 +22,13 @@ typedef enum {
     MFSideMenuStateLeftMenuOpen, // the left-hand menu is open
     MFSideMenuStateRightMenuOpen // the right-hand menu is open
 } MFSideMenuState;
+
+typedef enum {
+    MFSideMenuStateEventMenuWillOpen, // the menu is going to open
+    MFSideMenuStateEventMenuDidOpen, // the menu finished opening
+    MFSideMenuStateEventMenuWillClose, // the menu is going to close
+    MFSideMenuStateEventMenuDidClose // the menu finished closing
+} MFSideMenuStateEvent;
 
 
 @interface MFSideMenuContainerViewController : UIViewController<UIGestureRecognizerDelegate>
