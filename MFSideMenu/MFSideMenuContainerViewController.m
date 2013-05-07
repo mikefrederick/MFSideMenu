@@ -9,13 +9,13 @@
 #import "MFSideMenuContainerViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
+NSString * const MFSideMenuStateNotificationEvent = @"MFSideMenuStateNotificationEvent";
+
 typedef enum {
     MFSideMenuPanDirectionNone,
     MFSideMenuPanDirectionLeft,
     MFSideMenuPanDirectionRight
 } MFSideMenuPanDirection;
-
-
 
 @interface MFSideMenuContainerViewController ()
 @property (nonatomic, strong) UIView *menuContainerView;

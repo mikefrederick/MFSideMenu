@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-static NSString *MFSideMenuStateNotificationEvent = @"MFSideMenuStateNotificationEvent";
+extern NSString * const MFSideMenuStateNotificationEvent;
 
 typedef enum {
     MFSideMenuPanModeNone = 0, // pan disabled
