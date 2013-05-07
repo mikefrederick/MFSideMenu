@@ -75,10 +75,7 @@ typedef enum {
 }
 
 - (void)setDefaultSettings {
-    CGRect applicationFrame = [[UIApplication sharedApplication].delegate window].screen.applicationFrame;
-    CGRect menuContainerFrame = (CGRect){CGPointZero, applicationFrame.size};
-    self.menuContainerView = [[UIView alloc] initWithFrame:menuContainerFrame];
-    self.menuContainerView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+    self.menuContainerView = [[UIView alloc] init];
     self.menuState = MFSideMenuStateClosed;
     self.menuWidth = 270.0f;
     self.shadowRadius = 10.0f;
@@ -91,9 +88,19 @@ typedef enum {
     self.panMode = MFSideMenuPanModeDefault;
 }
 
+- (void)setMenuContainerFrameFromApplicationFrame {
+    CGRect applicationFrame = [[UIApplication sharedApplication].delegate window].screen.applicationFrame;
+    CGRect menuContainerFrame = (CGRect){CGPointZero, applicationFrame.size};
+    self.menuContainerView.frame = menuContainerFrame;
+}
 
 #pragma mark -
 #pragma mark - View Lifecycle
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self setMenuContainerFrameFromApplicationFrame];
+}
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
