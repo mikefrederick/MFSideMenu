@@ -26,7 +26,6 @@
 		276985FA17355AB300536685 /* menu-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 276985E717355AB300536685 /* menu-icon@2x.png */; };
 		276985FB17355AB300536685 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 276985E817355AB300536685 /* main.m */; };
 		276985FC17355AB300536685 /* MFAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 276985EA17355AB300536685 /* MFAppDelegate.m */; };
-		276985FD17355AB300536685 /* MFSideMenuDemoSearchBar-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 276985EB17355AB300536685 /* MFSideMenuDemoSearchBar-Info.plist */; };
 		276985FE17355AB300536685 /* DemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 276985EF17355AB300536685 /* DemoViewController.m */; };
 		276985FF17355AB300536685 /* DemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 276985F017355AB300536685 /* DemoViewController.xib */; };
 		2769860017355AB300536685 /* SideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 276985F217355AB300536685 /* SideMenuViewController.m */; };
@@ -303,7 +302,6 @@
 				276985F817355AB300536685 /* Default@2x.png in Resources */,
 				276985F917355AB300536685 /* menu-icon.png in Resources */,
 				276985FA17355AB300536685 /* menu-icon@2x.png in Resources */,
-				276985FD17355AB300536685 /* MFSideMenuDemoSearchBar-Info.plist in Resources */,
 				276985FF17355AB300536685 /* DemoViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
