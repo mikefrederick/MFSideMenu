@@ -1,73 +1,127 @@
-# MFSideMenu
+#MFSideMenu
+
+This project was inspired by the side-menu functionality seen in the Facebook iOS app. MFSideMenu utilizes view controller containment and gives you a simple API for implementing side-menu functionality. It integrates with storyboard-based apps as well as traditional setups.
+
 =======
 
-This project was inspired by the Facebook iOS app. The idea is to give a slideout menu to a UINavigationController-based app.
+![](http://i.imgur.com/Ah5mP.png)  &nbsp;  ![](http://i.imgur.com/KN4IB.png)
 
-=======
+##Features
 
-[![](http://i.imgur.com/Ah5mP.png)
-[![](http://i.imgur.com/KN4IB.png)
-
-Features
-=======
 - Universal device support (iPhone + iPad)
 - Universal orientation support (Portrait + Landscape)
-- The menu can display on the left or right side of the screen.
-- Support for UINavigationController or UITabBarController as the window's rootViewController.
-- Toggle the menu by pressing the UIBarButtonItem or by dragging your UINavigationController to the side.
-- When the menu is visible you can tap or drag it back to the closed position.
-- Optional shadow between UINavigationController and menu
+- Menus on the left and right side of the screen.
+- Storyboard support
+- View controller containment
+- Works with UINavigationController, UITabBarController, and other types of view controllers
+- Nice set of configuration options
 - Lightweight, simple and readable code.
 
 
-Basic Setup
-=======
-The example project shows how to use the full configuration. It also includes an example of how to use the app with a UITabBarController. MFSideMenu uses ARC. If you have a project that doesn't use ARC, just add the `-fobjc-arc` compiler flag to the MFSideMenu files.
+##Installation
 
-Note: QuartzCore is required for shadow rendering
+####CocoaPods
+Add `pod 'MFSideMenu'` to your Podfile.
 
-1. Bring the MFSideMenu folder into your project.
-2. Create your menu (a UITableViewController -- in the demo this is the SideMenuViewController class)
-3. Initiate MFSideMenu in your app delegate:<br />
-	```objective-c                                             
-    MFSideMenu *sideMenu = [MFSideMenu menuWithNavigationController:navigationController
-                                            leftSideMenuController:leftSideMenuController
-                                            rightSideMenuController:rightSideMenuController];
-                                                 
-    self.window.rootViewController = navigationController;
-    [self.window makeKeyAndVisible];
-    ```
+####Manually
+Add the `MFSideMenu` folder to your project. Add QuartzCore to your project. MFSideMenu uses ARC. If you have a project that doesn't use ARC, just add the `-fobjc-arc` compiler flag to the MFSideMenu files.
 
 
-Configuration
-=======
-Checkout MFSideMenu.h to get the full gist of the configuration options.
+##Usage
 
-- **MFSideMenuPanMode** lets you control the areas that can be panned in order to show the menu. You can use this to disable panning on the UINavigationBar or on the body of the UINavigationController.
-- **MFSideMenuState** tells you the current state of the menu (left menu open, right menu open, or closed)
-- **MFSideMenuStateEventBlock** can be used to receive notifications of MFSideMenuStateEvents. You can do this like so:<br />
+###Basic Setup
+
+In your app delegate:<br />
+```objective-c
+#import "MFSideMenu.h"
+
+MFSideMenuContainerViewController *container = [MFSideMenuContainerViewController
+                                                containerWithCenterViewController:centerViewController
+                                                leftMenuViewController:leftMenuViewController
+                                                rightMenuViewController:rightMenuViewController];
+self.window.rootViewController = container;
+[self.window makeKeyAndVisible];
+```
+
+###Opening & Closing Menus
 
 ```objective-c
-    self.navigationController.sideMenu.menuStateEventBlock = ^(MFSideMenuStateEvent event) {
-        switch (event) {
-            case MFSideMenuStateEventMenuWillOpen:
-                // the menu will open
-                break;
-            case MFSideMenuStateEventMenuDidOpen:
-                // the menu finished opening
-                break;
-            case MFSideMenuStateEventMenuWillClose:
-                // the menu will close
-                break;
-            case MFSideMenuStateEventMenuDidClose:
-                // the menu finished closing
-                break;
-        }
-    }; 
+// toggle the left side menu
+[self.menuContainerViewController toggleLeftSideMenuCompletion:^{}];
+// toggle the right side menu
+[self.menuContainerViewController toggleRightSideMenuCompletion:^{}];
+// close the side menu
+[self.menuContainerViewController setMenuState:MFSideMenuStateClosed];
+// open the left side menu
+[self.menuContainerViewController setMenuState:MFSideMenuStateLeftMenuOpen];
+// open the right side menu
+[self.menuContainerViewController setMenuState:MFSideMenuStateRightMenuOpen];
 ```
-    
-Contact
-=======
+
+###Pan Modes
+
+You can specify which areas you want to allow pan gestures on:
+
+```objective-c
+// enable panning on the center view controllers & the side menus (this is the default behavior):
+menuContainerViewController.panMode = MFSideMenuPanModeCenterViewController | MFSideMenuPanModeSideMenu;
+
+// disable panning on the side menus, only allow panning on the center view controller:
+menuContainerViewController.panMode = MFSideMenuPanModeCenterViewController;
+
+// disable all panning
+menuContainerViewController.panMode = MFSideMenuPanModeNone;
+```
+
+
+###Listening for Menu Events
+
+You can listen for menu state event changes (i.e. menu will open, menu did open, etc.). See MFSideMenuContainerViewController.h for the different types of events.
+
+```objective-c
+[[NSNotificationCenter defaultCenter] addObserver:self
+                                            selector:@selector(menuStateEventOccurred:)
+                                                name:MFSideMenuStateNotificationEvent
+                                              object:nil];
+- (void)menuStateEventOccurred:(NSNotification *)notification {
+    MFSideMenuStateEvent event = [[[notification userInfo] objectForKey:@"eventType"] intValue];
+    MFSideMenuContainerViewController *containerViewController = notification.object;
+    // ...
+}
+```
+
+###Menu Slide Animation
+
+With this option enabled, the side menus will slide in & out with the center view controller. This effect is similar to the Wunderlist side menu.
+
+```objective-c
+// enable the menu slide animation
+[menuContainerViewController setMenuSlideAnimationEnabled:YES];
+
+// control the exaggeration of the menu slide animation
+[menuContainerViewController setMenuSlideAnimationFactor:3.0f];
+```
+
+###Shadow
+
+MFSideMenu gives you the option to show a shadow between the center view controller & the side menus.
+
+```objective-c
+// enable/disable the shadow
+[menuContainerViewController setShadowEnabled:YES];
+
+// set the radius of the shadow
+[menuContainerViewController setShadowRadius:10.0f];
+
+// set the color of the shadow
+[menuContainerViewController setShadowColor:[UIColor blackColor]];
+
+// set the opacity of the shadow
+[menuContainerViewController setShadowOpacity:0.75f];
+
+```
+
+##Contact
 
 mike@viamike.com<br />
 http://viamike.com<br />
