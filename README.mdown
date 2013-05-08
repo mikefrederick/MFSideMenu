@@ -51,11 +51,11 @@ self.window.rootViewController = container;
 // toggle the right side menu
 [self.menuContainerViewController toggleRightSideMenuCompletion:^{}];
 // close the side menu
-[self.menuContainerViewController setMenuState:MFSideMenuStateClosed];
+[self.menuContainerViewController setMenuState:MFSideMenuStateClosed completion:^{}];
 // open the left side menu
-[self.menuContainerViewController setMenuState:MFSideMenuStateLeftMenuOpen];
+[self.menuContainerViewController setMenuState:MFSideMenuStateLeftMenuOpen completion:^{}];
 // open the right side menu
-[self.menuContainerViewController setMenuState:MFSideMenuStateRightMenuOpen];
+[self.menuContainerViewController setMenuState:MFSideMenuStateRightMenuOpen completion:^{}];
 ```
 
 ###Pan Modes
