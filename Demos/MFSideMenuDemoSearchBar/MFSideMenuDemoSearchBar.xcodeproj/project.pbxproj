@@ -473,6 +473,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MFSideMenuDemoSearchBar/MFSideMenuDemoSearchBar-Prefix.pch";
 				INFOPLIST_FILE = "MFSideMenuDemoSearchBar/MFSideMenuDemoSearchBar-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = MFSideMenuDemoSearchBar;
 				WRAPPER_EXTENSION = app;
 			};
@@ -484,6 +485,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MFSideMenuDemoSearchBar/MFSideMenuDemoSearchBar-Prefix.pch";
 				INFOPLIST_FILE = "MFSideMenuDemoSearchBar/MFSideMenuDemoSearchBar-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = MFSideMenuDemoSearchBar;
 				WRAPPER_EXTENSION = app;
 			};
