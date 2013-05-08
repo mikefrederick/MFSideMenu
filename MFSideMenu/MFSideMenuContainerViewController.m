@@ -97,6 +97,11 @@ typedef enum {
 #pragma mark -
 #pragma mark - View Lifecycle
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    if(self.centerViewController) return [self.centerViewController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+    return YES;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setMenuContainerFrameFromApplicationFrame];
