@@ -233,17 +233,17 @@ typedef enum {
 - (void)openLeftSideMenuCompletion:(void (^)(void))completion {
     if(!self.leftMenuViewController) return;
     [self.menuContainerView bringSubviewToFront:[self.leftMenuViewController view]];
-    [self setCenterViewControllerOffsetWithAnimation:self.leftMenuWidth completion:completion];
+    [self setCenterViewControllerOffset:self.leftMenuWidth animated:YES completion:completion];
 }
 
 - (void)openRightSideMenuCompletion:(void (^)(void))completion {
     if(!self.rightMenuViewController) return;
     [self.menuContainerView bringSubviewToFront:[self.rightMenuViewController view]];
-    [self setCenterViewControllerOffsetWithAnimation:-1*self.rightMenuWidth completion:completion];
+    [self setCenterViewControllerOffset:-1*self.rightMenuWidth animated:YES completion:completion];
 }
 
 - (void)closeSideMenuCompletion:(void (^)(void))completion {
-    [self setCenterViewControllerOffsetWithAnimation:0 completion:completion];
+    [self setCenterViewControllerOffset:0 animated:YES completion:completion];
 }
 
 - (void)setMenuState:(MFSideMenuState)menuState {
@@ -598,7 +598,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
                 [self setMenuState:MFSideMenuStateLeftMenuOpen];
             } else {
                 self.panGestureVelocity = 0;
-                [self setCenterViewControllerOffsetWithAnimation:0 completion:nil];
+                [self setCenterViewControllerOffset:0 animated:YES completion:nil];
             }
         } else {
             BOOL hideMenu = (finalX > adjustedOrigin.x);
@@ -607,7 +607,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
                 [self setMenuState:MFSideMenuStateClosed];
             } else {
                 self.panGestureVelocity = 0;
-                [self setCenterViewControllerOffsetWithAnimation:adjustedOrigin.x completion:nil];
+                [self setCenterViewControllerOffset:adjustedOrigin.x animated:YES completion:nil];
             }
         }
         
@@ -649,7 +649,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
                 [self setMenuState:MFSideMenuStateRightMenuOpen];
             } else {
                 self.panGestureVelocity = 0;
-                [self setCenterViewControllerOffsetWithAnimation:0 completion:nil];
+                [self setCenterViewControllerOffset:0 animated:YES completion:nil];
             }
         } else {
             BOOL hideMenu = (finalX < adjustedOrigin.x);
@@ -658,7 +658,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
                 [self setMenuState:MFSideMenuStateClosed];
             } else {
                 self.panGestureVelocity = 0;
-                [self setCenterViewControllerOffsetWithAnimation:adjustedOrigin.x completion:nil];
+                [self setCenterViewControllerOffset:adjustedOrigin.x animated:YES completion:nil];
             }
         }
 	}
@@ -670,27 +670,39 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     }
 }
 
+- (void)setUserInteractionStateForCenterViewController {
+    // disable user interaction on the current stack of view controllers if the menu is visible
+    if([self.centerViewController respondsToSelector:@selector(viewControllers)]) {
+        NSArray *viewControllers = [self.centerViewController viewControllers];
+        for(UIViewController* viewController in viewControllers) {
+            viewController.view.userInteractionEnabled = (self.menuState == MFSideMenuStateClosed);
+        }
+    }
+}
 
 #pragma mark -
 #pragma mark - Center View Controller Movement
 
-- (void)setCenterViewControllerOffsetWithAnimation:(CGFloat)offset completion:(void (^)(void))completion {
-    CGFloat centerViewControllerXPosition = ABS([self.centerViewController view].frame.origin.x);
-    CGFloat duration = [self animationDurationFromStartPosition:centerViewControllerXPosition toEndPosition:offset];
-    
-    [UIView animateWithDuration:duration animations:^{
-        [self setCenterViewControllerOffset:offset];
-    } completion:^(BOOL finished) {
+- (void)setCenterViewControllerOffset:(CGFloat)offset animated:(BOOL)animated
+                           completion:(void (^)(void))completion {
+    void (^innerCompletion)() = ^ {
+        [self setUserInteractionStateForCenterViewController];
         if(completion) completion();
+    };
+    
+    if(animated) {
+        CGFloat centerViewControllerXPosition = ABS([self.centerViewController view].frame.origin.x);
+        CGFloat duration = [self animationDurationFromStartPosition:centerViewControllerXPosition toEndPosition:offset];
         
-        // disable user interaction on the current stack of view controllers if the menu is visible
-        if([self.centerViewController respondsToSelector:@selector(viewControllers)]) {
-            NSArray *viewControllers = [self.centerViewController viewControllers];
-            for(UIViewController* viewController in viewControllers) {
-                viewController.view.userInteractionEnabled = (self.menuState == MFSideMenuStateClosed);
-            }
-        }
-    }];
+        [UIView animateWithDuration:duration animations:^{
+            [self setCenterViewControllerOffset:offset];
+        } completion:^(BOOL finished) {
+            innerCompletion();
+        }];
+    } else {
+        [self setCenterViewControllerOffset:offset];
+        innerCompletion();
+    }
 }
 
 - (void) setCenterViewControllerOffset:(CGFloat)xOffset {
