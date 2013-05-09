@@ -351,7 +351,7 @@ typedef enum {
 
 
 #pragma mark -
-#pragma mark - MFSideMenuOptions
+#pragma mark - Shadows
 
 - (void)setShadowEnabled:(BOOL)shadowEnabled {
     _shadowEnabled = shadowEnabled;
@@ -363,6 +363,43 @@ typedef enum {
         [self.centerViewController view].layer.shadowRadius = 0.0f;
     }
 }
+
+- (void)setShadowRadius:(CGFloat)shadowRadius {
+    _shadowRadius = shadowRadius;
+    [self drawMenuShadows];
+}
+
+- (void)setShadowColor:(UIColor *)shadowColor {
+    _shadowColor = shadowColor;
+    [self drawMenuShadows];
+}
+
+- (void)setShadowOpacity:(CGFloat)shadowOpacity {
+    _shadowOpacity = shadowOpacity;
+    [self drawMenuShadows];
+}
+
+- (void) drawMenuShadows {
+    if(_shadowEnabled) {
+        [self drawCenterControllerShadowPath];
+        [self.centerViewController view].layer.shadowOpacity = self.shadowOpacity;
+        [self.centerViewController view].layer.shadowRadius = self.shadowRadius;
+        [self.centerViewController view].layer.shadowColor = [self.shadowColor CGColor];
+    }
+}
+
+// draw a shadow between the navigation controller and the menu
+- (void) drawCenterControllerShadowPath {
+    if(_shadowEnabled) {
+        CGRect pathRect = [self.centerViewController view].bounds;
+        pathRect.size = [self.centerViewController view].frame.size;
+        [self.centerViewController view].layer.shadowPath = [UIBezierPath bezierPathWithRect:pathRect].CGPath;
+    }
+}
+
+
+#pragma mark -
+#pragma mark - Side Menu Width
 
 - (void)setMenuWidth:(CGFloat)menuWidth {
     [self setMenuWidth:menuWidth animated:YES];
@@ -445,39 +482,6 @@ typedef enum {
     }
     
     if(animated) [UIView commitAnimations];
-}
-
-- (void)setShadowRadius:(CGFloat)shadowRadius {
-    _shadowRadius = shadowRadius;
-    [self drawMenuShadows];
-}
-
-- (void)setShadowColor:(UIColor *)shadowColor {
-    _shadowColor = shadowColor;
-    [self drawMenuShadows];
-}
-
-- (void)setShadowOpacity:(CGFloat)shadowOpacity {
-    _shadowOpacity = shadowOpacity;
-    [self drawMenuShadows];
-}
-
-- (void) drawMenuShadows {
-    if(_shadowEnabled) {
-        [self drawCenterControllerShadowPath];
-        [self.centerViewController view].layer.shadowOpacity = self.shadowOpacity;
-        [self.centerViewController view].layer.shadowRadius = self.shadowRadius;
-        [self.centerViewController view].layer.shadowColor = [self.shadowColor CGColor];
-    }
-}
-
-// draw a shadow between the navigation controller and the menu
-- (void) drawCenterControllerShadowPath {
-    if(_shadowEnabled) {
-        CGRect pathRect = [self.centerViewController view].bounds;
-        pathRect.size = [self.centerViewController view].frame.size;
-        [self.centerViewController view].layer.shadowPath = [UIBezierPath bezierPathWithRect:pathRect].CGPath;
-    }
 }
 
 
