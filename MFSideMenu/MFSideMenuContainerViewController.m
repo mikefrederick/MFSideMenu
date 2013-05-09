@@ -78,6 +78,7 @@ typedef enum {
 
 - (void)setDefaultSettings {
     self.menuContainerView = [[UIView alloc] init];
+    [self setMenuContainerFrameFromApplicationFrame];
     self.menuState = MFSideMenuStateClosed;
     self.menuWidth = 270.0f;
     self.leftMenuWidth = 270.f;
