@@ -50,6 +50,8 @@ typedef enum {
 
 // width of the side menus
 @property (nonatomic, assign) CGFloat menuWidth;
+@property (nonatomic, assign) CGFloat leftMenuWidth;
+@property (nonatomic, assign) CGFloat rightMenuWidth;
 
 // shadow
 @property (nonatomic, assign) BOOL shadowEnabled;
@@ -66,5 +68,7 @@ typedef enum {
 - (void)toggleRightSideMenuCompletion:(void (^)(void))completion;
 - (void)setMenuState:(MFSideMenuState)menuState completion:(void (^)(void))completion;
 - (void)setMenuWidth:(CGFloat)menuWidth animated:(BOOL)animated;
+- (void)setLeftMenuWidth:(CGFloat)leftMenuWidth animated:(BOOL)animated;
+- (void)setRightMenuWidth:(CGFloat)rightMenuWidth animated:(BOOL)animated;
 
 @end
