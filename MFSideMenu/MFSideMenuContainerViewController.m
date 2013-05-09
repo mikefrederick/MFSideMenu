@@ -94,6 +94,7 @@ typedef enum {
     self.menuContainerView.frame = menuContainerFrame;
 }
 
+
 #pragma mark -
 #pragma mark - View Lifecycle
 
@@ -104,11 +105,8 @@ typedef enum {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     [self setMenuContainerFrameFromApplicationFrame];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
     
     [self addGestureRecognizers];
     [self.view insertSubview:menuContainerView atIndex:0];
@@ -117,14 +115,6 @@ typedef enum {
     [self setRightSideMenuFrameToClosedPosition];
     
     [self drawMenuShadows];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    
-    if(self.menuContainerView && self.menuContainerView.superview) {
-        [self.menuContainerView removeFromSuperview];
-    }
 }
 
 
