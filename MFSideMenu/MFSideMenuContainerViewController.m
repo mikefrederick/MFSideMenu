@@ -76,8 +76,11 @@ typedef enum {
 }
 
 - (void)setDefaultSettings {
+    if(self.menuContainerView) return;
+    
     self.menuContainerView = [[UIView alloc] init];
     [self setMenuContainerFrameFromApplicationFrame];
+    
     self.menuState = MFSideMenuStateClosed;
     self.menuWidth = 270.0f;
     self.shadowRadius = 10.0f;
@@ -88,6 +91,21 @@ typedef enum {
     self.menuAnimationDefaultDuration = 0.2f;
     self.menuAnimationMaxDuration = 0.4f;
     self.panMode = MFSideMenuPanModeDefault;
+}
+
+- (void)setupMenuContainerView {
+    if(self.menuContainerView.superview) return;
+    
+    [self setMenuContainerFrameFromApplicationFrame];
+    [self.view insertSubview:menuContainerView atIndex:0];
+    
+    if(self.leftMenuViewController && !self.leftMenuViewController.view.superview) {
+        [self.menuContainerView addSubview:self.leftMenuViewController.view];
+    }
+    
+    if(self.rightMenuViewController && !self.rightMenuViewController.view.superview) {
+        [self.menuContainerView addSubview:self.rightMenuViewController.view];
+    }
 }
 
 - (void)setMenuContainerFrameFromApplicationFrame {
@@ -104,15 +122,13 @@ typedef enum {
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setMenuContainerFrameFromApplicationFrame];
-    
-    [self addGestureRecognizers];
-    [self.view insertSubview:menuContainerView atIndex:0];
-    
+    [self setupMenuContainerView];
     [self setLeftSideMenuFrameToClosedPosition];
     [self setRightSideMenuFrameToClosedPosition];
     
     [self drawMenuShadows];
+    
+    [self addGestureRecognizers];
 }
 
 
@@ -143,20 +159,22 @@ typedef enum {
 #pragma mark - UIViewController Containment
 
 - (void)setLeftMenuViewController:(UIViewController *)leftSideMenuViewController {
-    [self removeChildViewController:_leftSideMenuViewController];
+    [self removeChildViewControllerFromContainer:_leftSideMenuViewController];
     
     _leftSideMenuViewController = leftSideMenuViewController;
     if(!_leftSideMenuViewController) return;
     
     [self addChildViewController:_leftSideMenuViewController];
-    [self.menuContainerView insertSubview:[_leftSideMenuViewController view] atIndex:0];
+    if(self.menuContainerView.superview) {
+        [self.menuContainerView insertSubview:[_leftSideMenuViewController view] atIndex:0];
+    }
     [_leftSideMenuViewController didMoveToParentViewController:self];
     
     [self setLeftSideMenuFrameToClosedPosition];
 }
 
 - (void)setCenterViewController:(UIViewController *)centerViewController {
-    [self removeChildViewController:_centerViewController];
+    [self removeChildViewControllerFromContainer:_centerViewController];
     
     _centerViewController = centerViewController;
     if(!_centerViewController) return;
@@ -167,19 +185,21 @@ typedef enum {
 }
 
 - (void)setRightMenuViewController:(UIViewController *)rightSideMenuViewController {
-    [self removeChildViewController:_rightSideMenuViewController];
+    [self removeChildViewControllerFromContainer:_rightSideMenuViewController];
     
     _rightSideMenuViewController = rightSideMenuViewController;
     if(!_rightSideMenuViewController) return;
     
     [self addChildViewController:_rightSideMenuViewController];
-    [self.menuContainerView insertSubview:[_rightSideMenuViewController view] atIndex:0];
+    if(self.menuContainerView.superview) {
+        [self.menuContainerView insertSubview:[_rightSideMenuViewController view] atIndex:0];
+    }
     [_rightSideMenuViewController didMoveToParentViewController:self];
     
     [self setRightSideMenuFrameToClosedPosition];
 }
 
-- (void)removeChildViewController:(UIViewController *)childViewController {
+- (void)removeChildViewControllerFromContainer:(UIViewController *)childViewController {
     if(!childViewController) return;
     [childViewController willMoveToParentViewController:nil];
     [childViewController removeFromParentViewController];
