@@ -31,8 +31,6 @@
                                                     containerWithCenterViewController:[self navigationController]
                                                     leftMenuViewController:leftMenuViewController
                                                     rightMenuViewController:rightMenuViewController];
-    [container setLeftMenuWidth:150.f];
-    [container setRightMenuWidth:250.f];
     self.window.rootViewController = container;
     [self.window makeKeyAndVisible];
     
