@@ -94,6 +94,7 @@ typedef enum {
     CGRect applicationFrame = [[UIApplication sharedApplication].delegate window].screen.applicationFrame;
     CGRect menuContainerFrame = (CGRect){CGPointZero, applicationFrame.size};
     self.menuContainerView.frame = menuContainerFrame;
+    self.menuContainerView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
 }
 
 
