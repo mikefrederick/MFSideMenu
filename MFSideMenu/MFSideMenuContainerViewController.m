@@ -37,7 +37,6 @@ typedef enum {
 @synthesize menuState = _menuState;
 @synthesize panDirection;
 @synthesize shadowEnabled = _shadowEnabled;
-@synthesize menuWidth = _menuWidth;
 @synthesize leftMenuWidth = _leftMenuWidth;
 @synthesize rightMenuWidth = _rightMenuWidth;
 @synthesize shadowRadius = _shadowRadius;
@@ -81,8 +80,6 @@ typedef enum {
     [self setMenuContainerFrameFromApplicationFrame];
     self.menuState = MFSideMenuStateClosed;
     self.menuWidth = 270.0f;
-    self.leftMenuWidth = 270.f;
-    self.rightMenuWidth = 270.f;
     self.shadowRadius = 10.0f;
     self.shadowOpacity = 0.75f;
     self.shadowColor = [UIColor blackColor];
@@ -414,74 +411,40 @@ typedef enum {
 }
 
 - (void)setMenuWidth:(CGFloat)menuWidth animated:(BOOL)animated {
-    if(animated) [UIView beginAnimations:nil context:NULL];
-    
-    _menuWidth = menuWidth;
-    _leftMenuWidth = menuWidth;
-    _rightMenuWidth = menuWidth;
-    
-    switch (self.menuState) {
-        case MFSideMenuStateClosed:
-            [self setLeftSideMenuFrameToClosedPosition];
-            [self setRightSideMenuFrameToClosedPosition];
-            break;
-        case MFSideMenuStateLeftMenuOpen:
-            [self setCenterViewControllerOffset:_menuWidth];
-            [self alignLeftMenuControllerWithCenterViewController];
-            [self setRightSideMenuFrameToClosedPosition];
-            break;
-        case MFSideMenuStateRightMenuOpen:
-            [self setCenterViewControllerOffset:-1*_menuWidth];
-            [self alignRightMenuControllerWithCenterViewController];
-            [self setLeftSideMenuFrameToClosedPosition];
-            break;
-    }
-    
-    if(animated) [UIView commitAnimations];
+    [self setLeftMenuWidth:menuWidth animated:animated];
+    [self setRightMenuWidth:menuWidth animated:animated];
 }
 
 - (void)setLeftMenuWidth:(CGFloat)leftMenuWidth animated:(BOOL)animated {
-    if(animated) [UIView beginAnimations:nil context:NULL];
-    
     _leftMenuWidth = leftMenuWidth;
     
-    switch (self.menuState) {
-        case MFSideMenuStateClosed:
-            [self setLeftSideMenuFrameToClosedPosition];
-            [self setRightSideMenuFrameToClosedPosition];
-            break;
-        case MFSideMenuStateLeftMenuOpen:
-            [self setCenterViewControllerOffset:_leftMenuWidth];
-            [self alignLeftMenuControllerWithCenterViewController];
-            [self setRightSideMenuFrameToClosedPosition];
-            break;
-        case MFSideMenuStateRightMenuOpen:
-            break;
+    if(self.menuState != MFSideMenuStateLeftMenuOpen) {
+        [self setLeftSideMenuFrameToClosedPosition];
+        return;
     }
     
-    if(animated) [UIView commitAnimations];
+    CGFloat offset = _leftMenuWidth;
+    void (^effects)() = ^ {
+        [self alignLeftMenuControllerWithCenterViewController];
+    };
+    
+    [self setCenterViewControllerOffset:offset additionalAnimations:effects animated:animated completion:nil];
 }
 
 - (void)setRightMenuWidth:(CGFloat)rightMenuWidth animated:(BOOL)animated {
-    if(animated) [UIView beginAnimations:nil context:NULL];
-    
     _rightMenuWidth = rightMenuWidth;
     
-    switch (self.menuState) {
-        case MFSideMenuStateClosed:
-            [self setLeftSideMenuFrameToClosedPosition];
-            [self setRightSideMenuFrameToClosedPosition];
-            break;
-        case MFSideMenuStateLeftMenuOpen:
-            break;
-        case MFSideMenuStateRightMenuOpen:
-            [self setCenterViewControllerOffset:-1*_rightMenuWidth];
-            [self alignRightMenuControllerWithCenterViewController];
-            [self setLeftSideMenuFrameToClosedPosition];
-            break;
+    if(self.menuState != MFSideMenuStateRightMenuOpen) {
+        [self setRightSideMenuFrameToClosedPosition];
+        return;
     }
     
-    if(animated) [UIView commitAnimations];
+    CGFloat offset = -1*rightMenuWidth;
+    void (^effects)() = ^ {
+        [self alignRightMenuControllerWithCenterViewController];
+    };
+    
+    [self setCenterViewControllerOffset:offset additionalAnimations:effects animated:animated completion:nil];
 }
 
 
@@ -687,7 +650,14 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 #pragma mark -
 #pragma mark - Center View Controller Movement
 
-- (void)setCenterViewControllerOffset:(CGFloat)offset animated:(BOOL)animated
+- (void)setCenterViewControllerOffset:(CGFloat)offset animated:(BOOL)animated completion:(void (^)(void))completion {
+    [self setCenterViewControllerOffset:offset additionalAnimations:nil
+                               animated:animated completion:completion];
+}
+
+- (void)setCenterViewControllerOffset:(CGFloat)offset
+                 additionalAnimations:(void (^)(void))additionalAnimations
+                             animated:(BOOL)animated
                            completion:(void (^)(void))completion {
     void (^innerCompletion)() = ^ {
         [self setUserInteractionStateForCenterViewController];
@@ -700,11 +670,13 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         
         [UIView animateWithDuration:duration animations:^{
             [self setCenterViewControllerOffset:offset];
+            if(additionalAnimations) additionalAnimations();
         } completion:^(BOOL finished) {
             innerCompletion();
         }];
     } else {
         [self setCenterViewControllerOffset:offset];
+        if(additionalAnimations) additionalAnimations();
         innerCompletion();
     }
 }
@@ -737,7 +709,9 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         duration = animationPositionDelta / ABS(self.panGestureVelocity);
     } else {
         // no swipe was used, user tapped the bar button item
-        CGFloat animationPerecent = (animationPositionDelta == 0) ? 0 : self.menuWidth / animationPositionDelta;
+        // TODO: full animation duration hard to calculate with two menu widths
+        CGFloat menuWidth = MAX(_leftMenuWidth, _rightMenuWidth);
+        CGFloat animationPerecent = (animationPositionDelta == 0) ? 0 : menuWidth / animationPositionDelta;
         duration = self.menuAnimationDefaultDuration * animationPerecent;
     }
     
