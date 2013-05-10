@@ -79,8 +79,6 @@ typedef enum {
     if(self.menuContainerView) return;
     
     self.menuContainerView = [[UIView alloc] init];
-    [self setMenuContainerFrameFromApplicationFrame];
-    
     self.menuState = MFSideMenuStateClosed;
     self.menuWidth = 270.0f;
     self.shadowRadius = 10.0f;
@@ -96,7 +94,9 @@ typedef enum {
 - (void)setupMenuContainerView {
     if(self.menuContainerView.superview) return;
     
-    [self setMenuContainerFrameFromApplicationFrame];
+    self.menuContainerView.frame = self.view.bounds;
+    self.menuContainerView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+    
     [self.view insertSubview:menuContainerView atIndex:0];
     
     if(self.leftMenuViewController && !self.leftMenuViewController.view.superview) {
@@ -106,13 +106,6 @@ typedef enum {
     if(self.rightMenuViewController && !self.rightMenuViewController.view.superview) {
         [self.menuContainerView addSubview:self.rightMenuViewController.view];
     }
-}
-
-- (void)setMenuContainerFrameFromApplicationFrame {
-    CGRect applicationFrame = [[UIApplication sharedApplication].delegate window].screen.applicationFrame;
-    CGRect menuContainerFrame = (CGRect){CGPointZero, applicationFrame.size};
-    self.menuContainerView.frame = menuContainerFrame;
-    self.menuContainerView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
 }
 
 
