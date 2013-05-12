@@ -34,6 +34,14 @@
 		27C808F1170D9DD0000584DA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C808F0170D9DD0000584DA /* CoreGraphics.framework */; };
 		27C80921170D9F08000584DA /* MFSideMenuContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C8091B170D9F08000584DA /* MFSideMenuContainerViewController.m */; };
 		27C8093D170DA4B9000584DA /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C8093C170DA4B9000584DA /* QuartzCore.framework */; };
+		27E4865E173BC2A900141B28 /* MFSideMenu.h in Sources */ = {isa = PBXBuildFile; fileRef = 2769860C1737D77100536685 /* MFSideMenu.h */; };
+		27E4865F173BC2A900141B28 /* MFSideMenuContainerViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 27C8091A170D9F08000584DA /* MFSideMenuContainerViewController.h */; };
+		27E48660173BC2A900141B28 /* MFSideMenuContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C8091B170D9F08000584DA /* MFSideMenuContainerViewController.m */; };
+		27E48661173BC2CF00141B28 /* DemoViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 276985EE17355AB300536685 /* DemoViewController.h */; };
+		27E48662173BC2CF00141B28 /* DemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 276985EF17355AB300536685 /* DemoViewController.m */; };
+		27E48663173BC2CF00141B28 /* DemoViewController.xib in Sources */ = {isa = PBXBuildFile; fileRef = 276985F017355AB300536685 /* DemoViewController.xib */; };
+		27E48664173BC2CF00141B28 /* SideMenuViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 276985F117355AB300536685 /* SideMenuViewController.h */; };
+		27E48665173BC2CF00141B28 /* SideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 276985F217355AB300536685 /* SideMenuViewController.m */; };
 		65E71B52D6C645118F1A5D60 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C567FB73885C477DB4742BBD /* libPods-Tests.a */; };
 /* End PBXBuildFile section */
 
@@ -344,6 +352,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27E48661173BC2CF00141B28 /* DemoViewController.h in Sources */,
+				27E48662173BC2CF00141B28 /* DemoViewController.m in Sources */,
+				27E48663173BC2CF00141B28 /* DemoViewController.xib in Sources */,
+				27E48664173BC2CF00141B28 /* SideMenuViewController.h in Sources */,
+				27E48665173BC2CF00141B28 /* SideMenuViewController.m in Sources */,
+				27E4865E173BC2A900141B28 /* MFSideMenu.h in Sources */,
+				27E4865F173BC2A900141B28 /* MFSideMenuContainerViewController.h in Sources */,
+				27E48660173BC2A900141B28 /* MFSideMenuContainerViewController.m in Sources */,
 				276985CC1733D9FF00536685 /* main.m in Sources */,
 				276985DC1733DD3300536685 /* MFSideMenuContainerViewControllerTest.m in Sources */,
 			);
