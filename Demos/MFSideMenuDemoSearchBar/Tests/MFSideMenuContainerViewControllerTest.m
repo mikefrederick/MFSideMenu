@@ -19,13 +19,11 @@ typedef enum {
 } MFSideMenuPanDirection;
 
 @interface MFSideMenuContainerViewController()
-@property (nonatomic, strong) UIViewController *leftMenuViewController;
-@property (nonatomic, strong) UIViewController *centerViewController;
-@property (nonatomic, strong) UIViewController *rightMenuViewController;
 @property (nonatomic, strong) UIView *menuContainerView;
 @property (nonatomic, assign) CGPoint panGestureOrigin;
 @property (nonatomic, assign) CGFloat panGestureVelocity;
 @property (nonatomic, assign) MFSideMenuPanDirection panDirection;
+- (CGFloat)animationDurationFromStartPosition:(CGFloat)startPosition toEndPosition:(CGFloat)endPosition;
 @end
 
 @interface MFSideMenuContainerViewControllerTest : GHTestCase
@@ -49,8 +47,8 @@ typedef enum {
     UINavigationController *navigationController = [[UINavigationController alloc]
                                                     initWithRootViewController:demoViewController];
     self.container = [MFSideMenuContainerViewController
-                      containerWithCenterViewController:leftSideMenuController
-                      leftMenuViewController:navigationController
+                      containerWithCenterViewController:navigationController
+                      leftMenuViewController:leftSideMenuController
                       rightMenuViewController:rightSideMenuController];
 }
 
@@ -68,6 +66,12 @@ typedef enum {
 
 - (void)testInitialize {
 
+}
+
+- (void)testAnimationDuration {
+    
+    CGFloat duration = [self.container animationDurationFromStartPosition:0 toEndPosition:140.0f];
+    GHAssertEquals(duration, self.container.menuAnimationDefaultDuration, @"duration should be half of default");
 }
 
 

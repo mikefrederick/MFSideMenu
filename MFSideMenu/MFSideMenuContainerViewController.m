@@ -42,10 +42,10 @@ typedef enum {
 @synthesize shadowRadius = _shadowRadius;
 @synthesize shadowColor = _shadowColor;
 @synthesize shadowOpacity = _shadowOpacity;
-@synthesize menuSlideAnimationEnabled;
 @synthesize menuSlideAnimationFactor;
 @synthesize menuAnimationDefaultDuration;
 @synthesize menuAnimationMaxDuration;
+@synthesize openCloseMenuAnimation = _openCloseMenuAnimation;
 
 
 #pragma mark -
@@ -89,12 +89,13 @@ typedef enum {
     self.menuAnimationDefaultDuration = 0.2f;
     self.menuAnimationMaxDuration = 0.4f;
     self.panMode = MFSideMenuPanModeDefault;
+    self.openCloseMenuAnimation = MFSideMenuOpenCloseMenuAnimationNone;
 }
 
 - (void)setupMenuContainerView {
     if(self.menuContainerView.superview) return;
     
-    self.menuContainerView.frame = self.view.bounds;
+    [self setMenuContainerViewFrame];
     self.menuContainerView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     
     [self.view insertSubview:menuContainerView atIndex:0];
@@ -108,6 +109,9 @@ typedef enum {
     }
 }
 
+- (void)setMenuContainerViewFrame {
+    self.menuContainerView.frame = self.view.bounds;
+}
 
 #pragma mark -
 #pragma mark - View Lifecycle
@@ -133,7 +137,7 @@ typedef enum {
     return YES;
 }
 
--(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {    
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
     [self.centerViewController view].layer.shadowPath = nil;
@@ -145,6 +149,9 @@ typedef enum {
     
     [self drawCenterControllerShadowPath];
     [self.centerViewController view].layer.shouldRasterize = NO;
+    
+    // transforms + auto resizing could leave the menu container frame in a weird place so let's reset it
+    [self setMenuContainerViewFrame];
 }
 
 
@@ -196,6 +203,17 @@ typedef enum {
     if(!childViewController) return;
     [childViewController willMoveToParentViewController:nil];
     [childViewController removeFromParentViewController];
+}
+
+- (UIViewController *)visibileSideMenuViewController {
+    if(self.menuState == MFSideMenuStateLeftMenuOpen) return _leftSideMenuViewController;
+    if(self.menuState == MFSideMenuStateRightMenuOpen) return _rightSideMenuViewController;
+    
+    CGFloat xPosition = [self.centerViewController view].frame.origin.x;
+    if(xPosition > 0) return _leftSideMenuViewController;
+    if(xPosition < 0) return _rightSideMenuViewController;
+    
+    return nil;
 }
 
 
@@ -264,9 +282,12 @@ typedef enum {
 - (void)setMenuState:(MFSideMenuState)menuState completion:(void (^)(void))completion {
     void (^innerCompletion)() = ^ {
         _menuState = menuState;
-        if(completion) completion();
+        
+        [self setUserInteractionStateForCenterViewController];
         MFSideMenuStateEvent eventType = (_menuState == MFSideMenuStateClosed) ? MFSideMenuStateEventMenuDidClose : MFSideMenuStateEventMenuDidOpen;
         [self sendStateEventNotification:eventType];
+        
+        if(completion) completion();
     };
     
     switch (menuState) {
@@ -327,7 +348,7 @@ typedef enum {
     if(!self.leftMenuViewController) return;
     CGRect leftFrame = [self.leftMenuViewController view].frame;
     leftFrame.size.width = self.leftMenuWidth;
-    leftFrame.origin.x = (self.menuSlideAnimationEnabled) ? -1*leftFrame.size.width / self.menuSlideAnimationFactor : 0;
+    leftFrame.origin.x = (self.openCloseMenuAnimation == MFSideMenuOpenCloseMenuAnimationSlide) ? -1*leftFrame.size.width / self.menuSlideAnimationFactor : 0;
     leftFrame.origin.y = 0;
     [self.leftMenuViewController view].frame = leftFrame;
     [self.leftMenuViewController view].autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleHeight;
@@ -339,7 +360,7 @@ typedef enum {
     rightFrame.size.width = self.rightMenuWidth;
     rightFrame.origin.y = 0;
     rightFrame.origin.x = [self.centerViewController view].frame.size.width - self.rightMenuWidth;
-    if(self.menuSlideAnimationEnabled) rightFrame.origin.x += self.rightMenuWidth / self.menuSlideAnimationFactor;
+    if(self.openCloseMenuAnimation == MFSideMenuOpenCloseMenuAnimationSlide) rightFrame.origin.x += self.rightMenuWidth / self.menuSlideAnimationFactor;
     [self.rightMenuViewController view].frame = rightFrame;
     [self.rightMenuViewController view].autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight;
 }
@@ -411,6 +432,11 @@ typedef enum {
 
 #pragma mark -
 #pragma mark - Side Menu Width
+
+// TODO: full animation duration hard to calculate with two menu widths
+- (CGFloat)menuWidth {
+    return MAX(_leftMenuWidth, _rightMenuWidth);
+}
 
 - (void)setMenuWidth:(CGFloat)menuWidth {
     [self setMenuWidth:menuWidth animated:YES];
@@ -661,6 +687,52 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     }
 }
 
+
+#pragma mark -
+#pragma mark - Side Menu Open/Close Animation
+
+- (void)resetMenuContainerViewTransforms {
+    UIView *transformedView = self.menuContainerView;
+    transformedView.layer.transform = CATransform3DIdentity;
+    //transformedView.layer.shadowOpacity = 0.0f;
+    transformedView.layer.opacity = 1.0f;
+}
+
+- (void)setOpenCloseMenuAnimation:(MFSideMenuOpenCloseMenuAnimation)openCloseMenuAnimation {
+    _openCloseMenuAnimation = openCloseMenuAnimation;
+    
+    switch (_openCloseMenuAnimation) {
+        case MFSideMenuOpenCloseMenuAnimationSlide:
+            [self resetMenuContainerViewTransforms];
+            break;
+        case MFSideMenuOpenCloseMenuAnimationFade:
+            [self resetMenuContainerViewTransforms];
+            [self setSideMenuFadeState];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)setSideMenuFadeState {
+    CGFloat xOffset = ABS([self.centerViewController view].frame.origin.x);
+    CGFloat percent = 1.0f - (xOffset / self.menuWidth);
+    
+    if(percent == 0) {
+        [self resetMenuContainerViewTransforms];
+        return;
+    }
+    
+    CATransform3D transform = CATransform3DIdentity;
+    transform.m34 = (1.0 / -5000) * percent;
+    
+    CALayer *layer = self.menuContainerView.layer;
+    layer.shadowOpacity = 0.01;
+    layer.opacity = 1.0f - (0.5f * percent);
+    layer.transform = CATransform3DTranslate(transform, 0, 0, -300 * percent);
+}
+
+
 #pragma mark -
 #pragma mark - Center View Controller Movement
 
@@ -674,7 +746,6 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
                              animated:(BOOL)animated
                            completion:(void (^)(void))completion {
     void (^innerCompletion)() = ^ {
-        [self setUserInteractionStateForCenterViewController];
         if(completion) completion();
     };
     
@@ -700,17 +771,19 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     frame.origin.x = xOffset;
     [self.centerViewController view].frame = frame;
     
-    if(!self.menuSlideAnimationEnabled) return;
-    
-    if(xOffset > 0){
-        [self alignLeftMenuControllerWithCenterViewController];
-        [self setRightSideMenuFrameToClosedPosition];
-    } else if(xOffset < 0){
-        [self alignRightMenuControllerWithCenterViewController];
-        [self setLeftSideMenuFrameToClosedPosition];
-    } else {
-        [self setLeftSideMenuFrameToClosedPosition];
-        [self setRightSideMenuFrameToClosedPosition];
+    if(self.openCloseMenuAnimation == MFSideMenuOpenCloseMenuAnimationSlide) {
+        if(xOffset > 0){
+            [self alignLeftMenuControllerWithCenterViewController];
+            [self setRightSideMenuFrameToClosedPosition];
+        } else if(xOffset < 0){
+            [self alignRightMenuControllerWithCenterViewController];
+            [self setLeftSideMenuFrameToClosedPosition];
+        } else {
+            [self setLeftSideMenuFrameToClosedPosition];
+            [self setRightSideMenuFrameToClosedPosition];
+        }
+    } else if(self.openCloseMenuAnimation == MFSideMenuOpenCloseMenuAnimationFade) {
+        [self setSideMenuFadeState];
     }
 }
 
@@ -723,9 +796,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         duration = animationPositionDelta / ABS(self.panGestureVelocity);
     } else {
         // no swipe was used, user tapped the bar button item
-        // TODO: full animation duration hard to calculate with two menu widths
-        CGFloat menuWidth = MAX(_leftMenuWidth, _rightMenuWidth);
-        CGFloat animationPerecent = (animationPositionDelta == 0) ? 0 : menuWidth / animationPositionDelta;
+        CGFloat animationPerecent = (animationPositionDelta == 0) ? 0 : self.menuWidth / animationPositionDelta;
         duration = self.menuAnimationDefaultDuration * animationPerecent;
     }
     
