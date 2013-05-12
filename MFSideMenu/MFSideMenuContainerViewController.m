@@ -264,9 +264,12 @@ typedef enum {
 - (void)setMenuState:(MFSideMenuState)menuState completion:(void (^)(void))completion {
     void (^innerCompletion)() = ^ {
         _menuState = menuState;
-        if(completion) completion();
+        
+        [self setUserInteractionStateForCenterViewController];
         MFSideMenuStateEvent eventType = (_menuState == MFSideMenuStateClosed) ? MFSideMenuStateEventMenuDidClose : MFSideMenuStateEventMenuDidOpen;
         [self sendStateEventNotification:eventType];
+        
+        if(completion) completion();
     };
     
     switch (menuState) {
@@ -674,7 +677,6 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
                              animated:(BOOL)animated
                            completion:(void (^)(void))completion {
     void (^innerCompletion)() = ^ {
-        [self setUserInteractionStateForCenterViewController];
         if(completion) completion();
     };
     
