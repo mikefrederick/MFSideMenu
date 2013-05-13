@@ -701,12 +701,18 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 - (void)setOpenCloseMenuAnimation:(MFSideMenuOpenCloseMenuAnimation)openCloseMenuAnimation {
     _openCloseMenuAnimation = openCloseMenuAnimation;
     
+    if(self.menuState != MFSideMenuStateClosed) {
+        [self setMenuState:MFSideMenuStateClosed completion:nil];
+    }
+    
+    [self resetMenuContainerViewTransforms];
+    [self setLeftSideMenuFrameToClosedPosition];
+    [self setRightSideMenuFrameToClosedPosition];
+    
     switch (_openCloseMenuAnimation) {
         case MFSideMenuOpenCloseMenuAnimationSlide:
-            [self resetMenuContainerViewTransforms];
             break;
         case MFSideMenuOpenCloseMenuAnimationFade:
-            [self resetMenuContainerViewTransforms];
             [self setSideMenuFadeState];
             break;
         default:
