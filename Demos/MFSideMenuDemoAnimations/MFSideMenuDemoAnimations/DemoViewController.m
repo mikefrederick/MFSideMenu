@@ -21,6 +21,8 @@
     [super viewDidLoad];
     
     [self setSelectedSegmentFromCurrentAnimationType];
+    [self setExaggerationSliderValue];
+    [self setExaggerationAmountText];
     [self.animationTypeSegmentedControl addTarget:self action:@selector(setAnimationTypeFromSelectedSegment)
                                  forControlEvents:UIControlEventValueChanged];
     [self.animationExaggerationSlider addTarget:self action:@selector(animationExaggerationChanged:)
@@ -79,7 +81,15 @@
 
 - (void)animationExaggerationChanged:(id)sender {
     [self menuContainerViewController].menuSlideAnimationExaggeration = self.animationExaggerationSlider.value;
-    self.exaggerationAmountLabel.text = [NSString stringWithFormat:@"%.2f", self.animationExaggerationSlider.value];
+    [self setExaggerationAmountText];
+}
+
+- (void)setExaggerationAmountText {
+    self.exaggerationAmountLabel.text = [NSString stringWithFormat:@"%.2f", [self menuContainerViewController].menuSlideAnimationExaggeration];
+}
+
+- (void)setExaggerationSliderValue {
+    self.animationExaggerationSlider.value = [self menuContainerViewController].menuSlideAnimationExaggeration;
 }
 
 @end
