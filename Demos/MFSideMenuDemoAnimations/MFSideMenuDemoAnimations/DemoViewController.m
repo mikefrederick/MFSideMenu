@@ -17,7 +17,7 @@
 {
     [super viewDidLoad];
     
-    [self setAnimationTypeFromSelectedSegment];
+    [self setSelectedSegmentFromCurrentAnimationType];
     [self.animationTypeSegmentedControl addTarget:self action:@selector(setAnimationTypeFromSelectedSegment)
                                  forControlEvents:UIControlEventValueChanged];
 }
@@ -49,6 +49,20 @@
     }
     
     [[self menuContainerViewController] setOpenCloseMenuAnimation:animation];
+}
+
+- (void)setSelectedSegmentFromCurrentAnimationType {
+    switch ([self menuContainerViewController].openCloseMenuAnimation) {
+        case MFSideMenuOpenCloseMenuAnimationFade:
+            self.animationTypeSegmentedControl.selectedSegmentIndex = 1;
+            break;
+        case MFSideMenuOpenCloseMenuAnimationSlide:
+            self.animationTypeSegmentedControl.selectedSegmentIndex = 0;
+            break;
+        case MFSideMenuOpenCloseMenuAnimationNone:
+            self.animationTypeSegmentedControl.selectedSegmentIndex = 2;
+            break;
+    }
 }
 
 @end
