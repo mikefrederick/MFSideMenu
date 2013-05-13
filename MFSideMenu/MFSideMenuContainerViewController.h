@@ -66,9 +66,8 @@ typedef enum {
 @property (nonatomic, assign) CGFloat shadowOpacity;
 @property (nonatomic, strong) UIColor *shadowColor;
 
-// menu slide-in animation
-@property (nonatomic, assign) BOOL menuSlideAnimationEnabled;
-@property (nonatomic, assign) CGFloat menuSlideAnimationFactor; // higher = less menu movement on animation
+// menu slide-in animation, must be between 0.1 and 1.0
+@property (nonatomic, assign) CGFloat menuSlideAnimationExaggeration;
 
 
 - (void)toggleLeftSideMenuCompletion:(void (^)(void))completion;

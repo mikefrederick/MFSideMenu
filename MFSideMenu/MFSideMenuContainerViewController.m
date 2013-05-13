@@ -42,7 +42,7 @@ typedef enum {
 @synthesize shadowRadius = _shadowRadius;
 @synthesize shadowColor = _shadowColor;
 @synthesize shadowOpacity = _shadowOpacity;
-@synthesize menuSlideAnimationFactor;
+@synthesize menuSlideAnimationExaggeration = _menuSlideAnimationExaggeration;
 @synthesize menuAnimationDefaultDuration;
 @synthesize menuAnimationMaxDuration;
 @synthesize openCloseMenuAnimation = _openCloseMenuAnimation;
@@ -84,7 +84,7 @@ typedef enum {
     self.shadowRadius = 10.0f;
     self.shadowOpacity = 0.75f;
     self.shadowColor = [UIColor blackColor];
-    self.menuSlideAnimationFactor = 3.0f;
+    self.menuSlideAnimationExaggeration = 0.25f;
     self.shadowEnabled = YES;
     self.menuAnimationDefaultDuration = 0.2f;
     self.menuAnimationMaxDuration = 0.4f;
@@ -348,7 +348,7 @@ typedef enum {
     if(!self.leftMenuViewController) return;
     CGRect leftFrame = [self.leftMenuViewController view].frame;
     leftFrame.size.width = self.leftMenuWidth;
-    leftFrame.origin.x = (self.openCloseMenuAnimation == MFSideMenuOpenCloseMenuAnimationSlide) ? -1*leftFrame.size.width / self.menuSlideAnimationFactor : 0;
+    leftFrame.origin.x = (self.openCloseMenuAnimation == MFSideMenuOpenCloseMenuAnimationSlide) ? -1*leftFrame.size.width * self.menuSlideAnimationExaggeration : 0;
     leftFrame.origin.y = 0;
     [self.leftMenuViewController view].frame = leftFrame;
     [self.leftMenuViewController view].autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleHeight;
@@ -360,7 +360,7 @@ typedef enum {
     rightFrame.size.width = self.rightMenuWidth;
     rightFrame.origin.y = 0;
     rightFrame.origin.x = [self.centerViewController view].frame.size.width - self.rightMenuWidth;
-    if(self.openCloseMenuAnimation == MFSideMenuOpenCloseMenuAnimationSlide) rightFrame.origin.x += self.rightMenuWidth / self.menuSlideAnimationFactor;
+    if(self.openCloseMenuAnimation == MFSideMenuOpenCloseMenuAnimationSlide) rightFrame.origin.x += self.rightMenuWidth * self.menuSlideAnimationExaggeration;
     [self.rightMenuViewController view].frame = rightFrame;
     [self.rightMenuViewController view].autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight;
 }
@@ -718,6 +718,15 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         default:
             break;
     }
+}
+
+- (void)setMenuSlideAnimationExaggeration:(CGFloat)factor {
+    factor = MAX(factor, 0.1);
+    factor = MIN(factor, 1.0);
+    _menuSlideAnimationExaggeration = factor;
+    
+    [self setLeftSideMenuFrameToClosedPosition];
+    [self setRightSideMenuFrameToClosedPosition];
 }
 
 - (void)setSideMenuFadeState {
