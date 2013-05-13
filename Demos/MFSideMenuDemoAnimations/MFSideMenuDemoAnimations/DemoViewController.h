@@ -11,6 +11,9 @@
 @interface DemoViewController : UIViewController
 
 @property (nonatomic, strong) IBOutlet UISegmentedControl *animationTypeSegmentedControl;
+@property (nonatomic, strong) IBOutlet UISlider *animationExaggerationSlider;
+@property (nonatomic, strong) IBOutlet UILabel *exaggerationAmountLabel;
+@property (nonatomic, strong) IBOutlet UIView *exaggerationWrapperView;
 
 - (IBAction)showLeftMenuPressed:(id)sender;
 - (IBAction)showRightMenuPressed:(id)sender;

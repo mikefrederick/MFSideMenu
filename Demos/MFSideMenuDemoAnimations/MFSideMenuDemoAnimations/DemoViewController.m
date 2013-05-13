@@ -12,6 +12,9 @@
 @implementation DemoViewController
 
 @synthesize animationTypeSegmentedControl;
+@synthesize animationExaggerationSlider;
+@synthesize exaggerationAmountLabel;
+@synthesize exaggerationWrapperView;
 
 - (void)viewDidLoad
 {
@@ -19,6 +22,8 @@
     
     [self setSelectedSegmentFromCurrentAnimationType];
     [self.animationTypeSegmentedControl addTarget:self action:@selector(setAnimationTypeFromSelectedSegment)
+                                 forControlEvents:UIControlEventValueChanged];
+    [self.animationExaggerationSlider addTarget:self action:@selector(animationExaggerationChanged:)
                                  forControlEvents:UIControlEventValueChanged];
 }
 
@@ -49,6 +54,7 @@
     }
     
     [[self menuContainerViewController] setOpenCloseMenuAnimation:animation];
+    [self setExaggerationViewState];
 }
 
 - (void)setSelectedSegmentFromCurrentAnimationType {
@@ -63,6 +69,17 @@
             self.animationTypeSegmentedControl.selectedSegmentIndex = 2;
             break;
     }
+    
+    [self setExaggerationViewState];
+}
+
+- (void)setExaggerationViewState {
+    self.exaggerationWrapperView.hidden = [self menuContainerViewController].openCloseMenuAnimation != MFSideMenuOpenCloseMenuAnimationSlide;
+}
+
+- (void)animationExaggerationChanged:(id)sender {
+    [self menuContainerViewController].menuSlideAnimationExaggeration = self.animationExaggerationSlider.value;
+    self.exaggerationAmountLabel.text = [NSString stringWithFormat:@"%.2f", self.animationExaggerationSlider.value];
 }
 
 @end

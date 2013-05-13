@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="fAJ-E2-RJR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="fAJ-E2-RJR">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -41,22 +41,63 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="qB1-gO-4oK">
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="266" id="UJr-Ko-rA3"/>
-                                </constraints>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="qB1-gO-4oK">
+                                <rect key="frame" x="27" y="98" width="266" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="Slide"/>
                                     <segment title="Fade"/>
                                     <segment title="None"/>
                                 </segments>
                             </segmentedControl>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Select an animation type:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Tjc-ej-b7z">
+                                <rect key="frame" x="27" y="69" width="266" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" id="ucI-6M-Du2">
+                                <rect key="frame" x="0.0" y="177" width="320" height="105"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.25" minValue="0.10000000000000001" maxValue="1" id="6Yn-4u-PLQ">
+                                        <rect key="frame" x="27" y="42" width="266" height="23"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </slider>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yKv-pe-hNB">
+                                        <rect key="frame" x="290" y="42" width="24" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="0.1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4lP-1b-tcP">
+                                        <rect key="frame" x="6" y="43" width="24" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="0.25" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="YKa-hO-Ppn">
+                                        <rect key="frame" x="137" y="64" width="47" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Animation exaggeration:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="spo-2T-Fco">
+                                        <rect key="frame" x="27" y="20" width="266" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="qB1-gO-4oK" firstAttribute="top" secondItem="FNJ-31-8kd" secondAttribute="top" constant="111" id="8rj-W4-lgS"/>
-                            <constraint firstItem="qB1-gO-4oK" firstAttribute="centerX" secondItem="FNJ-31-8kd" secondAttribute="centerX" type="default" id="JzF-4Q-LnJ"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="h6h-Q4-Zrd">
                         <barButtonItem key="leftBarButtonItem" image="menu-icon.png" id="730-BF-gMA">
@@ -71,7 +112,10 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="animationExaggerationSlider" destination="6Yn-4u-PLQ" id="BQl-HR-ocf"/>
                         <outlet property="animationTypeSegmentedControl" destination="qB1-gO-4oK" id="xx5-Gm-Hx7"/>
+                        <outlet property="exaggerationAmountLabel" destination="YKa-hO-Ppn" id="ZfG-vF-gYR"/>
+                        <outlet property="exaggerationWrapperView" destination="ucI-6M-Du2" id="LFU-9J-ONW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="haa-Ge-vw1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -125,14 +169,14 @@
                 <relationship kind="action" name="pushAnotherPressed:"/>
                 <relationship kind="action" name="showLeftMenuPressed:"/>
                 <relationship kind="action" name="showRightMenuPressed:"/>
+                <relationship kind="outlet" name="animationExaggerationSlider" candidateClass="UISlider"/>
                 <relationship kind="outlet" name="animationTypeSegmentedControl" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="exaggerationAmountLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="exaggerationWrapperView" candidateClass="UIView"/>
             </relationships>
         </class>
         <class className="MFSideMenuContainerViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MFSideMenuContainerViewController.h"/>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
         </class>
         <class className="SideMenuViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SideMenuViewController.h"/>
