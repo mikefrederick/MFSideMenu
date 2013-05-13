@@ -5,6 +5,9 @@
       location = "group:Demos/MFSideMenuDemoBasic/MFSideMenuDemoBasic.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:Demos/MFSideMenuDemoAnimations/MFSideMenuDemoAnimations.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Demos/MFSideMenuDemoSearchBar/MFSideMenuDemoSearchBar.xcodeproj">
    </FileRef>
    <FileRef
