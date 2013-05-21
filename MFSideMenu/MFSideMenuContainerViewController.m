@@ -127,6 +127,42 @@ typedef enum {
 
 #pragma mark -
 #pragma mark - UIViewController Rotation
+-(NSUInteger)supportedInterfaceOrientations {
+    if (self.centerViewController)
+    {
+        if ([self.centerViewController isKindOfClass:[UINavigationController class]])
+        {
+            [((UINavigationController *)self.centerViewController).topViewController supportedInterfaceOrientations];
+        }
+        return [self.centerViewController supportedInterfaceOrientations];
+    }
+    return UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
+-(BOOL)shouldAutorotate {
+    if (self.centerViewController)
+    {
+        if ([self.centerViewController isKindOfClass:[UINavigationController class]])
+        {
+            return [((UINavigationController *)self.centerViewController).topViewController shouldAutorotate];
+        }
+        return [self.centerViewController shouldAutorotate];
+    }
+    return YES;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    if (self.centerViewController)
+    {
+        if ([self.centerViewController isKindOfClass:[UINavigationController class]])
+        {
+            return [((UINavigationController *)self.centerViewController).topViewController preferredInterfaceOrientationForPresentation];
+        }
+        return [self.centerViewController preferredInterfaceOrientationForPresentation];
+    }
+    return UIInterfaceOrientationPortrait;
+}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     if(self.centerViewController) return [self.centerViewController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
