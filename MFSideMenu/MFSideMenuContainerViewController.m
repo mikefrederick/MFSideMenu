@@ -23,6 +23,7 @@ typedef enum {
 @property (nonatomic, assign) CGPoint panGestureOrigin;
 @property (nonatomic, assign) CGFloat panGestureVelocity;
 @property (nonatomic, assign) MFSideMenuPanDirection panDirection;
+@property (nonatomic, strong) UITapGestureRecognizer *centerTapRecognizer;
 @end
 
 @implementation MFSideMenuContainerViewController
@@ -203,6 +204,7 @@ typedef enum {
 }
 
 - (void)setCenterViewController:(UIViewController *)centerViewController {
+    [self removeCenterGestureRecognizers];
     [self removeChildViewControllerFromContainer:_centerViewController];
     
     _centerViewController = centerViewController;
@@ -211,6 +213,7 @@ typedef enum {
     [self addChildViewController:_centerViewController];
     [self.view addSubview:[_centerViewController view]];
     [_centerViewController didMoveToParentViewController:self];
+    [self addCenterGestureRecognizers];
 }
 
 - (void)setRightMenuViewController:(UIViewController *)rightSideMenuViewController {
@@ -246,18 +249,39 @@ typedef enum {
     return recognizer;
 }
 
+
 - (void)addGestureRecognizers {
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]
-                                             initWithTarget:self
-                                             action:@selector(centerViewControllerTapped:)];
-    [tapRecognizer setDelegate:self];
-    [[self.centerViewController view] addGestureRecognizer:tapRecognizer];
-    
-    [[self.centerViewController view] addGestureRecognizer:[self panGestureRecognizer]];
+    [self addCenterGestureRecognizers];
     [menuContainerView addGestureRecognizer:[self panGestureRecognizer]];
 }
+- (void)removeCenterGestureRecognizers
+{
+    if (self.centerViewController)
+    {
+        [[self.centerViewController view] removeGestureRecognizer:self.centerTapRecognizer];
+        [[self.centerViewController view] removeGestureRecognizer:[self panGestureRecognizer]];
+    }
+}
+- (void)addCenterGestureRecognizers
+{
+    if (self.centerViewController)
+    {
+        [[self.centerViewController view] addGestureRecognizer:self.centerTapRecognizer];
+        [[self.centerViewController view] addGestureRecognizer:[self panGestureRecognizer]];
+    }
+}
 
-
+- (UITapGestureRecognizer *)centerTapRecognizer
+{
+    if (!_centerTapRecognizer)
+    {
+        [self setCenterTapRecognizer:[[UITapGestureRecognizer alloc]
+                                initWithTarget:self
+                                action:@selector(centerViewControllerTapped:)]];
+        [_centerTapRecognizer setDelegate:self];
+    }
+    return _centerTapRecognizer;
+}
 #pragma mark -
 #pragma mark - Menu State
 
