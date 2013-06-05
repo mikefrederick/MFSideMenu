@@ -72,3 +72,12 @@ typedef enum {
 - (void)setRightMenuWidth:(CGFloat)rightMenuWidth animated:(BOOL)animated;
 
 @end
+
+// category on UIViewController to provide access to the viewDeckController in the
+// contained viewcontrollers, a la UINavigationController.
+@interface UIViewController (MFSideMenuAdditions)
+
+@property(nonatomic,readonly,retain) MFSideMenuContainerViewController *menuContainerViewController;
+
+@end
+
