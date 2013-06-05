@@ -745,8 +745,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     id containerView = self.navigationController.parentViewController;
     if ([containerView isKindOfClass:[MFSideMenuContainerViewController class]])
         return containerView;
-    else
-        return nil;
+    return nil;
 }
 
 @end
