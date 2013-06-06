@@ -352,16 +352,16 @@ typedef enum {
 - (void)alignLeftMenuControllerWithCenterViewController {
     CGRect leftMenuFrame = [self.leftMenuViewController view].frame;
     leftMenuFrame.size.width = _leftMenuWidth;
-    CGFloat menuX = [self.centerViewController view].frame.origin.x - leftMenuFrame.size.width;
-    leftMenuFrame.origin.x = menuX;
+    CGFloat xOffset = [self.centerViewController view].frame.origin.x;
+    leftMenuFrame.origin.x = xOffset / self.menuSlideAnimationFactor - _leftMenuWidth / self.menuSlideAnimationFactor;
     [self.leftMenuViewController view].frame = leftMenuFrame;
 }
 
 - (void)alignRightMenuControllerWithCenterViewController {
     CGRect rightMenuFrame = [self.rightMenuViewController view].frame;
     rightMenuFrame.size.width = _rightMenuWidth;
-    CGFloat menuX = [self.centerViewController view].frame.size.width + [self.centerViewController view].frame.origin.x;
-    rightMenuFrame.origin.x = menuX;
+    CGFloat xOffset = [self.centerViewController view].frame.origin.x;
+    rightMenuFrame.origin.x = [self.centerViewController view].frame.size.width - _rightMenuWidth + xOffset / self.menuSlideAnimationFactor + _rightMenuWidth / self.menuSlideAnimationFactor;
     [self.rightMenuViewController view].frame = rightMenuFrame;
 }
 
@@ -704,7 +704,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     }
 }
 
-- (void) setCenterViewControllerOffset:(CGFloat)xOffset {
+- (void)setCenterViewControllerOffset:(CGFloat)xOffset {
     CGRect frame = [self.centerViewController view].frame;
     frame.origin.x = xOffset;
     [self.centerViewController view].frame = frame;
