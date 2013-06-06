@@ -44,6 +44,7 @@ typedef enum {
 @synthesize shadowOpacity = _shadowOpacity;
 @synthesize menuSlideAnimationEnabled;
 @synthesize menuSlideAnimationFactor;
+@synthesize menuAnimationAutoDurationEnabled;
 @synthesize menuAnimationDefaultDuration;
 @synthesize menuAnimationMaxDuration;
 
@@ -89,6 +90,7 @@ typedef enum {
     self.menuAnimationDefaultDuration = 0.2f;
     self.menuAnimationMaxDuration = 0.4f;
     self.panMode = MFSideMenuPanModeDefault;
+    self.menuAnimationAutoDurationEnabled = YES;
 }
 
 - (void)setupMenuContainerView {
@@ -725,7 +727,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     CGFloat animationPositionDelta = ABS(endPosition - startPosition);
     
     CGFloat duration;
-    if(ABS(self.panGestureVelocity) > 1.0) {
+    if(ABS(self.panGestureVelocity && self.menuAnimationAutoDurationEnabled) > 1.0) {
         // try to continue the animation at the speed the user was swiping
         duration = animationPositionDelta / ABS(self.panGestureVelocity);
     } else {
