@@ -742,10 +742,13 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 @dynamic menuContainerViewController;
 
 - (MFSideMenuContainerViewController *)menuContainerViewController {
-    id containerView = self.navigationController.parentViewController;
-    if ([containerView isKindOfClass:[MFSideMenuContainerViewController class]])
-        return containerView;
-    return nil;
+    id containerView = self;
+    while (![containerView isKindOfClass:[MFSideMenuContainerViewController class]] && ![containerView isKindOfClass:[NSNull class]]) {
+        if ([containerView respondsToSelector:@selector(parentViewController)]) {
+            containerView = [containerView parentViewController];
+        }
+    }
+    return [containerView isKindOfClass:[NSNull class]] ? nil : containerView;
 }
 
 @end
