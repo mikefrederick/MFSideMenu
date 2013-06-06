@@ -44,6 +44,7 @@ typedef enum {
 @synthesize shadowOpacity = _shadowOpacity;
 @synthesize menuSlideAnimationEnabled;
 @synthesize menuSlideAnimationFactor;
+@synthesize menuAnimationAutoDurationEnabled;
 @synthesize menuAnimationDefaultDuration;
 @synthesize menuAnimationMaxDuration;
 
@@ -89,6 +90,7 @@ typedef enum {
     self.menuAnimationDefaultDuration = 0.2f;
     self.menuAnimationMaxDuration = 0.4f;
     self.panMode = MFSideMenuPanModeDefault;
+    self.menuAnimationAutoDurationEnabled = YES;
 }
 
 - (void)setupMenuContainerView {
@@ -350,16 +352,16 @@ typedef enum {
 - (void)alignLeftMenuControllerWithCenterViewController {
     CGRect leftMenuFrame = [self.leftMenuViewController view].frame;
     leftMenuFrame.size.width = _leftMenuWidth;
-    CGFloat menuX = [self.centerViewController view].frame.origin.x - leftMenuFrame.size.width;
-    leftMenuFrame.origin.x = menuX;
+    CGFloat xOffset = [self.centerViewController view].frame.origin.x;
+    leftMenuFrame.origin.x = xOffset / self.menuSlideAnimationFactor - _leftMenuWidth / self.menuSlideAnimationFactor;
     [self.leftMenuViewController view].frame = leftMenuFrame;
 }
 
 - (void)alignRightMenuControllerWithCenterViewController {
     CGRect rightMenuFrame = [self.rightMenuViewController view].frame;
     rightMenuFrame.size.width = _rightMenuWidth;
-    CGFloat menuX = [self.centerViewController view].frame.size.width + [self.centerViewController view].frame.origin.x;
-    rightMenuFrame.origin.x = menuX;
+    CGFloat xOffset = [self.centerViewController view].frame.origin.x;
+    rightMenuFrame.origin.x = [self.centerViewController view].frame.size.width - _rightMenuWidth + xOffset / self.menuSlideAnimationFactor + _rightMenuWidth / self.menuSlideAnimationFactor;
     [self.rightMenuViewController view].frame = rightMenuFrame;
 }
 
@@ -469,6 +471,11 @@ typedef enum {
 #pragma mark - MFSideMenuPanMode
 
 - (BOOL) centerViewControllerPanEnabled {
+    if (self.panMode & MFsideMenuPanModePanWhenOpen) {
+        if ((self.menuState & MFSideMenuStateLeftMenuOpen) || (self.menuState & MFSideMenuStateRightMenuOpen)) {
+            return YES;
+        }
+    }
     return ((self.panMode & MFSideMenuPanModeCenterViewController) == MFSideMenuPanModeCenterViewController);
 }
 
@@ -697,7 +704,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     }
 }
 
-- (void) setCenterViewControllerOffset:(CGFloat)xOffset {
+- (void)setCenterViewControllerOffset:(CGFloat)xOffset {
     CGRect frame = [self.centerViewController view].frame;
     frame.origin.x = xOffset;
     [self.centerViewController view].frame = frame;
@@ -720,7 +727,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     CGFloat animationPositionDelta = ABS(endPosition - startPosition);
     
     CGFloat duration;
-    if(ABS(self.panGestureVelocity) > 1.0) {
+    if(ABS(self.panGestureVelocity && self.menuAnimationAutoDurationEnabled) > 1.0) {
         // try to continue the animation at the speed the user was swiping
         duration = animationPositionDelta / ABS(self.panGestureVelocity);
     } else {
@@ -734,5 +741,18 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     return MIN(duration, self.menuAnimationMaxDuration);
 }
 
+@end
+
+
+@implementation UIViewController (MFSideMenuAdditions)
+
+@dynamic menuContainerViewController;
+
+- (MFSideMenuContainerViewController *)menuContainerViewController {
+    id containerView = self.navigationController.parentViewController;
+    if ([containerView isKindOfClass:[MFSideMenuContainerViewController class]])
+        return containerView;
+    return nil;
+}
 
 @end

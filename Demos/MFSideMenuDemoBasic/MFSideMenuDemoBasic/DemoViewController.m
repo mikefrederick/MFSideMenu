@@ -18,7 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     if(!self.title) self.title = @"Demo!";
-    
+    [self.menuContainerViewController setPanMode:MFsideMenuPanModePanWhenOpen];
     [self setupMenuBarButtonItems];
 }
 

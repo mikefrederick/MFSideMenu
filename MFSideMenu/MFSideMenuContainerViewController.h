@@ -14,7 +14,8 @@ typedef enum {
     MFSideMenuPanModeNone = 0, // pan disabled
     MFSideMenuPanModeCenterViewController = 1 << 0, // enable panning on the centerViewController
     MFSideMenuPanModeSideMenu = 1 << 1, // enable panning on side menus
-    MFSideMenuPanModeDefault = MFSideMenuPanModeCenterViewController | MFSideMenuPanModeSideMenu
+    MFSideMenuPanModeDefault = MFSideMenuPanModeCenterViewController | MFSideMenuPanModeSideMenu,
+    MFsideMenuPanModePanWhenOpen // enable panning on center view when open
 } MFSideMenuPanMode;
 
 typedef enum {
@@ -45,6 +46,7 @@ typedef enum {
 @property (nonatomic, assign) MFSideMenuPanMode panMode;
 
 // menu open/close animation duration -- user can pan faster than default duration, max duration sets the limit
+@property (nonatomic, assign) BOOL menuAnimationAutoDurationEnabled;
 @property (nonatomic, assign) CGFloat menuAnimationDefaultDuration;
 @property (nonatomic, assign) CGFloat menuAnimationMaxDuration;
 
@@ -72,3 +74,12 @@ typedef enum {
 - (void)setRightMenuWidth:(CGFloat)rightMenuWidth animated:(BOOL)animated;
 
 @end
+
+// category on UIViewController to provide access to the viewDeckController in the
+// contained viewcontrollers, a la UINavigationController.
+@interface UIViewController (MFSideMenuAdditions)
+
+@property(nonatomic,readonly,retain) MFSideMenuContainerViewController *menuContainerViewController;
+
+@end
+
