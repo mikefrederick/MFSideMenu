@@ -743,12 +743,13 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (MFSideMenuContainerViewController *)menuContainerViewController {
     id containerView = self;
-    while (![containerView isKindOfClass:[MFSideMenuContainerViewController class]] && ![containerView isKindOfClass:[NSNull class]]) {
-        if ([containerView respondsToSelector:@selector(parentViewController)]) {
+    while (![containerView isKindOfClass:[MFSideMenuContainerViewController class]] && containerView) {
+        if ([containerView respondsToSelector:@selector(splitViewController)])
+            containerView = [containerView splitViewController];
+        if ([containerView respondsToSelector:@selector(parentViewController)] && !containerView)
             containerView = [containerView parentViewController];
-        }
     }
-    return [containerView isKindOfClass:[NSNull class]] ? nil : containerView;
+    return containerView;
 }
 
 @end
