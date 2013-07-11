@@ -2,8 +2,8 @@
 //  UIViewController+MFSideMenuAdditions.m
 //  MFSideMenuDemoBasic
 //
-//  Created by Robin Chou on 7/11/13.
-//  Copyright (c) 2013 University of Wisconsin - Madison. All rights reserved.
+//  Created by Michael Frederick on 4/2/13.
+//  Copyright (c) 2013 Frederick Development. All rights reserved.
 //
 
 #import "UIViewController+MFSideMenuAdditions.h"
