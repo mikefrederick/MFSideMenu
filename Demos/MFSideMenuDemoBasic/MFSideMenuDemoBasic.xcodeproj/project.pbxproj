@@ -23,6 +23,7 @@
 		275F15B41517F0B90052A240 /* SideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 275F15B31517F0B90052A240 /* SideMenuViewController.m */; };
 		275F15BC1517F7A20052A240 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 275F15BB1517F7A20052A240 /* QuartzCore.framework */; };
 		2769860317355C4C00536685 /* MFSideMenuContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2769860217355C4C00536685 /* MFSideMenuContainerViewController.m */; };
+		D081F04D178E67F5004A89D0 /* UIViewController+MFSideMenuAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D081F04C178E67F5004A89D0 /* UIViewController+MFSideMenuAdditions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,8 @@
 		2769860117355C4C00536685 /* MFSideMenuContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenuContainerViewController.h; sourceTree = "<group>"; };
 		2769860217355C4C00536685 /* MFSideMenuContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSideMenuContainerViewController.m; sourceTree = "<group>"; };
 		2769860B1737D76900536685 /* MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenu.h; sourceTree = "<group>"; };
+		D081F04B178E67F5004A89D0 /* UIViewController+MFSideMenuAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MFSideMenuAdditions.h"; sourceTree = "<group>"; };
+		D081F04C178E67F5004A89D0 /* UIViewController+MFSideMenuAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MFSideMenuAdditions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +89,8 @@
 				2769860B1737D76900536685 /* MFSideMenu.h */,
 				2769860117355C4C00536685 /* MFSideMenuContainerViewController.h */,
 				2769860217355C4C00536685 /* MFSideMenuContainerViewController.m */,
+				D081F04B178E67F5004A89D0 /* UIViewController+MFSideMenuAdditions.h */,
+				D081F04C178E67F5004A89D0 /* UIViewController+MFSideMenuAdditions.m */,
 			);
 			name = MFSideMenu;
 			path = ../../MFSideMenu;
@@ -222,6 +227,7 @@
 				275F15A91517ED230052A240 /* DemoViewController.m in Sources */,
 				275F15B41517F0B90052A240 /* SideMenuViewController.m in Sources */,
 				2769860317355C4C00536685 /* MFSideMenuContainerViewController.m in Sources */,
+				D081F04D178E67F5004A89D0 /* UIViewController+MFSideMenuAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
