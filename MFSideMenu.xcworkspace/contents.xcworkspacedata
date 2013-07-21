@@ -17,6 +17,9 @@
       location = "group:Demos/MFSideMenuDemoStoryboard/MFSideMenuDemoStoryboard.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:Demos/MFSideMenuDemoCustomView/MFSideMenuDemoCustomView.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>
