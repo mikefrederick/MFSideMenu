@@ -14,6 +14,7 @@ typedef enum {
     MFSideMenuPanModeNone = 0, // pan disabled
     MFSideMenuPanModeCenterViewController = 1 << 0, // enable panning on the centerViewController
     MFSideMenuPanModeSideMenu = 1 << 1, // enable panning on side menus
+    MFSideMenuPanModeCustomView = 1 << 2, // enable panning on a custom view
     MFSideMenuPanModeDefault = MFSideMenuPanModeCenterViewController | MFSideMenuPanModeSideMenu
 } MFSideMenuPanMode;
 
@@ -40,6 +41,7 @@ typedef enum {
 @property (nonatomic, strong) id centerViewController;
 @property (nonatomic, strong) UIViewController *leftMenuViewController;
 @property (nonatomic, strong) UIViewController *rightMenuViewController;
+@property (nonatomic, strong) UIView *customPanningView;
 
 @property (nonatomic, assign) MFSideMenuState menuState;
 @property (nonatomic, assign) MFSideMenuPanMode panMode;

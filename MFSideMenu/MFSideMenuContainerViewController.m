@@ -23,6 +23,8 @@ typedef enum {
 @property (nonatomic, assign) CGPoint panGestureOrigin;
 @property (nonatomic, assign) CGFloat panGestureVelocity;
 @property (nonatomic, assign) MFSideMenuPanDirection panDirection;
+@property (nonatomic, strong) UIPanGestureRecognizer *customViewGestureRecognizer;
+
 @end
 
 @implementation MFSideMenuContainerViewController
@@ -30,6 +32,8 @@ typedef enum {
 @synthesize leftMenuViewController = _leftSideMenuViewController;
 @synthesize centerViewController = _centerViewController;
 @synthesize rightMenuViewController = _rightSideMenuViewController;
+@synthesize customPanningView = _customPanningView;
+@synthesize customViewGestureRecognizer = _customViewGestureRecognizer;
 @synthesize menuContainerView;
 @synthesize panMode;
 @synthesize panGestureOrigin;
@@ -108,6 +112,11 @@ typedef enum {
     }
 }
 
+- (void)setCustomPanningView:(UIView *)customPanningView {
+    [_customPanningView removeGestureRecognizer:self.customViewGestureRecognizer];
+    _customPanningView = customPanningView;
+    [_customPanningView addGestureRecognizer:self.customViewGestureRecognizer];
+}
 
 #pragma mark -
 #pragma mark - View Lifecycle
@@ -184,7 +193,7 @@ typedef enum {
 
 - (void)setRightMenuViewController:(UIViewController *)rightSideMenuViewController {
     [self removeChildViewControllerFromContainer:_rightSideMenuViewController];
-    
+
     _rightSideMenuViewController = rightSideMenuViewController;
     if(!_rightSideMenuViewController) return;
     
@@ -225,8 +234,14 @@ typedef enum {
     
     [[self.centerViewController view] addGestureRecognizer:[self panGestureRecognizer]];
     [menuContainerView addGestureRecognizer:[self panGestureRecognizer]];
+    [self.customPanningView addGestureRecognizer:[self customViewGestureRecognizer]];
 }
 
+- (UIPanGestureRecognizer *)customViewGestureRecognizer {
+    if (!_customViewGestureRecognizer)
+        _customViewGestureRecognizer = [self panGestureRecognizer];
+    return _customViewGestureRecognizer;
+}
 
 #pragma mark -
 #pragma mark - Menu State
@@ -482,6 +497,9 @@ typedef enum {
     return ((self.panMode & MFSideMenuPanModeSideMenu) == MFSideMenuPanModeSideMenu);
 }
 
+- (BOOL) customViewPanEnabled {
+    return ((self.panMode & MFSideMenuPanModeCustomView) == MFSideMenuPanModeCustomView);
+}
 
 #pragma mark -
 #pragma mark - UIGestureRecognizerDelegate
@@ -496,8 +514,11 @@ typedef enum {
         
         if([gestureRecognizer.view isEqual:self.menuContainerView] &&
            [self sideMenuPanEnabled]) return YES;
+
+        if([gestureRecognizer.view isEqual:self.customPanningView] &&
+           [self customViewPanEnabled]) return YES;
     }
-    
+
     return NO;
 }
 
