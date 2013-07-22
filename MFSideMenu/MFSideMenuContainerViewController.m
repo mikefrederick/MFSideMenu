@@ -55,6 +55,7 @@ typedef enum {
                                                   leftMenuViewController:(id)leftMenuViewController
                                                  rightMenuViewController:(id)rightMenuViewController {
     MFSideMenuContainerViewController *controller = [MFSideMenuContainerViewController new];
+    controller.wantsFullScreenLayout = YES;
     controller.leftMenuViewController = leftMenuViewController;
     controller.centerViewController = centerViewController;
     controller.rightMenuViewController = rightMenuViewController;
@@ -108,7 +109,6 @@ typedef enum {
     }
 }
 
-
 #pragma mark -
 #pragma mark - View Lifecycle
 
@@ -123,6 +123,20 @@ typedef enum {
     [self addGestureRecognizers];
 }
 
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self drawCenterControllerShadowPath];
+    [self.centerViewController view].layer.shouldRasterize = NO;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.centerViewController view].layer.shadowPath = nil;
+    [self.centerViewController view].layer.shouldRasterize = YES;
+}
 
 #pragma mark -
 #pragma mark - UIViewController Rotation
