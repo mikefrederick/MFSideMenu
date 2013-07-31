@@ -141,6 +141,16 @@ typedef enum {
     return YES;
 }
 
+- (NSUInteger)supportedInterfaceOrientations {
+    if (self.centerViewController) return [self.centerViewController supportedInterfaceOrientations];
+    return UIInterfaceOrientationMaskAll;
+}
+
+- (BOOL)shouldAutorotate {
+    if(self.centerViewController) return [self.centerViewController shouldAutorotate];
+    return YES;
+}
+
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
