@@ -23,6 +23,8 @@ typedef enum {
 @property (nonatomic, assign) CGPoint panGestureOrigin;
 @property (nonatomic, assign) CGFloat panGestureVelocity;
 @property (nonatomic, assign) MFSideMenuPanDirection panDirection;
+
+@property (nonatomic, assign) BOOL viewHasAppeared;
 @end
 
 @implementation MFSideMenuContainerViewController
@@ -89,6 +91,7 @@ typedef enum {
     self.menuAnimationDefaultDuration = 0.2f;
     self.menuAnimationMaxDuration = 0.4f;
     self.panMode = MFSideMenuPanModeDefault;
+    self.viewHasAppeared = NO;
 }
 
 - (void)setupMenuContainerView {
@@ -114,17 +117,20 @@ typedef enum {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    [self setupMenuContainerView];
-    [self setLeftSideMenuFrameToClosedPosition];
-    [self setRightSideMenuFrameToClosedPosition];
-    
-    [self addGestureRecognizers];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self drawMenuShadows];
+    
+    if(!self.viewHasAppeared) {
+        [self setupMenuContainerView];
+        [self setLeftSideMenuFrameToClosedPosition];
+        [self setRightSideMenuFrameToClosedPosition];
+        [self addGestureRecognizers];
+        [self drawMenuShadows];
+        
+        self.viewHasAppeared = YES;
+    }
 }
 
 
@@ -166,7 +172,7 @@ typedef enum {
     }
     [_leftSideMenuViewController didMoveToParentViewController:self];
     
-    [self setLeftSideMenuFrameToClosedPosition];
+    if(self.viewHasAppeared) [self setLeftSideMenuFrameToClosedPosition];
 }
 
 - (void)setCenterViewController:(UIViewController *)centerViewController {
@@ -198,7 +204,7 @@ typedef enum {
     }
     [_rightSideMenuViewController didMoveToParentViewController:self];
     
-    [self setRightSideMenuFrameToClosedPosition];
+    if(self.viewHasAppeared) [self setRightSideMenuFrameToClosedPosition];
 }
 
 - (void)removeChildViewControllerFromContainer:(UIViewController *)childViewController {
