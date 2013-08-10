@@ -412,16 +412,24 @@ typedef enum {
 - (void)alignLeftMenuControllerWithCenterViewController {
     CGRect leftMenuFrame = [self.leftMenuViewController view].frame;
     leftMenuFrame.size.width = _leftMenuWidth;
-    CGFloat menuX = [self.centerViewController view].frame.origin.x - leftMenuFrame.size.width;
-    leftMenuFrame.origin.x = menuX;
+    
+    CGFloat xOffset = [self.centerViewController view].frame.origin.x;
+    CGFloat xPositionDivider = (self.menuSlideAnimationEnabled) ? self.menuSlideAnimationFactor : 1.0;
+    leftMenuFrame.origin.x = xOffset / xPositionDivider - _leftMenuWidth / xPositionDivider;
+    
     [self.leftMenuViewController view].frame = leftMenuFrame;
 }
 
 - (void)alignRightMenuControllerWithCenterViewController {
     CGRect rightMenuFrame = [self.rightMenuViewController view].frame;
     rightMenuFrame.size.width = _rightMenuWidth;
-    CGFloat menuX = [self.centerViewController view].frame.size.width + [self.centerViewController view].frame.origin.x;
-    rightMenuFrame.origin.x = menuX;
+    
+    CGFloat xOffset = [self.centerViewController view].frame.origin.x;
+    CGFloat xPositionDivider = (self.menuSlideAnimationEnabled) ? self.menuSlideAnimationFactor : 1.0;
+    rightMenuFrame.origin.x = self.menuContainerView.frame.size.width - _rightMenuWidth
+        + xOffset / xPositionDivider
+        + _rightMenuWidth / xPositionDivider;
+    
     [self.rightMenuViewController view].frame = rightMenuFrame;
 }
 
