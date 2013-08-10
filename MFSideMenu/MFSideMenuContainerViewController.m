@@ -351,7 +351,7 @@ typedef enum {
     CGRect rightFrame = [self.rightMenuViewController view].frame;
     rightFrame.size.width = self.rightMenuWidth;
     rightFrame.origin.y = 0;
-    rightFrame.origin.x = [self.centerViewController view].frame.size.width - self.rightMenuWidth;
+    rightFrame.origin.x = self.menuContainerView.frame.size.width - self.rightMenuWidth;
     if(self.menuSlideAnimationEnabled) rightFrame.origin.x += self.rightMenuWidth / self.menuSlideAnimationFactor;
     [self.rightMenuViewController view].frame = rightFrame;
     [self.rightMenuViewController view].autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight;
