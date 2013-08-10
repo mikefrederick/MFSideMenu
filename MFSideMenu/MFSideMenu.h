@@ -7,3 +7,4 @@
 //
 
 #import "MFSideMenuContainerViewController.h"
+#import "UIViewController+MFSideMenuAdditions.h"
