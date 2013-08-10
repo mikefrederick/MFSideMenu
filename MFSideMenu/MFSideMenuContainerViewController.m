@@ -201,6 +201,7 @@ typedef enum {
 }
 
 - (void)setCenterViewController:(UIViewController *)centerViewController {
+    [self removeCenterGestureRecognizers];
     [self removeChildViewControllerFromContainer:_centerViewController];
     
     CGPoint origin = ((UIViewController *)_centerViewController).view.frame.origin;
@@ -214,7 +215,7 @@ typedef enum {
     [_centerViewController didMoveToParentViewController:self];
     
     [self drawMenuShadows];
-    [self addGestureRecognizers];
+    [self addCenterGestureRecognizers];
 }
 
 - (void)setRightMenuViewController:(UIViewController *)rightSideMenuViewController {
@@ -252,14 +253,34 @@ typedef enum {
 }
 
 - (void)addGestureRecognizers {
+    [self addCenterGestureRecognizers];
+    [menuContainerView addGestureRecognizer:[self panGestureRecognizer]];
+}
+
+- (void)removeCenterGestureRecognizers
+{
+    if (self.centerViewController)
+    {
+        [[self.centerViewController view] removeGestureRecognizer:[self centerTapGestureRecognizer]];
+        [[self.centerViewController view] removeGestureRecognizer:[self panGestureRecognizer]];
+    }
+}
+- (void)addCenterGestureRecognizers
+{
+    if (self.centerViewController)
+    {
+        [[self.centerViewController view] addGestureRecognizer:[self centerTapGestureRecognizer]];
+        [[self.centerViewController view] addGestureRecognizer:[self panGestureRecognizer]];
+    }
+}
+
+- (UITapGestureRecognizer *)centerTapGestureRecognizer
+{
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]
                                              initWithTarget:self
                                              action:@selector(centerViewControllerTapped:)];
     [tapRecognizer setDelegate:self];
-    [[self.centerViewController view] addGestureRecognizer:tapRecognizer];
-    
-    [[self.centerViewController view] addGestureRecognizer:[self panGestureRecognizer]];
-    [menuContainerView addGestureRecognizer:[self panGestureRecognizer]];
+    return tapRecognizer;
 }
 
 
