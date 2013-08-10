@@ -6,7 +6,7 @@
 //
 
 #import "DemoViewController.h"
-#import "MFSideMenuContainerViewController.h"
+#import "MFSideMenu.h"
 
 @implementation DemoViewController
 
@@ -21,11 +21,6 @@
     
     [self setupMenuBarButtonItems];
 }
-
-- (MFSideMenuContainerViewController *)menuContainerViewController {
-    return (MFSideMenuContainerViewController *)self.navigationController.parentViewController;
-}
-
 
 #pragma mark -
 #pragma mark - UIBarButtonItems

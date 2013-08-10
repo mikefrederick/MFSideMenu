@@ -22,6 +22,7 @@
 		27FDAE931706737700F84DFA /* MFMasterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27FDAE911706737700F84DFA /* MFMasterViewController.xib */; };
 		27FDAE961706737700F84DFA /* MFDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27FDAE941706737700F84DFA /* MFDetailViewController.xib */; };
 		27FDAEA51706741900F84DFA /* SideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FDAEA41706741900F84DFA /* SideMenuViewController.m */; };
+		D081F057178E6BE4004A89D0 /* UIViewController+MFSideMenuAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D081F056178E6BE4004A89D0 /* UIViewController+MFSideMenuAdditions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,8 @@
 		27FDAE951706737700F84DFA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MFDetailViewController.xib; sourceTree = "<group>"; };
 		27FDAEA31706741900F84DFA /* SideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideMenuViewController.h; sourceTree = "<group>"; };
 		27FDAEA41706741900F84DFA /* SideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideMenuViewController.m; sourceTree = "<group>"; };
+		D081F055178E6BE4004A89D0 /* UIViewController+MFSideMenuAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MFSideMenuAdditions.h"; sourceTree = "<group>"; };
+		D081F056178E6BE4004A89D0 /* UIViewController+MFSideMenuAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MFSideMenuAdditions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +134,8 @@
 				2769860D1737D77F00536685 /* MFSideMenu.h */,
 				27C808DA170AF4A3000584DA /* MFSideMenuContainerViewController.h */,
 				27C808DB170AF4A3000584DA /* MFSideMenuContainerViewController.m */,
+				D081F055178E6BE4004A89D0 /* UIViewController+MFSideMenuAdditions.h */,
+				D081F056178E6BE4004A89D0 /* UIViewController+MFSideMenuAdditions.m */,
 			);
 			name = MFSideMenu;
 			path = ../../MFSideMenu;
@@ -210,6 +215,7 @@
 				27FDAE901706737700F84DFA /* MFDetailViewController.m in Sources */,
 				27FDAEA51706741900F84DFA /* SideMenuViewController.m in Sources */,
 				27C808DC170AF4A3000584DA /* MFSideMenuContainerViewController.m in Sources */,
+				D081F057178E6BE4004A89D0 /* UIViewController+MFSideMenuAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

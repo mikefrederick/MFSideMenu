@@ -6,10 +6,9 @@
 //
 
 #import "DemoViewController.h"
-#import "MFSideMenuContainerViewController.h"
+#import "MFSideMenu.h"
 
 @implementation DemoViewController
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     return YES;
@@ -20,10 +19,6 @@
     if(!self.title) self.title = @"Demo!";
     
     [self setupMenuBarButtonItems];
-}
-
-- (MFSideMenuContainerViewController *)menuContainerViewController {
-    return (MFSideMenuContainerViewController *)self.navigationController.parentViewController;
 }
 
 

@@ -22,6 +22,7 @@
 		273D117616F8859B00C187E0 /* menu-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 273D117116F8859B00C187E0 /* menu-icon.png */; };
 		273D117716F8859B00C187E0 /* menu-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 273D117216F8859B00C187E0 /* menu-icon@2x.png */; };
 		276985BC1733D69200536685 /* MFSideMenuContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 276985BB1733D69200536685 /* MFSideMenuContainerViewController.m */; };
+		D081F051178E6AD3004A89D0 /* UIViewController+MFSideMenuAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D081F050178E6AD3004A89D0 /* UIViewController+MFSideMenuAdditions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,9 @@
 		273D117216F8859B00C187E0 /* menu-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu-icon@2x.png"; sourceTree = "<group>"; };
 		276985BA1733D69200536685 /* MFSideMenuContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenuContainerViewController.h; sourceTree = "<group>"; };
 		276985BB1733D69200536685 /* MFSideMenuContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSideMenuContainerViewController.m; sourceTree = "<group>"; };
+		D081F04E178E6AD3004A89D0 /* MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenu.h; sourceTree = "<group>"; };
+		D081F04F178E6AD3004A89D0 /* UIViewController+MFSideMenuAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MFSideMenuAdditions.h"; sourceTree = "<group>"; };
+		D081F050178E6AD3004A89D0 /* UIViewController+MFSideMenuAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MFSideMenuAdditions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +125,9 @@
 		273D115816F8843600C187E0 /* MFSideMenu */ = {
 			isa = PBXGroup;
 			children = (
+				D081F04E178E6AD3004A89D0 /* MFSideMenu.h */,
+				D081F04F178E6AD3004A89D0 /* UIViewController+MFSideMenuAdditions.h */,
+				D081F050178E6AD3004A89D0 /* UIViewController+MFSideMenuAdditions.m */,
 				276985BA1733D69200536685 /* MFSideMenuContainerViewController.h */,
 				276985BB1733D69200536685 /* MFSideMenuContainerViewController.m */,
 			);
@@ -214,6 +221,7 @@
 				273D116A16F884F900C187E0 /* DemoViewController.m in Sources */,
 				273D116C16F884F900C187E0 /* SideMenuViewController.m in Sources */,
 				276985BC1733D69200536685 /* MFSideMenuContainerViewController.m in Sources */,
+				D081F051178E6AD3004A89D0 /* UIViewController+MFSideMenuAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

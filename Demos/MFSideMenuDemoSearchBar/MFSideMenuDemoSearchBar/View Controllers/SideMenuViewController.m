@@ -5,7 +5,7 @@
 //  Created by Michael Frederick on 3/19/12.
 
 #import "SideMenuViewController.h"
-#import "MFSideMenuContainerViewController.h"
+#import "MFSideMenu.h"
 #import "DemoViewController.h"
 
 @interface SideMenuViewController()
@@ -25,11 +25,6 @@
     
     self.tableView.tableHeaderView = self.searchBar;
 }
-
-- (MFSideMenuContainerViewController *)menuContainerViewController {
-    return (MFSideMenuContainerViewController *)self.parentViewController;
-}
-
 
 #pragma mark -
 #pragma mark - UITableViewDataSource

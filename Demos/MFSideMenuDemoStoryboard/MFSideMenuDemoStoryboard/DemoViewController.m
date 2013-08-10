@@ -7,7 +7,7 @@
 //
 
 #import "DemoViewController.h"
-#import "MFSideMenuContainerViewController.h"
+#import "MFSideMenu.h"
 
 @interface DemoViewController ()
 
@@ -18,10 +18,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-}
-
-- (MFSideMenuContainerViewController *)menuContainerViewController {
-    return (MFSideMenuContainerViewController *)self.navigationController.parentViewController;
 }
 
 - (IBAction)showLeftMenuPressed:(id)sender {

@@ -35,6 +35,7 @@
 		27C80921170D9F08000584DA /* MFSideMenuContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C8091B170D9F08000584DA /* MFSideMenuContainerViewController.m */; };
 		27C8093D170DA4B9000584DA /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C8093C170DA4B9000584DA /* QuartzCore.framework */; };
 		65E71B52D6C645118F1A5D60 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C567FB73885C477DB4742BBD /* libPods-Tests.a */; };
+		D081F05A178E6C43004A89D0 /* UIViewController+MFSideMenuAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D081F059178E6C43004A89D0 /* UIViewController+MFSideMenuAdditions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +75,8 @@
 		27C8091B170D9F08000584DA /* MFSideMenuContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSideMenuContainerViewController.m; sourceTree = "<group>"; };
 		27C8093C170DA4B9000584DA /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C567FB73885C477DB4742BBD /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D081F058178E6C43004A89D0 /* UIViewController+MFSideMenuAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MFSideMenuAdditions.h"; sourceTree = "<group>"; };
+		D081F059178E6C43004A89D0 /* UIViewController+MFSideMenuAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MFSideMenuAdditions.m"; sourceTree = "<group>"; };
 		D7753082D93141CD9D851827 /* Pods-Tests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.xcconfig"; path = "../../Pods/Pods-Tests.xcconfig"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -206,6 +209,8 @@
 				2769860C1737D77100536685 /* MFSideMenu.h */,
 				27C8091A170D9F08000584DA /* MFSideMenuContainerViewController.h */,
 				27C8091B170D9F08000584DA /* MFSideMenuContainerViewController.m */,
+				D081F058178E6C43004A89D0 /* UIViewController+MFSideMenuAdditions.h */,
+				D081F059178E6C43004A89D0 /* UIViewController+MFSideMenuAdditions.m */,
 			);
 			name = MFSideMenu;
 			path = ../../MFSideMenu;
@@ -358,6 +363,7 @@
 				276985FC17355AB300536685 /* MFAppDelegate.m in Sources */,
 				276985FE17355AB300536685 /* DemoViewController.m in Sources */,
 				2769860017355AB300536685 /* SideMenuViewController.m in Sources */,
+				D081F05A178E6C43004A89D0 /* UIViewController+MFSideMenuAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
