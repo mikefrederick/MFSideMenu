@@ -119,8 +119,12 @@ typedef enum {
     [self setLeftSideMenuFrameToClosedPosition];
     [self setRightSideMenuFrameToClosedPosition];
     
-    [self drawMenuShadows];
     [self addGestureRecognizers];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self drawMenuShadows];
 }
 
 
