@@ -73,6 +73,13 @@ menuContainerViewController.panMode = MFSideMenuPanModeCenterViewController;
 menuContainerViewController.panMode = MFSideMenuPanModeNone;
 ```
 
+###Panning Custom Views
+
+You can add panning to any view like so:
+
+```objective-c
+[panView addGestureRecognizer:[self.menuContainerViewController panGestureRecognizer];
+```
 
 ###Listening for Menu Events
 
