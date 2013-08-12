@@ -43,6 +43,16 @@ self.window.rootViewController = container;
 [self.window makeKeyAndVisible];
 ```
 
+###Animation Speed
+By default, the animation duration is set to how fast the user was swiping. The user can pan faster than the default duration and the max duration sets the limit.
+```objective-c
+[self.menuContainerViewController setMenuAnimationDefaultDuration:0.3f];
+[self.menuContainerViewController setMenuAnimationMaxDuration:0.4f];
+
+// disable this behavior
+[self.menuContainerViewController setMenuAnimationAutoDurationEnabled:NO];
+```
+
 ###Opening & Closing Menus
 
 ```objective-c
