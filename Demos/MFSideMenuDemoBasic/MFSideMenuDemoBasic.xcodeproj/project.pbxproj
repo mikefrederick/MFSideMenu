@@ -12,6 +12,11 @@
 		273D0F8F16CB344600C187E0 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 273D0F8A16CB344600C187E0 /* Default-568h@2x.png */; };
 		273D0F9016CB344600C187E0 /* menu-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 273D0F8B16CB344600C187E0 /* menu-icon.png */; };
 		273D0F9116CB344600C187E0 /* menu-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 273D0F8C16CB344600C187E0 /* menu-icon@2x.png */; };
+		274419C917BBAED20007ADE7 /* MFSideMenu.h in Sources */ = {isa = PBXBuildFile; fileRef = 2769860B1737D76900536685 /* MFSideMenu.h */; };
+		274419CA17BBAED20007ADE7 /* MFSideMenuContainerViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 2769860117355C4C00536685 /* MFSideMenuContainerViewController.h */; };
+		274419CB17BBAED20007ADE7 /* UIViewController+MFSideMenuAdditions.h in Sources */ = {isa = PBXBuildFile; fileRef = D081F04B178E67F5004A89D0 /* UIViewController+MFSideMenuAdditions.h */; };
+		274419CC17BBAED20007ADE7 /* MFSideMenuShadow.h in Sources */ = {isa = PBXBuildFile; fileRef = 274419C717BBABA70007ADE7 /* MFSideMenuShadow.h */; };
+		274419CD17BBAED20007ADE7 /* MFSideMenuShadow.m in Sources */ = {isa = PBXBuildFile; fileRef = 274419C817BBABA70007ADE7 /* MFSideMenuShadow.m */; };
 		275F15881517E9B80052A240 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 275F15871517E9B80052A240 /* UIKit.framework */; };
 		275F158A1517E9B80052A240 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 275F15891517E9B80052A240 /* Foundation.framework */; };
 		275F158C1517E9B80052A240 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 275F158B1517E9B80052A240 /* CoreGraphics.framework */; };
@@ -33,6 +38,8 @@
 		273D0F8B16CB344600C187E0 /* menu-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu-icon.png"; sourceTree = "<group>"; };
 		273D0F8C16CB344600C187E0 /* menu-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu-icon@2x.png"; sourceTree = "<group>"; };
 		273D0FA216E98A5A00C187E0 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		274419C717BBABA70007ADE7 /* MFSideMenuShadow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MFSideMenuShadow.h; sourceTree = "<group>"; };
+		274419C817BBABA70007ADE7 /* MFSideMenuShadow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MFSideMenuShadow.m; sourceTree = "<group>"; };
 		275F15831517E9B80052A240 /* MFSideMenuDemoBasic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MFSideMenuDemoBasic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		275F15871517E9B80052A240 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		275F15891517E9B80052A240 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -91,6 +98,8 @@
 				2769860217355C4C00536685 /* MFSideMenuContainerViewController.m */,
 				D081F04B178E67F5004A89D0 /* UIViewController+MFSideMenuAdditions.h */,
 				D081F04C178E67F5004A89D0 /* UIViewController+MFSideMenuAdditions.m */,
+				274419C717BBABA70007ADE7 /* MFSideMenuShadow.h */,
+				274419C817BBABA70007ADE7 /* MFSideMenuShadow.m */,
 			);
 			name = MFSideMenu;
 			path = ../../MFSideMenu;
@@ -222,6 +231,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				274419C917BBAED20007ADE7 /* MFSideMenu.h in Sources */,
+				274419CA17BBAED20007ADE7 /* MFSideMenuContainerViewController.h in Sources */,
+				274419CB17BBAED20007ADE7 /* UIViewController+MFSideMenuAdditions.h in Sources */,
+				274419CC17BBAED20007ADE7 /* MFSideMenuShadow.h in Sources */,
+				274419CD17BBAED20007ADE7 /* MFSideMenuShadow.m in Sources */,
 				275F15941517E9B80052A240 /* main.m in Sources */,
 				275F15981517E9B80052A240 /* MFAppDelegate.m in Sources */,
 				275F15A91517ED230052A240 /* DemoViewController.m in Sources */,

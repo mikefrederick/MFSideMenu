@@ -115,16 +115,16 @@ MFSideMenu gives you the option to show a shadow between the center view control
 
 ```objective-c
 // enable/disable the shadow
-[menuContainerViewController setShadowEnabled:YES];
+[menuContainerViewController.shadow setEnabled:YES];
 
 // set the radius of the shadow
-[menuContainerViewController setShadowRadius:10.0f];
+[menuContainerViewController.shadow setRadius:10.0f];
 
 // set the color of the shadow
-[menuContainerViewController setShadowColor:[UIColor blackColor]];
+[menuContainerViewController.shadow setColor:[UIColor blackColor]];
 
 // set the opacity of the shadow
-[menuContainerViewController setShadowOpacity:0.75f];
+[menuContainerViewController.shadow setOpacity:0.75f];
 
 ```
 

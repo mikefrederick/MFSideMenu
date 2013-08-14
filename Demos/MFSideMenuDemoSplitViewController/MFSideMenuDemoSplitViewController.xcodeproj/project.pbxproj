@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		274419D317BBAF8C0007ADE7 /* MFSideMenuShadow.m in Sources */ = {isa = PBXBuildFile; fileRef = 274419D217BBAF8C0007ADE7 /* MFSideMenuShadow.m */; };
 		27C808DC170AF4A3000584DA /* MFSideMenuContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C808DB170AF4A3000584DA /* MFSideMenuContainerViewController.m */; };
 		27FDAE741706737700F84DFA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27FDAE731706737700F84DFA /* UIKit.framework */; };
 		27FDAE761706737700F84DFA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27FDAE751706737700F84DFA /* Foundation.framework */; };
@@ -26,6 +27,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		274419D117BBAF8C0007ADE7 /* MFSideMenuShadow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenuShadow.h; sourceTree = "<group>"; };
+		274419D217BBAF8C0007ADE7 /* MFSideMenuShadow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSideMenuShadow.m; sourceTree = "<group>"; };
 		2769860D1737D77F00536685 /* MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenu.h; sourceTree = "<group>"; };
 		27C808DA170AF4A3000584DA /* MFSideMenuContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenuContainerViewController.h; sourceTree = "<group>"; };
 		27C808DB170AF4A3000584DA /* MFSideMenuContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSideMenuContainerViewController.m; sourceTree = "<group>"; };
@@ -136,6 +139,8 @@
 				27C808DB170AF4A3000584DA /* MFSideMenuContainerViewController.m */,
 				D081F055178E6BE4004A89D0 /* UIViewController+MFSideMenuAdditions.h */,
 				D081F056178E6BE4004A89D0 /* UIViewController+MFSideMenuAdditions.m */,
+				274419D117BBAF8C0007ADE7 /* MFSideMenuShadow.h */,
+				274419D217BBAF8C0007ADE7 /* MFSideMenuShadow.m */,
 			);
 			name = MFSideMenu;
 			path = ../../MFSideMenu;
@@ -209,6 +214,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				274419D317BBAF8C0007ADE7 /* MFSideMenuShadow.m in Sources */,
 				27FDAE801706737700F84DFA /* main.m in Sources */,
 				27FDAE841706737700F84DFA /* MFAppDelegate.m in Sources */,
 				27FDAE8D1706737700F84DFA /* MFMasterViewController.m in Sources */,
