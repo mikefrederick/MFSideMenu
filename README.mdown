@@ -71,6 +71,9 @@ menuContainerViewController.panMode = MFSideMenuPanModeCenterViewController;
 
 // disable all panning
 menuContainerViewController.panMode = MFSideMenuPanModeNone;
+
+// enable panning on the center view controller only when the side menu is open
+menuContainerViewController.panMode = MFsideMenuPanModePanWhenOpen;
 ```
 
 ###Panning Custom Views
