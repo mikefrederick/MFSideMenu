@@ -641,8 +641,6 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         translatedPoint.x = MAX(translatedPoint.x, 0);
     }
     
-    [self setCenterViewControllerOffset:translatedPoint.x];
-    
     if(recognizer.state == UIGestureRecognizerStateEnded) {
         CGPoint velocity = [recognizer velocityInView:view];
         CGFloat finalX = translatedPoint.x + (.35*velocity.x);
@@ -669,7 +667,9 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         }
         
         self.panDirection = MFSideMenuPanDirectionNone;
-	}
+	} else {
+        [self setCenterViewControllerOffset:translatedPoint.x];
+    }
 }
 
 - (void) handleLeftPan:(UIPanGestureRecognizer *)recognizer {
@@ -718,7 +718,9 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
                 [self setCenterViewControllerOffset:adjustedOrigin.x animated:YES completion:nil];
             }
         }
-	}
+	} else {
+        [self setCenterViewControllerOffset:translatedPoint.x];
+    }
 }
 
 - (void)centerViewControllerTapped:(id)sender {
