@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MFSideMenuShadow.h"
 
 extern NSString * const MFSideMenuStateNotificationEvent;
 
@@ -54,10 +55,7 @@ typedef enum {
 @property (nonatomic, assign) CGFloat rightMenuWidth;
 
 // shadow
-@property (nonatomic, assign) BOOL shadowEnabled;
-@property (nonatomic, assign) CGFloat shadowRadius;
-@property (nonatomic, assign) CGFloat shadowOpacity;
-@property (nonatomic, strong) UIColor *shadowColor;
+@property (nonatomic, strong) MFSideMenuShadow *shadow;
 
 // menu slide-in animation
 @property (nonatomic, assign) BOOL menuSlideAnimationEnabled;

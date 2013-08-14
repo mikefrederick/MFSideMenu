@@ -14,6 +14,7 @@
 		273D106F16F3E7FE00C187E0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 273D106E16F3E7FE00C187E0 /* main.m */; };
 		273D107316F3E7FE00C187E0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 273D107216F3E7FE00C187E0 /* AppDelegate.m */; };
 		273D107C16F3E7FE00C187E0 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 273D107A16F3E7FE00C187E0 /* MainStoryboard.storyboard */; };
+		274419D917BBAFA90007ADE7 /* MFSideMenuShadow.m in Sources */ = {isa = PBXBuildFile; fileRef = 274419D817BBAFA90007ADE7 /* MFSideMenuShadow.m */; };
 		2769860617355CE900536685 /* MFSideMenuContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2769860517355CE900536685 /* MFSideMenuContainerViewController.m */; };
 		27698611173911BE00536685 /* SideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27698610173911BE00536685 /* SideMenuViewController.m */; };
 		2769861A1739176A00536685 /* back-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 276986131739176A00536685 /* back-arrow.png */; };
@@ -39,6 +40,8 @@
 		273D107116F3E7FE00C187E0 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		273D107216F3E7FE00C187E0 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		273D107B16F3E7FE00C187E0 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		274419D717BBAFA90007ADE7 /* MFSideMenuShadow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenuShadow.h; sourceTree = "<group>"; };
+		274419D817BBAFA90007ADE7 /* MFSideMenuShadow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSideMenuShadow.m; sourceTree = "<group>"; };
 		2769860417355CE900536685 /* MFSideMenuContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenuContainerViewController.h; sourceTree = "<group>"; };
 		2769860517355CE900536685 /* MFSideMenuContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFSideMenuContainerViewController.m; sourceTree = "<group>"; };
 		2769860E1737D78600536685 /* MFSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFSideMenu.h; sourceTree = "<group>"; };
@@ -134,6 +137,8 @@
 				2769860517355CE900536685 /* MFSideMenuContainerViewController.m */,
 				D081F052178E6B7E004A89D0 /* UIViewController+MFSideMenuAdditions.h */,
 				D081F053178E6B7E004A89D0 /* UIViewController+MFSideMenuAdditions.m */,
+				274419D717BBAFA90007ADE7 /* MFSideMenuShadow.h */,
+				274419D817BBAFA90007ADE7 /* MFSideMenuShadow.m */,
 			);
 			name = MFSideMenu;
 			path = ../../MFSideMenu;
@@ -225,6 +230,7 @@
 			files = (
 				273D106F16F3E7FE00C187E0 /* main.m in Sources */,
 				273D107316F3E7FE00C187E0 /* AppDelegate.m in Sources */,
+				274419D917BBAFA90007ADE7 /* MFSideMenuShadow.m in Sources */,
 				279CE767171433C00056366A /* DemoViewController.m in Sources */,
 				2769860617355CE900536685 /* MFSideMenuContainerViewController.m in Sources */,
 				27698611173911BE00536685 /* SideMenuViewController.m in Sources */,
