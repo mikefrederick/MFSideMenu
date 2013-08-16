@@ -194,7 +194,6 @@ typedef enum {
 - (void)setCenterViewController:(UIViewController *)centerViewController {
     [self removeCenterGestureRecognizers];
     [self removeChildViewControllerFromContainer:_centerViewController];
-    self.shadow = nil;
     
     CGPoint origin = ((UIViewController *)_centerViewController).view.frame.origin;
     _centerViewController = centerViewController;
@@ -205,8 +204,12 @@ typedef enum {
     [((UIViewController *)_centerViewController) view].frame = (CGRect){.origin = origin, .size=centerViewController.view.frame.size};
     
     [_centerViewController didMoveToParentViewController:self];
-    
-    self.shadow = [MFSideMenuShadow shadowWithView:[_centerViewController view]];
+
+    if (self.shadow) {
+        self.shadow.shadowedView = [_centerViewController view];
+    } else {
+        self.shadow = [MFSideMenuShadow shadowWithView:[_centerViewController view]];
+    }
     [self.shadow draw];
     [self addCenterGestureRecognizers];
 }
