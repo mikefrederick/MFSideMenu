@@ -711,6 +711,8 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
             [self setCenterViewControllerOffset:offset];
             if(additionalAnimations) additionalAnimations();
         } completion:^(BOOL finished) {
+            // Make sure the next non gesture based animation duration is calculated correctly.
+            self.panGestureVelocity = 0;
             innerCompletion();
         }];
     } else {
