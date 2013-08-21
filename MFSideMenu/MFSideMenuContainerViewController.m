@@ -45,6 +45,7 @@ typedef enum {
 @synthesize menuAnimationDefaultDuration;
 @synthesize menuAnimationMaxDuration;
 @synthesize shadow;
+@synthesize elastic;
 
 
 #pragma mark -
@@ -85,6 +86,7 @@ typedef enum {
     self.menuAnimationMaxDuration = 0.4f;
     self.panMode = MFSideMenuPanModeDefault;
     self.viewHasAppeared = NO;
+    self.elastic = YES;
 }
 
 - (void)setupMenuContainerView {
@@ -381,7 +383,7 @@ typedef enum {
 #pragma mark -
 #pragma mark - Side Menu Positioning
 
-- (void) setLeftSideMenuFrameToClosedPosition {
+- (void)setLeftSideMenuFrameToClosedPosition {
     if(!self.leftMenuViewController) return;
     CGRect leftFrame = [self.leftMenuViewController view].frame;
     leftFrame.size.width = self.leftMenuWidth;
@@ -391,7 +393,7 @@ typedef enum {
     [self.leftMenuViewController view].autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleHeight;
 }
 
-- (void) setRightSideMenuFrameToClosedPosition {
+- (void)setRightSideMenuFrameToClosedPosition {
     if(!self.rightMenuViewController) return;
     CGRect rightFrame = [self.rightMenuViewController view].frame;
     rightFrame.size.width = self.rightMenuWidth;
@@ -402,11 +404,15 @@ typedef enum {
     [self.rightMenuViewController view].autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight;
 }
 
-- (void)alignLeftMenuControllerWithCenterViewController {
+- (void)alignLeftMenuControllerWithCenterViewController {    
     CGRect leftMenuFrame = [self.leftMenuViewController view].frame;
     leftMenuFrame.size.width = _leftMenuWidth;
     
     CGFloat xOffset = [self.centerViewController view].frame.origin.x;
+    if (xOffset > self.leftMenuWidth) {
+        return;
+    }
+    
     CGFloat xPositionDivider = (self.menuSlideAnimationEnabled) ? self.menuSlideAnimationFactor : 1.0;
     leftMenuFrame.origin.x = xOffset / xPositionDivider - _leftMenuWidth / xPositionDivider;
     
@@ -418,6 +424,10 @@ typedef enum {
     rightMenuFrame.size.width = _rightMenuWidth;
     
     CGFloat xOffset = [self.centerViewController view].frame.origin.x;
+    if (xOffset < -1*self.rightMenuWidth) {
+        return;
+    }
+    
     CGFloat xPositionDivider = (self.menuSlideAnimationEnabled) ? self.menuSlideAnimationFactor : 1.0;
     rightMenuFrame.origin.x = self.menuContainerView.frame.size.width - _rightMenuWidth
         + xOffset / xPositionDivider
@@ -483,11 +493,11 @@ typedef enum {
 #pragma mark -
 #pragma mark - MFSideMenuPanMode
 
-- (BOOL) centerViewControllerPanEnabled {
+- (BOOL)centerViewControllerPanEnabled {
     return ((self.panMode & MFSideMenuPanModeCenterViewController) == MFSideMenuPanModeCenterViewController);
 }
 
-- (BOOL) sideMenuPanEnabled {
+- (BOOL)sideMenuPanEnabled {
     return ((self.panMode & MFSideMenuPanModeSideMenu) == MFSideMenuPanModeSideMenu);
 }
 
@@ -528,7 +538,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 // this method handles any pan event
 // and sets the navigation controller's frame as needed
-- (void) handlePan:(UIPanGestureRecognizer *)recognizer {
+- (void)handlePan:(UIPanGestureRecognizer *)recognizer {
     UIView *view = [self.centerViewController view];
     
 	if(recognizer.state == UIGestureRecognizerStateBegan) {
@@ -553,10 +563,10 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         }
     }
     
-    if((self.menuState == MFSideMenuStateRightMenuOpen && self.panDirection == MFSideMenuPanDirectionLeft)
-       || (self.menuState == MFSideMenuStateLeftMenuOpen && self.panDirection == MFSideMenuPanDirectionRight)) {
+    if (!self.elastic &&
+        (self.menuState == MFSideMenuStateLeftMenuOpen && self.panDirection == MFSideMenuPanDirectionRight) &&
+        (self.menuState == MFSideMenuStateRightMenuOpen && self.panDirection == MFSideMenuPanDirectionLeft)) {
         self.panDirection = MFSideMenuPanDirectionNone;
-        return;
     }
     
     if(self.panDirection == MFSideMenuPanDirectionLeft) {
@@ -566,7 +576,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     }
 }
 
-- (void) handleRightPan:(UIPanGestureRecognizer *)recognizer {
+- (void)handleRightPan:(UIPanGestureRecognizer *)recognizer {
     if(!self.leftMenuViewController && self.menuState == MFSideMenuStateClosed) return;
     
     UIView *view = [self.centerViewController view];
@@ -576,14 +586,16 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     translatedPoint = CGPointMake(adjustedOrigin.x + translatedPoint.x,
                                   adjustedOrigin.y + translatedPoint.y);
     
-    translatedPoint.x = MAX(translatedPoint.x, -1*self.rightMenuWidth);
-    translatedPoint.x = MIN(translatedPoint.x, self.leftMenuWidth);
-    if(self.menuState == MFSideMenuStateRightMenuOpen) {
-        // menu is already open, the most the user can do is close it in this gesture
-        translatedPoint.x = MIN(translatedPoint.x, 0);
-    } else {
-        // we are opening the menu
-        translatedPoint.x = MAX(translatedPoint.x, 0);
+    if (!self.elastic) {
+        translatedPoint.x = MAX(translatedPoint.x, -1*self.rightMenuWidth);
+        translatedPoint.x = MIN(translatedPoint.x, self.leftMenuWidth);
+        if(self.menuState == MFSideMenuStateRightMenuOpen) {
+            // menu is already open, the most the user can do is close it in this gesture
+            translatedPoint.x = MIN(translatedPoint.x, 0);
+        } else {
+            // we are opening the menu
+            translatedPoint.x = MAX(translatedPoint.x, 0);
+        }
     }
     
     if(recognizer.state == UIGestureRecognizerStateEnded) {
@@ -591,7 +603,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         CGFloat finalX = translatedPoint.x + (.35*velocity.x);
         CGFloat viewWidth = view.frame.size.width;
         
-        if(self.menuState == MFSideMenuStateClosed) {
+        if (self.menuState == MFSideMenuStateClosed) {
             BOOL showMenu = (finalX > viewWidth/2) || (finalX > self.leftMenuWidth/2);
             if(showMenu) {
                 self.panGestureVelocity = velocity.x;
@@ -603,6 +615,10 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         } else {
             BOOL hideMenu = (finalX > adjustedOrigin.x);
             if(hideMenu) {
+                if (self.elastic && self.menuState == MFSideMenuStateLeftMenuOpen) {
+                    [self setMenuState:MFSideMenuStateLeftMenuOpen];
+                    return;
+                }
                 self.panGestureVelocity = velocity.x;
                 [self setMenuState:MFSideMenuStateClosed];
             } else {
@@ -617,7 +633,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     }
 }
 
-- (void) handleLeftPan:(UIPanGestureRecognizer *)recognizer {
+- (void)handleLeftPan:(UIPanGestureRecognizer *)recognizer {
     if(!self.rightMenuViewController && self.menuState == MFSideMenuStateClosed) return;
     
     UIView *view = [self.centerViewController view];
@@ -627,14 +643,16 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     translatedPoint = CGPointMake(adjustedOrigin.x + translatedPoint.x,
                                   adjustedOrigin.y + translatedPoint.y);
     
-    translatedPoint.x = MAX(translatedPoint.x, -1*self.rightMenuWidth);
-    translatedPoint.x = MIN(translatedPoint.x, self.leftMenuWidth);
-    if(self.menuState == MFSideMenuStateLeftMenuOpen) {
-        // don't let the pan go less than 0 if the menu is already open
-        translatedPoint.x = MAX(translatedPoint.x, 0);
-    } else {
-        // we are opening the menu
-        translatedPoint.x = MIN(translatedPoint.x, 0);
+    if (!self.elastic) {
+        translatedPoint.x = MAX(translatedPoint.x, -1*self.rightMenuWidth);
+        translatedPoint.x = MIN(translatedPoint.x, self.leftMenuWidth);
+        if(self.menuState == MFSideMenuStateLeftMenuOpen) {
+            // don't let the pan go less than 0 if the menu is already open
+            translatedPoint.x = MAX(translatedPoint.x, 0);
+        } else {
+            // we are opening the menu
+            translatedPoint.x = MIN(translatedPoint.x, 0);
+        }
     }
     
     [self setCenterViewControllerOffset:translatedPoint.x];
@@ -656,6 +674,10 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         } else {
             BOOL hideMenu = (finalX < adjustedOrigin.x);
             if(hideMenu) {
+                if (self.elastic && self.menuState == MFSideMenuStateRightMenuOpen) {
+                    [self setMenuState:MFSideMenuStateRightMenuOpen];
+                    return;
+                }
                 self.panGestureVelocity = velocity.x;
                 [self setMenuState:MFSideMenuStateClosed];
             } else {
