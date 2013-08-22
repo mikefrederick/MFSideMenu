@@ -44,6 +44,7 @@ typedef enum {
 @synthesize menuSlideAnimationFactor;
 @synthesize menuAnimationDefaultDuration;
 @synthesize menuAnimationMaxDuration;
+@synthesize menuAnimationMinDuration;
 @synthesize shadow;
 
 
@@ -83,6 +84,7 @@ typedef enum {
     self.menuSlideAnimationFactor = 3.0f;
     self.menuAnimationDefaultDuration = 0.2f;
     self.menuAnimationMaxDuration = 0.4f;
+    self.menuAnimationMinDuration = 0.1f;
     self.panMode = MFSideMenuPanModeDefault;
     self.viewHasAppeared = NO;
 }
@@ -762,7 +764,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         duration = self.menuAnimationDefaultDuration * animationPerecent;
     }
     
-    return MIN(duration, self.menuAnimationMaxDuration);
+    return MAX(MIN(duration, self.menuAnimationMaxDuration), menuAnimationMinDuration);
 }
 
 @end

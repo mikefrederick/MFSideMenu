@@ -51,6 +51,7 @@ typedef enum {
 // menu open/close animation duration -- user can pan faster than default duration, max duration sets the limit
 @property (nonatomic, assign) CGFloat menuAnimationDefaultDuration;
 @property (nonatomic, assign) CGFloat menuAnimationMaxDuration;
+@property (nonatomic, assign) CGFloat menuAnimationMinDuration;
 
 // width of the side menus
 @property (nonatomic, assign) CGFloat menuWidth;
