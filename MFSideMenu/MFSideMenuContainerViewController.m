@@ -86,7 +86,7 @@ typedef enum {
     self.menuAnimationMaxDuration = 0.4f;
     self.panMode = MFSideMenuPanModeDefault;
     self.viewHasAppeared = NO;
-    self.elastic = YES;
+    self.elastic = NO;
 }
 
 - (void)setupMenuContainerView {

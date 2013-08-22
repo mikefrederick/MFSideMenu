@@ -81,6 +81,14 @@ You can add panning to any view like so:
 [panView addGestureRecognizer:[self.menuContainerViewController panGestureRecognizer];
 ```
 
+###Elasticity
+
+You can enable elasticity which allows the user to pan beyond the edges of the screen for a more natural feel. By default, this feature is disabled.
+
+```objective-c
+self.menuContainerViewController.elastic = YES;
+```
+
 ###Listening for Menu Events
 
 You can listen for menu state event changes (i.e. menu will open, menu did open, etc.). See MFSideMenuContainerViewController.h for the different types of events.
