@@ -408,6 +408,7 @@ typedef enum {
     CGRect leftMenuFrame = [self.leftMenuViewController view].frame;
     leftMenuFrame.size.width = _leftMenuWidth;
     
+    // prevent the slide from left animation from going past the menuWidth
     CGFloat xOffset = [self.centerViewController view].frame.origin.x;
     if (xOffset > self.leftMenuWidth) {
         return;
@@ -423,6 +424,7 @@ typedef enum {
     CGRect rightMenuFrame = [self.rightMenuViewController view].frame;
     rightMenuFrame.size.width = _rightMenuWidth;
     
+    // prevent the slide from right animation from going past the menuWidth
     CGFloat xOffset = [self.centerViewController view].frame.origin.x;
     if (xOffset < -1*self.rightMenuWidth) {
         return;
@@ -586,6 +588,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     translatedPoint = CGPointMake(adjustedOrigin.x + translatedPoint.x,
                                   adjustedOrigin.y + translatedPoint.y);
     
+    // Allow user to pan past the edge if elastic is YES
     if (!self.elastic) {
         translatedPoint.x = MAX(translatedPoint.x, -1*self.rightMenuWidth);
         translatedPoint.x = MIN(translatedPoint.x, self.leftMenuWidth);
@@ -648,6 +651,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     translatedPoint = CGPointMake(adjustedOrigin.x + translatedPoint.x,
                                   adjustedOrigin.y + translatedPoint.y);
     
+    // allow user to pan past the edge if elastic is enabled
     if (!self.elastic) {
         translatedPoint.x = MAX(translatedPoint.x, -1*self.rightMenuWidth);
         translatedPoint.x = MIN(translatedPoint.x, self.leftMenuWidth);
