@@ -697,6 +697,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
                              animated:(BOOL)animated
                            completion:(void (^)(void))completion {
     void (^innerCompletion)() = ^ {
+        self.panGestureVelocity = 0.0;
         if(completion) completion();
     };
     
