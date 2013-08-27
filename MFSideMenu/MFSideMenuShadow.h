@@ -14,7 +14,7 @@
 @property (nonatomic, assign) CGFloat radius;
 @property (nonatomic, assign) CGFloat opacity;
 @property (nonatomic, strong) UIColor *color;
-@property (nonatomic, weak) UIView *shadowedView;
+@property (nonatomic, assign) UIView *shadowedView;
 
 + (MFSideMenuShadow *)shadowWithView:(UIView *)shadowedView;
 + (MFSideMenuShadow *)shadowWithColor:(UIColor *)color radius:(CGFloat)radius opacity:(CGFloat)opacity;
