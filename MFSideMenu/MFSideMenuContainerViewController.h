@@ -54,12 +54,30 @@ typedef enum {
 @property (nonatomic, assign) CGFloat leftMenuWidth;
 @property (nonatomic, assign) CGFloat rightMenuWidth;
 
-// shadow
-@property (nonatomic, strong) MFSideMenuShadow *shadow;
+// shadows - content shadow only shown when showMenuOverContent = NO
+//         - menu shadows only shown when showMenuOverContent = YES
+@property (nonatomic, strong) MFSideMenuShadow *contentShadow;
+@property (nonatomic, strong) MFSideMenuShadow *leftMenuShadow;
+@property (nonatomic, strong) MFSideMenuShadow *rightMenuShadow;
+
+// menu depth
+@property (nonatomic, assign) BOOL showMenuOverContent;
 
 // menu slide-in animation
-@property (nonatomic, assign) BOOL menuSlideAnimationEnabled;
-@property (nonatomic, assign) CGFloat menuSlideAnimationFactor; // higher = less menu movement on animation
+@property (nonatomic, assign) CGFloat menuParallaxFactor;
+// 0 = no menu movement
+// > 0 & < 1 = ratio of movement to menu width
+// 1 = full menu movement
+
+// content slide-out animation
+@property (nonatomic, assign) CGFloat contentParallaxFactor;
+// 0 = no menu movement
+// > 0 & < 1 = ratio of movement to menu width
+// 1 = full menu movement
+
+
+@property (nonatomic, assign) BOOL menuSlideAnimationEnabled __deprecated;
+@property (nonatomic, assign) CGFloat menuSlideAnimationFactor __deprecated; // higher = less menu movement on animation
 
 
 - (void)toggleLeftSideMenuCompletion:(void (^)(void))completion;

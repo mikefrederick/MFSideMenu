@@ -16,6 +16,7 @@
 @synthesize radius = _radius;
 @synthesize enabled = _enabled;
 @synthesize shadowedView;
+@synthesize alpha = _alpha;
 
 + (MFSideMenuShadow *)shadowWithView:(UIView *)shadowedView {
     MFSideMenuShadow *shadow = [MFSideMenuShadow shadowWithColor:[UIColor blackColor] radius:10.0f opacity:0.75f];
@@ -38,6 +39,7 @@
         self.opacity = 0.75f;
         self.radius = 10.0f;
         self.enabled = YES;
+        self.alpha = 1.0;
     }
     return self;
 }
@@ -66,6 +68,10 @@
     [self draw];
 }
 
+- (void)setAlpha:(CGFloat)shadowAlpha {
+    _alpha = shadowAlpha;
+    [self draw];
+}
 
 #pragma mark -
 #pragma mark - Drawing
@@ -81,8 +87,9 @@
 - (void)show {
     CGRect pathRect = self.shadowedView.bounds;
     pathRect.size = self.shadowedView.frame.size;
+    self.shadowedView.layer.masksToBounds = NO;
     self.shadowedView.layer.shadowPath = [UIBezierPath bezierPathWithRect:pathRect].CGPath;
-    self.shadowedView.layer.shadowOpacity = self.opacity;
+    self.shadowedView.layer.shadowOpacity = self.opacity * self.alpha;
     self.shadowedView.layer.shadowRadius = self.radius;
     self.shadowedView.layer.shadowColor = [self.color CGColor];
     self.shadowedView.layer.rasterizationScale = [[UIScreen mainScreen] scale];
