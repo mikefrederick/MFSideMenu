@@ -269,19 +269,25 @@ typedef enum {
 
 - (void)addGestureRecognizers {
     [self addCenterGestureRecognizers];
-    [self.view addGestureRecognizer:[self panGestureRecognizer]];
+    [self.leftMenuContainer addGestureRecognizer:[self panGestureRecognizer]];
+    [self.rightMenuContainer addGestureRecognizer:[self panGestureRecognizer]];
 }
 
 - (void)removeCenterGestureRecognizers
 {
     if (self.centerViewController)
+    {
         [[self.centerViewController view] removeGestureRecognizer:[self centerTapGestureRecognizer]];
+        [[self.centerViewController view] removeGestureRecognizer:[self panGestureRecognizer]];
+    }
 }
-
 - (void)addCenterGestureRecognizers
 {
     if (self.centerViewController)
+    {
         [[self.centerViewController view] addGestureRecognizer:[self centerTapGestureRecognizer]];
+        [[self.centerViewController view] addGestureRecognizer:[self panGestureRecognizer]];
+    }
 }
 
 - (UITapGestureRecognizer *)centerTapGestureRecognizer
@@ -424,9 +430,9 @@ typedef enum {
             [self setControllerOffset:offset];
             
             // Otherwise shadow is removed while menu closes
-            if (self.leftMenuShadow.alpha != leftAlpha && leftAlpha == 1.0)
+            if (self.leftMenuShadow.alpha != leftAlpha && leftAlpha > 0)
                 self.leftMenuShadow.alpha = leftAlpha;
-            if (self.rightMenuShadow.alpha != rightAlpha && rightAlpha == 1.0)
+            if (self.rightMenuShadow.alpha != rightAlpha && rightAlpha > 0)
                 self.rightMenuShadow.alpha = rightAlpha;
             
             if(additionalAnimations) additionalAnimations();
@@ -527,9 +533,11 @@ typedef enum {
         return;
     }
     
-    CGFloat offset = _leftMenuWidth;
+    CGRect menuRect = self.leftMenuContainer.frame;
+    menuRect.size.width = _leftMenuWidth;
+    self.leftMenuContainer.frame = menuRect;
     
-    [self setControllerOffset:offset animated:animated completion:nil];
+    [self setControllerOffset:_leftMenuWidth animated:animated completion:nil];
 }
 
 - (void)setRightMenuWidth:(CGFloat)rightMenuWidth animated:(BOOL)animated {
@@ -540,9 +548,12 @@ typedef enum {
         return;
     }
     
-    CGFloat offset = -rightMenuWidth;
+    CGRect menuRect = self.rightMenuContainer.frame;
+    menuRect.origin.x = self.view.bounds.size.width - _rightMenuWidth;
+    menuRect.size.width = _rightMenuWidth;
+    self.rightMenuContainer.frame = menuRect;
     
-    [self setControllerOffset:offset animated:animated completion:nil];
+    [self setControllerOffset:-_rightMenuWidth animated:animated completion:nil];
 }
 
 
