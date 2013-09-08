@@ -454,7 +454,7 @@ typedef enum {
     
     leftFrame.origin.x = MIN(0, MAX(-self.leftMenuWidth, offset - self.leftMenuWidth)) * self.menuParallaxFactor;
     centerFrame.origin.x = offset * self.contentParallaxFactor;
-    rightFrame.origin.x = self.view.bounds.size.width - self.rightMenuWidth * (1 - self.menuParallaxFactor) + offset * self.menuParallaxFactor;
+    rightFrame.origin.x = centerFrame.size.width - self.rightMenuWidth * (1 - self.menuParallaxFactor) + offset * self.menuParallaxFactor;
     
     self.leftMenuContainer.frame = leftFrame;
     [self.centerViewController view].frame = centerFrame;
