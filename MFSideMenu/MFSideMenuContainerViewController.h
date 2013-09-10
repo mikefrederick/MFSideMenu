@@ -60,25 +60,34 @@ typedef enum {
 @property (nonatomic, strong) MFSideMenuShadow *leftMenuShadow;
 @property (nonatomic, strong) MFSideMenuShadow *rightMenuShadow;
 
+// depreciated sliding properties - replace with options below
+@property (nonatomic, assign) BOOL menuSlideAnimationEnabled __deprecated;
+@property (nonatomic, assign) CGFloat menuSlideAnimationFactor __deprecated; // higher = less menu movement on animation
+
 // menu depth
 @property (nonatomic, assign) BOOL showMenuOverContent;
 
 // menu slide-in animation
 @property (nonatomic, assign) CGFloat menuParallaxFactor;
-// 0 = no menu movement
+// 0 = no menu movement (default)
 // > 0 & < 1 = ratio of movement to menu width
 // 1 = full menu movement
 
 // content slide-out animation
 @property (nonatomic, assign) CGFloat contentParallaxFactor;
-// 0 = no menu movement
+// 0 = no menu movement (default)
 // > 0 & < 1 = ratio of movement to menu width
 // 1 = full menu movement
 
+// menu slide in scaling
+@property (nonatomic, assign) CGFloat menuScaleFactor;
+// 1 = no scaling (default)
+// < 1 = scale of menu at close
 
-@property (nonatomic, assign) BOOL menuSlideAnimationEnabled __deprecated;
-@property (nonatomic, assign) CGFloat menuSlideAnimationFactor __deprecated; // higher = less menu movement on animation
-
+// content slide out scaling
+@property (nonatomic, assign) CGFloat contentScaleFactor;
+// 1 = no scaling (default)
+// < 1 = scale of content at menu open
 
 - (void)toggleLeftSideMenuCompletion:(void (^)(void))completion;
 - (void)toggleRightSideMenuCompletion:(void (^)(void))completion;
