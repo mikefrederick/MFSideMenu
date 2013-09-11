@@ -420,13 +420,13 @@ typedef enum {
                 self.leftImageView.image = nil;
                 self.leftImageView.hidden = YES;
                 self.leftMenuViewController.view.hidden = NO;
-                self.leftMenuShadow.shadowedView = self.leftMenuViewController.view;
+                self.leftMenuShadow.shadowedView = self.leftMenuContainer;
                 [self.leftMenuShadow draw];
                 
                 self.rightImageView.image = nil;
                 self.rightImageView.hidden = YES;
                 self.rightMenuViewController.view.hidden = NO;
-                self.rightMenuShadow.shadowedView = self.rightMenuViewController.view;
+                self.rightMenuShadow.shadowedView = self.rightMenuContainer;
                 [self.rightMenuShadow draw];
                 
                 innerCompletion();
@@ -441,7 +441,7 @@ typedef enum {
                 self.leftImageView.image = nil;
                 self.leftImageView.hidden = YES;
                 self.leftMenuViewController.view.hidden = NO;
-                self.leftMenuShadow.shadowedView = self.leftMenuViewController.view;
+                self.leftMenuShadow.shadowedView = self.leftMenuContainer;
                 [self.leftMenuShadow draw];
                 innerCompletion();
             }];
@@ -455,7 +455,7 @@ typedef enum {
                 self.rightImageView.image = nil;
                 self.rightImageView.hidden = YES;
                 self.rightMenuViewController.view.hidden = NO;
-                self.rightMenuShadow.shadowedView = self.rightMenuViewController.view;
+                self.rightMenuShadow.shadowedView = self.rightMenuContainer;
                 [self.rightMenuShadow draw];
                 innerCompletion();
             }];
