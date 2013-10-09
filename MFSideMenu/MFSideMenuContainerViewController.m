@@ -50,6 +50,10 @@ typedef enum {
 #pragma mark -
 #pragma mark - Initialization
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return [self.centerViewController preferredStatusBarStyle];
+}
+
 + (MFSideMenuContainerViewController *)containerWithCenterViewController:(id)centerViewController
                                                   leftMenuViewController:(id)leftMenuViewController
                                                  rightMenuViewController:(id)rightMenuViewController {
