@@ -130,6 +130,4 @@ MFSideMenu gives you the option to show a shadow between the center view control
 
 ##Contact
 
-mike@viamike.com<br />
-http://viamike.com<br />
-http://twitter.com/mike_frederick
+[@mike_frederick](http://twitter.com/mike_frederick)
