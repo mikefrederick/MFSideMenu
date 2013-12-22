@@ -514,6 +514,12 @@ typedef enum {
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+        UIPanGestureRecognizer *panRecognizer = (UIPanGestureRecognizer *)gestureRecognizer;
+        CGPoint velocity = [panRecognizer velocityInView:gestureRecognizer.view];
+        bool isHorizontalPanning = fabsf(velocity.x) > fabsf(velocity.y);
+        return isHorizontalPanning;
+    }
     return YES;
 }
 
