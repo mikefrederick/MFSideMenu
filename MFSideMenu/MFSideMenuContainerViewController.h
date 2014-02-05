@@ -54,13 +54,40 @@ typedef enum {
 @property (nonatomic, assign) CGFloat leftMenuWidth;
 @property (nonatomic, assign) CGFloat rightMenuWidth;
 
-// shadow
-@property (nonatomic, strong) MFSideMenuShadow *shadow;
+// shadows - content shadow only shown when showMenuOverContent = NO
+//         - menu shadows only shown when showMenuOverContent = YES
+@property (nonatomic, strong) MFSideMenuShadow *contentShadow;
+@property (nonatomic, strong) MFSideMenuShadow *leftMenuShadow;
+@property (nonatomic, strong) MFSideMenuShadow *rightMenuShadow;
+
+// depreciated sliding properties - replace with options below
+@property (nonatomic, assign) BOOL menuSlideAnimationEnabled __deprecated;
+@property (nonatomic, assign) CGFloat menuSlideAnimationFactor __deprecated; // higher = less menu movement on animation
+
+// menu depth
+@property (nonatomic, assign) BOOL showMenuOverContent;
 
 // menu slide-in animation
-@property (nonatomic, assign) BOOL menuSlideAnimationEnabled;
-@property (nonatomic, assign) CGFloat menuSlideAnimationFactor; // higher = less menu movement on animation
+@property (nonatomic, assign) CGFloat menuParallaxFactor;
+// 0 = no menu movement (default)
+// > 0 & < 1 = ratio of movement to menu width
+// 1 = full menu movement
 
+// content slide-out animation
+@property (nonatomic, assign) CGFloat contentParallaxFactor;
+// 0 = no menu movement (default)
+// > 0 & < 1 = ratio of movement to menu width
+// 1 = full menu movement
+
+// menu slide in scaling
+@property (nonatomic, assign) CGFloat menuScaleFactor;
+// 1 = no scaling (default)
+// < 1 = scale of menu at close
+
+// content slide out scaling
+@property (nonatomic, assign) CGFloat contentScaleFactor;
+// 1 = no scaling (default)
+// < 1 = scale of content at menu open
 
 - (void)toggleLeftSideMenuCompletion:(void (^)(void))completion;
 - (void)toggleRightSideMenuCompletion:(void (^)(void))completion;

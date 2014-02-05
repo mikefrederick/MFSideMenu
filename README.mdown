@@ -97,34 +97,68 @@ You can listen for menu state event changes (i.e. menu will open, menu did open,
 }
 ```
 
-###Menu Slide Animation
+###Sliding Options
 
-With this option enabled, the side menus will slide in & out with the center view controller. This effect is similar to the Wunderlist side menu.
+Control how the center view and each menu slide.
 
 ```objective-c
-// enable the menu slide animation
-[menuContainerViewController setMenuSlideAnimationEnabled:YES];
+// keep menus behind center view (Default)
+[menuContainerViewController setShowMenuOverContent:NO];
 
-// control the exaggeration of the menu slide animation
-[menuContainerViewController setMenuSlideAnimationFactor:3.0f];
+// menu stationary (Default)
+[menuContainerViewController setMenuParallaxFactor:0.0f];
 ```
+![](http://i.imgur.com/1kEXXHV.png)
+```objective-c
+// menu slides half of the width
+[menuContainerViewController setMenuParallaxFactor:0.5f];
+```
+![](http://i.imgur.com/nAlFyiM.png)
+```objective-c
+// menu slides with center view
+[menuContainerViewController setMenuParallaxFactor:1.0f];
+```
+![](http://i.imgur.com/29BdgR5.png)
+```objective-c
+// bring menus in front of center view
+[menuContainerViewController setShowMenuOverContent:YES];
+
+// center view stationary (Default)
+[menuContainerViewController setContentParallaxFactor:0.0f];
+```
+![](http://i.imgur.com/tOZKJWV.png)
+```objective-c
+// center view slides half of the menu width
+[menuContainerViewController setContentParallaxFactor:0.5f];
+```
+![](http://i.imgur.com/i6siBOT.png)
+```objective-c
+// center view slides with menu
+[menuContainerViewController setMenuParallaxFactor:1.0f];
+```
+![](http://i.imgur.com/ayVtwF1.png)
+
 
 ###Shadow
 
 MFSideMenu gives you the option to show a shadow between the center view controller & the side menus.
 
+The `contentShadow` property is used for shadow of the center view controller over the side menus. It is only seen when `showMenuOverContent = NO`.
+
+The `leftMenuShadow` and `rightMenuShadow` properties are used for shadows of the side menus over the center view. They are only seen when `showMenuOverContent = YES`.
+
 ```objective-c
 // enable/disable the shadow
-[menuContainerViewController.shadow setEnabled:YES];
+[menuContainerViewController.contentShadow setEnabled:YES];
 
 // set the radius of the shadow
-[menuContainerViewController.shadow setRadius:10.0f];
+[menuContainerViewController.contentShadow setRadius:10.0f];
 
 // set the color of the shadow
-[menuContainerViewController.shadow setColor:[UIColor blackColor]];
+[menuContainerViewController.contentShadow setColor:[UIColor blackColor]];
 
 // set the opacity of the shadow
-[menuContainerViewController.shadow setOpacity:0.75f];
+[menuContainerViewController.contentShadow setOpacity:0.75f];
 
 ```
 
