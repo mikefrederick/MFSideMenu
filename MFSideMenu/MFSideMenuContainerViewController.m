@@ -126,6 +126,21 @@ typedef enum {
     }
 }
 
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    if ([self respondsToSelector:@selector(topLayoutGuide)]) {
+        if (_leftSideMenuViewController &&
+            [_leftSideMenuViewController automaticallyAdjustsScrollViewInsets] &&
+            [_leftSideMenuViewController.view respondsToSelector:@selector(setContentInset:)]) {
+            [(UIScrollView *)_leftSideMenuViewController.view setContentInset:UIEdgeInsetsMake([self.topLayoutGuide length], 0, 0, 0)];
+        }
+        if (_rightSideMenuViewController &&
+            [_rightSideMenuViewController automaticallyAdjustsScrollViewInsets] &&
+            [_rightSideMenuViewController.view respondsToSelector:@selector(setContentInset:)]) {
+            [(UIScrollView *)_rightSideMenuViewController.view setContentInset:UIEdgeInsetsMake([self.topLayoutGuide length], 0, 0, 0)];
+        }
+    }
+}
 
 #pragma mark -
 #pragma mark - UIViewController Rotation
