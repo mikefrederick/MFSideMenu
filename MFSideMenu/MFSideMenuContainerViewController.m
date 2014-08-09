@@ -9,7 +9,7 @@
 #import "MFSideMenuContainerViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
-NSString * const MFSideMenuStateNotificationEvent = @"MFSideMenuStateNotificationEvent";
+NSString * const MFStateNotificationEvent = @"MFStateNotificationEvent";
 
 typedef enum {
     MFSideMenuPanDirectionNone,
@@ -44,6 +44,7 @@ typedef enum {
 @synthesize menuSlideAnimationFactor;
 @synthesize menuAnimationDefaultDuration;
 @synthesize menuAnimationMaxDuration;
+@synthesize menuAnimationMinDuration;
 @synthesize shadow;
 
 
@@ -83,6 +84,7 @@ typedef enum {
     self.menuSlideAnimationFactor = 3.0f;
     self.menuAnimationDefaultDuration = 0.2f;
     self.menuAnimationMaxDuration = 0.4f;
+    self.menuAnimationMinDuration = 0.1f;
     self.panMode = MFSideMenuPanModeDefault;
     self.viewHasAppeared = NO;
 }
@@ -198,12 +200,13 @@ typedef enum {
     [_leftSideMenuViewController didMoveToParentViewController:self];
     
     if(self.viewHasAppeared) [self setLeftSideMenuFrameToClosedPosition];
+
+    [self sendStateEventNotification:MFStateEventLeftMenuDidChange];
 }
 
 - (void)setCenterViewController:(UIViewController *)centerViewController {
     [self removeCenterGestureRecognizers];
     [self removeChildViewControllerFromContainer:_centerViewController];
-    self.shadow = nil;
     
     CGPoint origin = ((UIViewController *)_centerViewController).view.frame.origin;
     _centerViewController = centerViewController;
@@ -214,10 +217,16 @@ typedef enum {
     [((UIViewController *)_centerViewController) view].frame = (CGRect){.origin = origin, .size=centerViewController.view.frame.size};
     
     [_centerViewController didMoveToParentViewController:self];
-    
-    self.shadow = [MFSideMenuShadow shadowWithView:[_centerViewController view]];
+
+    if (self.shadow) {
+        self.shadow.shadowedView = [_centerViewController view];
+    } else {
+        self.shadow = [MFSideMenuShadow shadowWithView:[_centerViewController view]];
+    }
     [self.shadow draw];
     [self addCenterGestureRecognizers];
+
+    [self sendStateEventNotification:MFStateEventCenterDidChange];
 }
 
 - (void)setRightMenuViewController:(UIViewController *)rightSideMenuViewController {
@@ -233,6 +242,8 @@ typedef enum {
     [_rightSideMenuViewController didMoveToParentViewController:self];
     
     if(self.viewHasAppeared) [self setRightSideMenuFrameToClosedPosition];
+
+    [self sendStateEventNotification:MFStateEventRightMenuDidChange];
 }
 
 - (void)removeChildViewControllerFromContainer:(UIViewController *)childViewController {
@@ -330,7 +341,7 @@ typedef enum {
         _menuState = menuState;
         
         [self setUserInteractionStateForCenterViewController];
-        MFSideMenuStateEvent eventType = (_menuState == MFSideMenuStateClosed) ? MFSideMenuStateEventMenuDidClose : MFSideMenuStateEventMenuDidOpen;
+        MFStateEvent eventType = (_menuState == MFSideMenuStateClosed) ? MFStateEventMenuDidClose : MFStateEventMenuDidOpen;
         [self sendStateEventNotification:eventType];
         
         if(completion) completion();
@@ -338,7 +349,7 @@ typedef enum {
     
     switch (menuState) {
         case MFSideMenuStateClosed: {
-            [self sendStateEventNotification:MFSideMenuStateEventMenuWillClose];
+            [self sendStateEventNotification:MFStateEventMenuWillClose];
             [self closeSideMenuCompletion:^{
                 [self.leftMenuViewController view].hidden = YES;
                 [self.rightMenuViewController view].hidden = YES;
@@ -348,13 +359,13 @@ typedef enum {
         }
         case MFSideMenuStateLeftMenuOpen:
             if(!self.leftMenuViewController) return;
-            [self sendStateEventNotification:MFSideMenuStateEventMenuWillOpen];
+            [self sendStateEventNotification:MFStateEventMenuWillOpen];
             [self leftMenuWillShow];
             [self openLeftSideMenuCompletion:innerCompletion];
             break;
         case MFSideMenuStateRightMenuOpen:
             if(!self.rightMenuViewController) return;
-            [self sendStateEventNotification:MFSideMenuStateEventMenuWillOpen];
+            [self sendStateEventNotification:MFStateEventMenuWillOpen];
             [self rightMenuWillShow];
             [self openRightSideMenuCompletion:innerCompletion];
             break;
@@ -378,10 +389,10 @@ typedef enum {
 #pragma mark -
 #pragma mark - State Event Notification
 
-- (void)sendStateEventNotification:(MFSideMenuStateEvent)event {
+- (void)sendStateEventNotification:(MFStateEvent)event {
     NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:event]
                                                          forKey:@"eventType"];
-    [[NSNotificationCenter defaultCenter] postNotificationName:MFSideMenuStateNotificationEvent
+    [[NSNotificationCenter defaultCenter] postNotificationName:MFStateNotificationEvent
                                                         object:self
                                                       userInfo:userInfo];
 }
@@ -723,6 +734,8 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
             [self setCenterViewControllerOffset:offset];
             if(additionalAnimations) additionalAnimations();
         } completion:^(BOOL finished) {
+            // Make sure the next non gesture based animation duration is calculated correctly.
+            self.panGestureVelocity = 0;
             innerCompletion();
         }];
     } else {
@@ -766,7 +779,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         duration = self.menuAnimationDefaultDuration * animationPerecent;
     }
     
-    return MIN(duration, self.menuAnimationMaxDuration);
+    return MAX(MIN(duration, self.menuAnimationMaxDuration), menuAnimationMinDuration);
 }
 
 @end

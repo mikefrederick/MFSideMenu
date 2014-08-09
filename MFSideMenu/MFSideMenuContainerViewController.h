@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "MFSideMenuShadow.h"
 
-extern NSString * const MFSideMenuStateNotificationEvent;
+extern NSString * const MFStateNotificationEvent;
 
 typedef enum {
     MFSideMenuPanModeNone = 0, // pan disabled
@@ -25,11 +25,14 @@ typedef enum {
 } MFSideMenuState;
 
 typedef enum {
-    MFSideMenuStateEventMenuWillOpen, // the menu is going to open
-    MFSideMenuStateEventMenuDidOpen, // the menu finished opening
-    MFSideMenuStateEventMenuWillClose, // the menu is going to close
-    MFSideMenuStateEventMenuDidClose // the menu finished closing
-} MFSideMenuStateEvent;
+    MFStateEventMenuWillOpen, // the menu is going to open
+    MFStateEventMenuDidOpen, // the menu finished opening
+    MFStateEventMenuWillClose, // the menu is going to close
+    MFStateEventMenuDidClose, // the menu finished closing
+    MFStateEventLeftMenuDidChange, // a new left-hand menu view controller was set
+    MFStateEventRightMenuDidChange, // a new right-hand menu view controller was set
+    MFStateEventCenterDidChange // a new center view controller was set
+} MFStateEvent;
 
 
 @interface MFSideMenuContainerViewController : UIViewController<UIGestureRecognizerDelegate>
@@ -48,6 +51,7 @@ typedef enum {
 // menu open/close animation duration -- user can pan faster than default duration, max duration sets the limit
 @property (nonatomic, assign) CGFloat menuAnimationDefaultDuration;
 @property (nonatomic, assign) CGFloat menuAnimationMaxDuration;
+@property (nonatomic, assign) CGFloat menuAnimationMinDuration;
 
 // width of the side menus
 @property (nonatomic, assign) CGFloat menuWidth;
