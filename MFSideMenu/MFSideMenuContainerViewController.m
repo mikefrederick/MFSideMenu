@@ -125,6 +125,25 @@ typedef enum {
     }
 }
 
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    
+    if([self respondsToSelector:@selector(topLayoutGuide)]) {
+        UIEdgeInsets insets = UIEdgeInsetsMake([self.topLayoutGuide length], 0, 0, 0);
+        if(_leftSideMenuViewController &&
+            [_leftSideMenuViewController automaticallyAdjustsScrollViewInsets] &&
+            [_leftSideMenuViewController.view respondsToSelector:@selector(setContentInset:)]) {
+            [(UIScrollView *)_leftSideMenuViewController.view setContentInset:insets];
+        }
+        if(_rightSideMenuViewController &&
+            [_rightSideMenuViewController automaticallyAdjustsScrollViewInsets] &&
+            [_rightSideMenuViewController.view respondsToSelector:@selector(setContentInset:)]) {
+            [(UIScrollView *)_rightSideMenuViewController.view setContentInset:insets];
+        }
+    }
+}
+
+
 - (UIStatusBarStyle)preferredStatusBarStyle {
     if (self.centerViewController) {
         if ([self.centerViewController isKindOfClass:[UINavigationController class]]) {
