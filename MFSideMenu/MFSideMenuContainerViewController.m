@@ -104,7 +104,6 @@ typedef enum {
     }
 }
 
-
 #pragma mark -
 #pragma mark - View Lifecycle
 
@@ -124,6 +123,16 @@ typedef enum {
         
         self.viewHasAppeared = YES;
     }
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    if (self.centerViewController) {
+        if ([self.centerViewController isKindOfClass:[UINavigationController class]]) {
+            return [((UINavigationController *)self.centerViewController).topViewController preferredStatusBarStyle];
+        }
+        return [self.centerViewController preferredStatusBarStyle];
+    }
+    return UIStatusBarStyleDefault;
 }
 
 
