@@ -90,16 +90,26 @@ typedef enum {
 - (void)setupMenuContainerView {
     if(self.menuContainerView.superview) return;
     
-    self.menuContainerView.frame = self.view.bounds;
+    CGRect frame = self.view.bounds;
+    frame.origin.x = 0;
+    //Account for notification bar
+    frame.origin.y = 20;
+    frame.size.height = frame.size.height - 20;
+    
+    self.menuContainerView.frame = frame;
     self.menuContainerView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     
     [self.view insertSubview:menuContainerView atIndex:0];
     
     if(self.leftMenuViewController && !self.leftMenuViewController.view.superview) {
-        [self.menuContainerView addSubview:self.leftMenuViewController.view];
+    	//added to account for when app is started in landscape that it takes the right size
+        self.leftMenuViewController.view.frame = frame;
+	[self.menuContainerView addSubview:self.leftMenuViewController.view];
     }
     
     if(self.rightMenuViewController && !self.rightMenuViewController.view.superview) {
+    	//added to account for when app is started in landscape that it takes the right size
+        self.rightMenuViewController.view.frame = frame;
         [self.menuContainerView addSubview:self.rightMenuViewController.view];
     }
 }
