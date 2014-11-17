@@ -759,6 +759,20 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     frame.origin.x = xOffset;
     [self.centerViewController view].frame = frame;
     
+    if (self.positioningMode == MFSideMenuPositioningModeSideBySide) {
+        frame = [self.leftMenuViewController view].frame;
+        frame.origin.x = [self.centerViewController view].frame.origin.x - frame.size.width;
+        [self.leftMenuViewController view].frame = frame;
+        
+        frame = [self.rightMenuViewController view].frame;
+        frame.origin.x = [self.centerViewController view].frame.origin.x - [self.centerViewController view].frame.size.width;
+        [self.rightMenuViewController view].frame = frame;
+    }
+    
+    if (self.panGestureDelegate) {
+        [self.panGestureDelegate mfSideMenuPanGestureRecognizerDidPanWithOffset:xOffset];
+    }
+
     if(!self.menuSlideAnimationEnabled) return;
     
     if(xOffset > 0){

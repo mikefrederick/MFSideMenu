@@ -19,6 +19,11 @@ typedef enum {
 } MFSideMenuPanMode;
 
 typedef enum {
+    MFSideMenuPositioningModeUnderTop, // side controllers' z-index will be greater than center controller's z-index
+    MFSideMenuPositioningModeSideBySide // side controllers will reside side by side with center controller
+} MFSideMenuPositioningMode;
+
+typedef enum {
     MFSideMenuStateClosed, // the menu is closed
     MFSideMenuStateLeftMenuOpen, // the left-hand menu is open
     MFSideMenuStateRightMenuOpen // the right-hand menu is open
@@ -30,6 +35,13 @@ typedef enum {
     MFSideMenuStateEventMenuWillClose, // the menu is going to close
     MFSideMenuStateEventMenuDidClose // the menu finished closing
 } MFSideMenuStateEvent;
+
+@protocol MFSideMenuContainerViewControllerPanProtocol <NSObject>
+
+@optional
+- (void)mfSideMenuPanGestureRecognizerDidPanWithOffset:(CGFloat)offset;
+
+@end
 
 
 @interface MFSideMenuContainerViewController : UIViewController<UIGestureRecognizerDelegate>
@@ -44,6 +56,7 @@ typedef enum {
 
 @property (nonatomic, assign) MFSideMenuState menuState;
 @property (nonatomic, assign) MFSideMenuPanMode panMode;
+@property (nonatomic, assign) MFSideMenuPositioningMode positioningMode;
 
 // menu open/close animation duration -- user can pan faster than default duration, max duration sets the limit
 @property (nonatomic, assign) CGFloat menuAnimationDefaultDuration;
@@ -61,6 +74,7 @@ typedef enum {
 @property (nonatomic, assign) BOOL menuSlideAnimationEnabled;
 @property (nonatomic, assign) CGFloat menuSlideAnimationFactor; // higher = less menu movement on animation
 
+@property (nonatomic, assign) id <MFSideMenuContainerViewControllerPanProtocol> panGestureDelegate;
 
 - (void)toggleLeftSideMenuCompletion:(void (^)(void))completion;
 - (void)toggleRightSideMenuCompletion:(void (^)(void))completion;
