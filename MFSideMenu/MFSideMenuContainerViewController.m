@@ -422,7 +422,7 @@ typedef enum {
     //#pragma mark - Start hotfix for iOS 7 by fotisp taken from https://github.com/mikefrederick/MFSideMenu/issues/106
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
         CGRect statusBarFrame =  [[UIApplication sharedApplication] statusBarFrame];
-        rightFrame.origin.y = rightFrame.origin.y+statusBarFrame.size.height;
+        leftFrame.origin.y = leftFrame.origin.y+statusBarFrame.size.height;
     }
     //#pragma mark - End hotfix for iOS 7
 
