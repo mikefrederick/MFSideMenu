@@ -532,7 +532,7 @@ typedef enum {
             return [self centerViewControllerPanEnabled];
         
         if([gestureRecognizer.view isEqual:self.menuContainerView])
-           return NO;
+           return [self sideMenuPanEnabled];
         
         // pan gesture is attached to a custom view
         return YES;
