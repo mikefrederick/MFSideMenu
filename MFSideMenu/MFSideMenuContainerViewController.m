@@ -709,12 +709,12 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (void)setUserInteractionStateForCenterViewController {
     // disable user interaction on the current stack of view controllers if the menu is visible
-    if([self.centerViewController respondsToSelector:@selector(viewControllers)]) {
-        NSArray *viewControllers = [self.centerViewController viewControllers];
-        for(UIViewController* viewController in viewControllers) {
-            viewController.view.userInteractionEnabled = (self.menuState == MFSideMenuStateClosed);
-        }
-    }
+    // if([self.centerViewController respondsToSelector:@selector(viewControllers)]) {
+    //     NSArray *viewControllers = [self.centerViewController viewControllers];
+    //     for(UIViewController* viewController in viewControllers) {
+    //         viewController.view.userInteractionEnabled = (self.menuState == MFSideMenuStateClosed);
+    //     }
+    // }
 }
 
 #pragma mark -
