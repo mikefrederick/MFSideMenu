@@ -125,25 +125,6 @@ typedef enum {
     }
 }
 
-- (void)viewWillLayoutSubviews {
-    [super viewWillLayoutSubviews];
-    
-    if([self respondsToSelector:@selector(topLayoutGuide)]) {
-        UIEdgeInsets insets = UIEdgeInsetsMake([self.topLayoutGuide length], 0, 0, 0);
-        if(_leftSideMenuViewController &&
-            [_leftSideMenuViewController automaticallyAdjustsScrollViewInsets] &&
-            [_leftSideMenuViewController.view respondsToSelector:@selector(setContentInset:)]) {
-            [(UIScrollView *)_leftSideMenuViewController.view setContentInset:insets];
-        }
-        if(_rightSideMenuViewController &&
-            [_rightSideMenuViewController automaticallyAdjustsScrollViewInsets] &&
-            [_rightSideMenuViewController.view respondsToSelector:@selector(setContentInset:)]) {
-            [(UIScrollView *)_rightSideMenuViewController.view setContentInset:insets];
-        }
-    }
-}
-
-
 - (UIStatusBarStyle)preferredStatusBarStyle {
     if (self.centerViewController) {
         if ([self.centerViewController isKindOfClass:[UINavigationController class]]) {
@@ -418,6 +399,14 @@ typedef enum {
     leftFrame.size.width = self.leftMenuWidth;
     leftFrame.origin.x = (self.menuSlideAnimationEnabled) ? -1*leftFrame.size.width / self.menuSlideAnimationFactor : 0;
     leftFrame.origin.y = 0;
+
+    //#pragma mark - Start hotfix for iOS 7 by fotisp taken from https://github.com/mikefrederick/MFSideMenu/issues/106
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
+        CGRect statusBarFrame =  [[UIApplication sharedApplication] statusBarFrame];
+        leftFrame.origin.y = leftFrame.origin.y+statusBarFrame.size.height;
+    }
+    //#pragma mark - End hotfix for iOS 7
+
     [self.leftMenuViewController view].frame = leftFrame;
     [self.leftMenuViewController view].autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleHeight;
 }
@@ -428,6 +417,14 @@ typedef enum {
     rightFrame.size.width = self.rightMenuWidth;
     rightFrame.origin.y = 0;
     rightFrame.origin.x = self.menuContainerView.frame.size.width - self.rightMenuWidth;
+
+    //#pragma mark - Start hotfix for iOS 7 by fotisp taken from https://github.com/mikefrederick/MFSideMenu/issues/106
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
+        CGRect statusBarFrame =  [[UIApplication sharedApplication] statusBarFrame];
+        rightFrame.origin.y = rightFrame.origin.y+statusBarFrame.size.height;
+    }
+    //#pragma mark - End hotfix for iOS 7
+
     if(self.menuSlideAnimationEnabled) rightFrame.origin.x += self.rightMenuWidth / self.menuSlideAnimationFactor;
     [self.rightMenuViewController view].frame = rightFrame;
     [self.rightMenuViewController view].autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight;
