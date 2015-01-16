@@ -388,11 +388,15 @@ typedef enum {
 // these callbacks are called when the menu will become visible, not neccessarily when they will OPEN
 - (void)leftMenuWillShow {
     [self.leftMenuViewController view].hidden = NO;
+    [self.leftMenuViewController beginAppearanceTransition:YES animated:YES];
+    [self.leftMenuViewController endAppearanceTransition];
     [self.menuContainerView bringSubviewToFront:[self.leftMenuViewController view]];
 }
 
 - (void)rightMenuWillShow {
     [self.rightMenuViewController view].hidden = NO;
+    [self.rightMenuViewController beginAppearanceTransition:YES animated:YES];
+    [self.rightMenuViewController endAppearanceTransition];
     [self.menuContainerView bringSubviewToFront:[self.rightMenuViewController view]];
 }
 
