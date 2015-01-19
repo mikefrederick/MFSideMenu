@@ -720,6 +720,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         NSArray *viewControllers = [self.centerViewController viewControllers];
         for(UIViewController* viewController in viewControllers) {
             viewController.view.userInteractionEnabled = (self.menuState == MFSideMenuStateClosed);
+            viewController.navigationController.interactivePopGestureRecognizer.enabled = (self.menuState == MFSideMenuStateClosed);
         }
     }
 }
