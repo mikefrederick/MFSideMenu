@@ -764,6 +764,18 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     frame.origin.x = xOffset;
     [self.centerViewController view].frame = frame;
     
+        if ([self.panGestureDelegate respondsToSelector:@selector(mfSideMenuPanGestureRecognizerDidPanWithOffset:)]) {
+        [self.panGestureDelegate mfSideMenuPanGestureRecognizerDidPanWithOffset:xOffset];
+    }
+    if (darkenStatusBarWhenMenuOpens) {
+        CGFloat menuWidth = MAX(_leftMenuWidth,  _rightMenuWidth);
+        CGFloat menuOpenedPerecent = ABS(xOffset) / menuWidth;
+        CGRect statusBarFrame = self.statusBarBackgoundView.frame;
+        statusBarFrame.size.width = self.view.bounds.size.width;
+        self.statusBarBackgoundView.frame = statusBarFrame;
+        self.statusBarBackgoundView.alpha = menuOpenedPerecent;
+    }
+    
     if(!self.menuSlideAnimationEnabled) return;
     
     if(xOffset > 0){
