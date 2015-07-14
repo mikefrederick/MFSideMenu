@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 NSString * const MFSideMenuStateNotificationEvent = @"MFSideMenuStateNotificationEvent";
+CGFloat const CENTER_VIEW_WIDTH_WHEN_MENU_OPEN = 50.0f;
 
 typedef enum {
     MFSideMenuPanDirectionNone,
@@ -79,7 +80,7 @@ typedef enum {
     
     self.menuContainerView = [[UIView alloc] init];
     self.menuState = MFSideMenuStateClosed;
-    self.menuWidth = 270.0f;
+    self.menuWidth = [UIScreen mainScreen].bounds.size.width - CENTER_VIEW_WIDTH_WHEN_MENU_OPEN;
     self.menuSlideAnimationFactor = 3.0f;
     self.menuAnimationDefaultDuration = 0.2f;
     self.menuAnimationMaxDuration = 0.4f;
