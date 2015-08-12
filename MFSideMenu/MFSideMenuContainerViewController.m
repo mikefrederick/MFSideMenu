@@ -154,6 +154,16 @@ typedef enum {
     return UIStatusBarStyleDefault;
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    if (self.centerViewController) {
+        if ([self.centerViewController isKindOfClass:[UINavigationController class]]) {
+            return [((UINavigationController *)self.centerViewController).topViewController prefersStatusBarHidden];
+        }
+        return [self.centerViewController prefersStatusBarHidden];
+    }
+    return NO;
+}
 
 #pragma mark -
 #pragma mark - UIViewController Rotation
