@@ -220,6 +220,7 @@ typedef enum {
 }
 
 - (void)setCenterViewController:(UIViewController *)centerViewController {
+	[self setUserInteractionStateForCenterViewController:YES];
     [self removeCenterGestureRecognizers];
     [self removeChildViewControllerFromContainer:_centerViewController];
     
@@ -351,7 +352,7 @@ typedef enum {
     void (^innerCompletion)() = ^ {
         _menuState = menuState;
         
-        [self setUserInteractionStateForCenterViewController];
+		[self setUserInteractionStateForCenterViewController:(menuState == MFSideMenuStateClosed)];
         MFSideMenuStateEvent eventType = (_menuState == MFSideMenuStateClosed) ? MFSideMenuStateEventMenuDidClose : MFSideMenuStateEventMenuDidOpen;
         [self sendStateEventNotification:eventType];
         
@@ -710,15 +711,17 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     }
 }
 
-- (void)setUserInteractionStateForCenterViewController {
+- (void)setUserInteractionStateForCenterViewController:(BOOL)state {
     // disable user interaction on the current stack of view controllers if the menu is visible
     if([self.centerViewController respondsToSelector:@selector(viewControllers)]) {
         NSArray *viewControllers = [self.centerViewController viewControllers];
         for(UIViewController* viewController in viewControllers) {
-            viewController.view.userInteractionEnabled = (self.menuState == MFSideMenuStateClosed);
+			viewController.view.userInteractionEnabled = state;
         }
     }
 }
+
+
 
 #pragma mark -
 #pragma mark - Center View Controller Movement
