@@ -24,6 +24,9 @@ typedef enum {
 @property (nonatomic, assign) CGFloat panGestureVelocity;
 @property (nonatomic, assign) MFSideMenuPanDirection panDirection;
 
+@property (nonatomic, strong) UIGestureRecognizer *panGestureRecognizer;
+@property (nonatomic, strong) UIGestureRecognizer *tapGestureRecognizer;
+
 @property (nonatomic, assign) BOOL viewHasAppeared;
 @end
 
@@ -269,16 +272,25 @@ typedef enum {
 #pragma mark - UIGestureRecognizer Helpers
 
 - (UIPanGestureRecognizer *)panGestureRecognizer {
+    
+    if (!_panGestureRecognizer) {
+        _panGestureRecognizer = [self createPanGestureRecognizer];
+    }
+    
+    return _panGestureRecognizer;
+}
+
+- (UIPanGestureRecognizer *)createPanGestureRecognizer {
     UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc]
-                                          initWithTarget:self action:@selector(handlePan:)];
-	[recognizer setMaximumNumberOfTouches:1];
+     initWithTarget:self action:@selector(handlePan:)];
+    [recognizer setMaximumNumberOfTouches:1];
     [recognizer setDelegate:self];
     return recognizer;
 }
 
 - (void)addGestureRecognizers {
     [self addCenterGestureRecognizers];
-    [menuContainerView addGestureRecognizer:[self panGestureRecognizer]];
+    [menuContainerView addGestureRecognizer:[self createPanGestureRecognizer]];
 }
 
 - (void)removeCenterGestureRecognizers
@@ -300,11 +312,12 @@ typedef enum {
 
 - (UITapGestureRecognizer *)centerTapGestureRecognizer
 {
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]
-                                             initWithTarget:self
-                                             action:@selector(centerViewControllerTapped:)];
-    [tapRecognizer setDelegate:self];
-    return tapRecognizer;
+    if (!_tapGestureRecognizer) {
+        _tapGestureRecognizer = [[UITapGestureRecognizer alloc]
+                                 initWithTarget:self
+                                 action:@selector(centerViewControllerTapped:)];
+    }
+    return _tapGestureRecognizer;
 }
 
 
