@@ -158,7 +158,7 @@ typedef enum {
 #pragma mark -
 #pragma mark - UIViewController Rotation
 
--(NSUInteger)supportedInterfaceOrientations {
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     if (self.centerViewController) {
         if ([self.centerViewController isKindOfClass:[UINavigationController class]]) {
             return [((UINavigationController *)self.centerViewController).topViewController supportedInterfaceOrientations];
@@ -220,6 +220,7 @@ typedef enum {
 }
 
 - (void)setCenterViewController:(UIViewController *)centerViewController {
+	[self setUserInteractionStateForCenterViewController:YES];
     [self removeCenterGestureRecognizers];
     [self removeChildViewControllerFromContainer:_centerViewController];
     
@@ -228,6 +229,7 @@ typedef enum {
     if(!_centerViewController) return;
     
     [self addChildViewController:_centerViewController];
+	centerViewController.view.frame = self.view.bounds;
     [self.view addSubview:[_centerViewController view]];
     [((UIViewController *)_centerViewController) view].frame = (CGRect){.origin = origin, .size=centerViewController.view.frame.size};
     
@@ -351,7 +353,7 @@ typedef enum {
     void (^innerCompletion)() = ^ {
         _menuState = menuState;
         
-        [self setUserInteractionStateForCenterViewController];
+		[self setUserInteractionStateForCenterViewController:(menuState == MFSideMenuStateClosed)];
         MFSideMenuStateEvent eventType = (_menuState == MFSideMenuStateClosed) ? MFSideMenuStateEventMenuDidClose : MFSideMenuStateEventMenuDidOpen;
         [self sendStateEventNotification:eventType];
         
@@ -547,7 +549,7 @@ typedef enum {
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
     if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
         CGPoint velocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:gestureRecognizer.view];
-        BOOL isHorizontalPanning = fabsf(velocity.x) > fabsf(velocity.y);
+        BOOL isHorizontalPanning = fabs(velocity.x) > fabs(velocity.y);
         return isHorizontalPanning;
     }
     return YES;
@@ -710,15 +712,17 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     }
 }
 
-- (void)setUserInteractionStateForCenterViewController {
+- (void)setUserInteractionStateForCenterViewController:(BOOL)state {
     // disable user interaction on the current stack of view controllers if the menu is visible
     if([self.centerViewController respondsToSelector:@selector(viewControllers)]) {
         NSArray *viewControllers = [self.centerViewController viewControllers];
         for(UIViewController* viewController in viewControllers) {
-            viewController.view.userInteractionEnabled = (self.menuState == MFSideMenuStateClosed);
+			viewController.view.userInteractionEnabled = state;
         }
     }
 }
+
+
 
 #pragma mark -
 #pragma mark - Center View Controller Movement
