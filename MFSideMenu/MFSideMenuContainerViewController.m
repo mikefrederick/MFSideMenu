@@ -229,6 +229,7 @@ typedef enum {
     if(!_centerViewController) return;
     
     [self addChildViewController:_centerViewController];
+	centerViewController.view.frame = self.view.bounds;
     [self.view addSubview:[_centerViewController view]];
     [((UIViewController *)_centerViewController) view].frame = (CGRect){.origin = origin, .size=centerViewController.view.frame.size};
     
