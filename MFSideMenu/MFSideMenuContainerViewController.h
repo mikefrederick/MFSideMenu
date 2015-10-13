@@ -34,9 +34,9 @@ typedef enum {
 
 @interface MFSideMenuContainerViewController : UIViewController<UIGestureRecognizerDelegate>
 
-+ (MFSideMenuContainerViewController *)containerWithCenterViewController:(id)centerViewController
-                                                  leftMenuViewController:(id)leftMenuViewController
-                                                 rightMenuViewController:(id)rightMenuViewController;
++ (instancetype)containerWithCenterViewController:(id)centerViewController
+                             leftMenuViewController:(id)leftMenuViewController
+                            rightMenuViewController:(id)rightMenuViewController;
 
 @property (nonatomic, strong) id centerViewController;
 @property (nonatomic, strong) UIViewController *leftMenuViewController;

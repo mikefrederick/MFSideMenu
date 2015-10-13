@@ -16,8 +16,8 @@
 @property (nonatomic, strong) UIColor *color;
 @property (nonatomic, assign) UIView *shadowedView;
 
-+ (MFSideMenuShadow *)shadowWithView:(UIView *)shadowedView;
-+ (MFSideMenuShadow *)shadowWithColor:(UIColor *)color radius:(CGFloat)radius opacity:(CGFloat)opacity;
++ (instancetype)shadowWithView:(UIView *)shadowedView;
++ (instancetype)shadowWithColor:(UIColor *)color radius:(CGFloat)radius opacity:(CGFloat)opacity;
 
 - (void)draw;
 - (void)shadowedViewWillRotate;
