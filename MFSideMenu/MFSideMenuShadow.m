@@ -17,14 +17,14 @@
 @synthesize enabled = _enabled;
 @synthesize shadowedView;
 
-+ (MFSideMenuShadow *)shadowWithView:(UIView *)shadowedView {
-    MFSideMenuShadow *shadow = [MFSideMenuShadow shadowWithColor:[UIColor blackColor] radius:10.0f opacity:0.75f];
++ (instancetype)shadowWithView:(UIView *)shadowedView {
+    MFSideMenuShadow *shadow = [self shadowWithColor:[UIColor blackColor] radius:10.0f opacity:0.75f];
     shadow.shadowedView = shadowedView;
     return shadow;
 }
 
-+ (MFSideMenuShadow *)shadowWithColor:(UIColor *)color radius:(CGFloat)radius opacity:(CGFloat)opacity {
-    MFSideMenuShadow *shadow = [MFSideMenuShadow new];
++ (instancetype)shadowWithColor:(UIColor *)color radius:(CGFloat)radius opacity:(CGFloat)opacity {
+    MFSideMenuShadow *shadow = [[self alloc] init];
     shadow.color = color;
     shadow.radius = radius;
     shadow.opacity = opacity;

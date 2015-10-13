@@ -50,10 +50,10 @@ typedef enum {
 #pragma mark -
 #pragma mark - Initialization
 
-+ (MFSideMenuContainerViewController *)containerWithCenterViewController:(id)centerViewController
-                                                  leftMenuViewController:(id)leftMenuViewController
-                                                 rightMenuViewController:(id)rightMenuViewController {
-    MFSideMenuContainerViewController *controller = [MFSideMenuContainerViewController new];
++ (instancetype)containerWithCenterViewController:(id)centerViewController
+                           leftMenuViewController:(id)leftMenuViewController
+                          rightMenuViewController:(id)rightMenuViewController {
+    MFSideMenuContainerViewController *controller = [[self alloc] init];
     controller.leftMenuViewController = leftMenuViewController;
     controller.centerViewController = centerViewController;
     controller.rightMenuViewController = rightMenuViewController;
