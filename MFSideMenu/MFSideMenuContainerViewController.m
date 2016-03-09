@@ -418,6 +418,10 @@ typedef enum {
     leftFrame.size.width = self.leftMenuWidth;
     leftFrame.origin.x = (self.menuSlideAnimationEnabled) ? -1*leftFrame.size.width / self.menuSlideAnimationFactor : 0;
     leftFrame.origin.y = 0;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
+        CGRect statusBarFrame =  [[UIApplication sharedApplication] statusBarFrame];
+        leftFrame.size.height = leftFrame.size.height+statusBarFrame.size.height;
+    }
     [self.leftMenuViewController view].frame = leftFrame;
     [self.leftMenuViewController view].autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleHeight;
 }
