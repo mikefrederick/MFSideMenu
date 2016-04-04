@@ -158,8 +158,13 @@ typedef enum {
 #pragma mark -
 #pragma mark - UIViewController Rotation
 
--(UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    if (self.centerViewController) {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED < 90000  
+- (NSUInteger)supportedInterfaceOrientations  
+#else  
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations  
+#endif  
+{
+   if (self.centerViewController) {
         if ([self.centerViewController isKindOfClass:[UINavigationController class]]) {
             return [((UINavigationController *)self.centerViewController).topViewController supportedInterfaceOrientations];
         }
