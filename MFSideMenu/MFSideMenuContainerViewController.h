@@ -61,6 +61,8 @@ typedef enum {
 @property (nonatomic, assign) BOOL menuSlideAnimationEnabled;
 @property (nonatomic, assign) CGFloat menuSlideAnimationFactor; // higher = less menu movement on animation
 
+// rotation based on UINavigationController
+@property (nonatomic, assign) BOOL rotationBasedOnTopViewController; // default YES. If YES, the top view controller defines interface orientations. Otherwise, the navigation controller should do it.
 
 - (void)toggleLeftSideMenuCompletion:(void (^)(void))completion;
 - (void)toggleRightSideMenuCompletion:(void (^)(void))completion;

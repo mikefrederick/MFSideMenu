@@ -85,6 +85,7 @@ typedef enum {
     self.menuAnimationMaxDuration = 0.4f;
     self.panMode = MFSideMenuPanModeDefault;
     self.viewHasAppeared = NO;
+    self.rotationBasedOnTopViewController = YES;
 }
 
 - (void)setupMenuContainerView {
@@ -160,7 +161,7 @@ typedef enum {
 
 -(NSUInteger)supportedInterfaceOrientations {
     if (self.centerViewController) {
-        if ([self.centerViewController isKindOfClass:[UINavigationController class]]) {
+        if ([self.centerViewController isKindOfClass:[UINavigationController class]] && self.rotationBasedOnTopViewController) {
             return [((UINavigationController *)self.centerViewController).topViewController supportedInterfaceOrientations];
         }
         return [self.centerViewController supportedInterfaceOrientations];
@@ -170,7 +171,7 @@ typedef enum {
 
 -(BOOL)shouldAutorotate {
     if (self.centerViewController) {
-        if ([self.centerViewController isKindOfClass:[UINavigationController class]]) {
+        if ([self.centerViewController isKindOfClass:[UINavigationController class]] && self.rotationBasedOnTopViewController) {
             return [((UINavigationController *)self.centerViewController).topViewController shouldAutorotate];
         }
         return [self.centerViewController shouldAutorotate];
@@ -180,7 +181,7 @@ typedef enum {
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
     if (self.centerViewController) {
-        if ([self.centerViewController isKindOfClass:[UINavigationController class]]) {
+        if ([self.centerViewController isKindOfClass:[UINavigationController class]] && self.rotationBasedOnTopViewController) {
             return [((UINavigationController *)self.centerViewController).topViewController preferredInterfaceOrientationForPresentation];
         }
         return [self.centerViewController preferredInterfaceOrientationForPresentation];
