@@ -86,6 +86,7 @@ typedef enum {
     self.panMode = MFSideMenuPanModeDefault;
     self.viewHasAppeared = NO;
     self.rotationBasedOnTopViewController = YES;
+    self.statusBarStyleBasedOnTopViewController = YES;
 }
 
 - (void)setupMenuContainerView {
@@ -147,7 +148,7 @@ typedef enum {
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
     if (self.centerViewController) {
-        if ([self.centerViewController isKindOfClass:[UINavigationController class]]) {
+        if ([self.centerViewController isKindOfClass:[UINavigationController class]] && self.statusBarStyleBasedOnTopViewController) {
             return [((UINavigationController *)self.centerViewController).topViewController preferredStatusBarStyle];
         }
         return [self.centerViewController preferredStatusBarStyle];
