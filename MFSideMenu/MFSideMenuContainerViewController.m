@@ -780,6 +780,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     if(ABS(self.panGestureVelocity) > 1.0) {
         // try to continue the animation at the speed the user was swiping
         duration = animationPositionDelta / ABS(self.panGestureVelocity);
+        self.panGestureVelocity = 0.0;
     } else {
         // no swipe was used, user tapped the bar button item
         // TODO: full animation duration hard to calculate with two menu widths
