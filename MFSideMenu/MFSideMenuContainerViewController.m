@@ -414,7 +414,7 @@ typedef enum {
 
 - (void) setLeftSideMenuFrameToClosedPosition {
     if(!self.leftMenuViewController) return;
-    CGRect leftFrame = [self.leftMenuViewController view].frame;
+    CGRect leftFrame = [self.centerViewController view].frame;
     leftFrame.size.width = self.leftMenuWidth;
     leftFrame.origin.x = (self.menuSlideAnimationEnabled) ? -1*leftFrame.size.width / self.menuSlideAnimationFactor : 0;
     leftFrame.origin.y = 0;
@@ -424,7 +424,7 @@ typedef enum {
 
 - (void) setRightSideMenuFrameToClosedPosition {
     if(!self.rightMenuViewController) return;
-    CGRect rightFrame = [self.rightMenuViewController view].frame;
+    CGRect rightFrame = [self.centerViewController view].frame;
     rightFrame.size.width = self.rightMenuWidth;
     rightFrame.origin.y = 0;
     rightFrame.origin.x = self.menuContainerView.frame.size.width - self.rightMenuWidth;
