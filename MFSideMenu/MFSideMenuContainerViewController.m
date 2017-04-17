@@ -160,7 +160,7 @@ typedef enum {
 #pragma mark -
 #pragma mark - UIViewController Rotation
 
--(NSUInteger)supportedInterfaceOrientations {
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations {
     if (self.centerViewController) {
         if ([self.centerViewController isKindOfClass:[UINavigationController class]] && self.rotationBasedOnTopViewController) {
             return [((UINavigationController *)self.centerViewController).topViewController supportedInterfaceOrientations];
@@ -549,7 +549,7 @@ typedef enum {
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
     if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
         CGPoint velocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:gestureRecognizer.view];
-        BOOL isHorizontalPanning = fabsf(velocity.x) > fabsf(velocity.y);
+        BOOL isHorizontalPanning = fabs(velocity.x) > fabs(velocity.y);
         return isHorizontalPanning;
     }
     return YES;
