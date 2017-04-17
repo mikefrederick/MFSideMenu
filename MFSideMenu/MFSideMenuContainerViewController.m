@@ -85,6 +85,8 @@ typedef enum {
     self.menuAnimationMaxDuration = 0.4f;
     self.panMode = MFSideMenuPanModeDefault;
     self.viewHasAppeared = NO;
+    self.rotationBasedOnTopViewController = YES;
+    self.statusBarStyleBasedOnTopViewController = YES;
 }
 
 - (void)setupMenuContainerView {
@@ -146,7 +148,7 @@ typedef enum {
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
     if (self.centerViewController) {
-        if ([self.centerViewController isKindOfClass:[UINavigationController class]]) {
+        if ([self.centerViewController isKindOfClass:[UINavigationController class]] && self.statusBarStyleBasedOnTopViewController) {
             return [((UINavigationController *)self.centerViewController).topViewController preferredStatusBarStyle];
         }
         return [self.centerViewController preferredStatusBarStyle];
@@ -158,9 +160,9 @@ typedef enum {
 #pragma mark -
 #pragma mark - UIViewController Rotation
 
--(NSUInteger)supportedInterfaceOrientations {
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations {
     if (self.centerViewController) {
-        if ([self.centerViewController isKindOfClass:[UINavigationController class]]) {
+        if ([self.centerViewController isKindOfClass:[UINavigationController class]] && self.rotationBasedOnTopViewController) {
             return [((UINavigationController *)self.centerViewController).topViewController supportedInterfaceOrientations];
         }
         return [self.centerViewController supportedInterfaceOrientations];
@@ -170,7 +172,7 @@ typedef enum {
 
 -(BOOL)shouldAutorotate {
     if (self.centerViewController) {
-        if ([self.centerViewController isKindOfClass:[UINavigationController class]]) {
+        if ([self.centerViewController isKindOfClass:[UINavigationController class]] && self.rotationBasedOnTopViewController) {
             return [((UINavigationController *)self.centerViewController).topViewController shouldAutorotate];
         }
         return [self.centerViewController shouldAutorotate];
@@ -180,7 +182,7 @@ typedef enum {
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
     if (self.centerViewController) {
-        if ([self.centerViewController isKindOfClass:[UINavigationController class]]) {
+        if ([self.centerViewController isKindOfClass:[UINavigationController class]] && self.rotationBasedOnTopViewController) {
             return [((UINavigationController *)self.centerViewController).topViewController preferredInterfaceOrientationForPresentation];
         }
         return [self.centerViewController preferredInterfaceOrientationForPresentation];
@@ -547,7 +549,7 @@ typedef enum {
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
     if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
         CGPoint velocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:gestureRecognizer.view];
-        BOOL isHorizontalPanning = fabsf(velocity.x) > fabsf(velocity.y);
+        BOOL isHorizontalPanning = fabs(velocity.x) > fabs(velocity.y);
         return isHorizontalPanning;
     }
     return YES;
