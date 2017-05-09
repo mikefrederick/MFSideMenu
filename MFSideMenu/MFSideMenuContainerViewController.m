@@ -50,6 +50,10 @@ typedef enum {
 #pragma mark -
 #pragma mark - Initialization
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return [self.centerViewController preferredStatusBarStyle];
+}
+
 + (MFSideMenuContainerViewController *)containerWithCenterViewController:(id)centerViewController
                                                   leftMenuViewController:(id)leftMenuViewController
                                                  rightMenuViewController:(id)rightMenuViewController {
@@ -529,18 +533,16 @@ typedef enum {
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]] &&
        self.menuState != MFSideMenuStateClosed) return YES;
-    
+
     if([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
-        if([gestureRecognizer.view isEqual:[self.centerViewController view]])
-            return [self centerViewControllerPanEnabled];
-        
-        if([gestureRecognizer.view isEqual:self.menuContainerView])
-           return [self sideMenuPanEnabled];
-        
-        // pan gesture is attached to a custom view
-        return YES;
+      if([gestureRecognizer.view isEqual:[self.centerViewController view]] &&
+         [self centerViewControllerPanEnabled] &&
+         [touch locationInView:touch.view].x < 60.0) return YES;
+
+      if([gestureRecognizer.view isEqual:self.menuContainerView] &&
+         [self sideMenuPanEnabled]) return YES;
     }
-    
+
     return NO;
 }
 
@@ -555,9 +557,8 @@ typedef enum {
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
 shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-	return NO;
+  return [otherGestureRecognizer isKindOfClass:NSClassFromString(@"UIScrollViewPanGestureRecognizer")];
 }
-
 
 #pragma mark -
 #pragma mark - UIGestureRecognizer Callbacks
